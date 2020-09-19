@@ -6,7 +6,7 @@ orbs:
 executors:
   default:
     docker:
-      - image: circleci/node:10.17.0
+      - image: circleci/node:14
 
 commands:
   npm_install:
