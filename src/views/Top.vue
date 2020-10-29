@@ -1,14 +1,13 @@
 <template>
   <Loading v-if="loading"></Loading>
-  <!-- <v-container class="top" fluid fill-height v-else> -->
   <v-container class="top" v-else>
-    <!-- <v-row class="lighten-4" style="height: 200px;" justify="center" align-content="center">
+    <v-row class="lighten-4" style="height: 200px;" justify="center" align-content="center">
       <v-col md="4">
-        <v-text-field v-model="searchTitle" label="タイトル検索" outlined></v-text-field>
+        <v-text-field v-model="keyword" label="検索" outlined></v-text-field>
       </v-col>
       <v-col md="12">
         <v-layout justify-center>
-          <v-btn class="white--text" color="blue" @click="searchTitles">
+          <v-btn class="white--text" color="blue" @click="search">
             <v-icon color="white">mdi-book-search</v-icon>検索
           </v-btn>
         </v-layout>
@@ -16,63 +15,25 @@
       <v-col md="12">
         <v-layout class="red--text" justify-center>{{ noDataMessage }}</v-layout>
       </v-col>
-    </v-row>-->
-    <!-- <v-pagination
+    </v-row>
+    <v-pagination
       v-model="page"
       :length="length"
       :total-visible="10"
       class="my-4"
       @input="showPage"
-    ></v-pagination>-->
-    <!-- <v-row dense class="mb-6" justify="center"> -->
+    ></v-pagination>
     <v-row dense class="mb-6">
-      <!-- <v-col class="pt-10" v-model="posts" v-for="post in posts" :key="post.id" cols="12" md="8">
+      <v-col class="pt-10" v-model="posts" v-for="post in posts" :key="post.id" cols="4">
         <v-card>
           <router-link :to="{name: 'DetailPost', params: {postId: post.id}}">
-            <v-img
-              :src="post.photoUrl"
-              class="white--text align-end"
-              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-              height="400px"
-            >
-              <v-card-title v-text="post.title"></v-card-title>
-              <v-row>
-                <v-col cols="8">
-                  <v-card-text>
-                    <v-icon color="white">mdi-heart</v-icon>
-                    {{ showLikes(post.likes) }}
-                  </v-card-text>
-                </v-col>
-              </v-row>
-            </v-img>
-          </router-link>
-        </v-card>
-      </v-col>-->
-      <v-col class="pt-10" v-model="posts" v-for="post in posts" :key="post.ID" cols="4">
-        <v-card>
-          <router-link :to="{name: 'DetailPost', params: {postId: post.ID}}">
-            <!-- <v-img
-              :src="post.photoUrl"
-              class="white--text align-end"
-              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-              height="400px"
-            >
-              <v-card-title v-text="post.title"></v-card-title>
-              <v-row>
-                <v-col cols="8">
-                  <v-card-text>
-                    <v-icon color="white">mdi-heart</v-icon>
-                    {{ showLikes(post.likes) }}
-                  </v-card-text>
-                </v-col>
-              </v-row>
-            </v-img>-->
-            <v-card-title>{{ post.Title }}</v-card-title>
-            <v-card-subtitle>{{ post.Speaker }}</v-card-subtitle>
+            <v-card-title>{{ post.title }}</v-card-title>
+            <v-card-subtitle>{{ post.speaker }}</v-card-subtitle>
             <v-card-text>
-              {{ post.Detail }}
+              {{ post.detail }}
+              <!--TODO 動画URL-->
               <!-- <iframe
-                :src="post.MovieURL"
+                :src="post.movie_url"
                 width="100%"
                 height="100%"
                 frameborder="0"
@@ -83,12 +44,14 @@
             <v-list>
               <v-list-item>
                 <v-list-item-avatar>
+                  <!--TODO アバター-->
                   <v-img src="https://randomuser.me/api/portraits/men/28.jpg" alt />
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                  <!-- TODO -->
-                  <v-list-item-title>ユーザー名 {{ post.CreatedAt | moment }}</v-list-item-title>
+                  <!-- TODO ユーザー名 -->
+                  <v-list-item-title>ユーザー名 {{ post.created_at | moment }}</v-list-item-title>
+                  <!-- TODO いいね -->
                   <!-- <v-list-item-subtitle>
                     <v-icon color="black">mdi-heart</v-icon>10
                   </v-list-item-subtitle>-->
@@ -139,13 +102,13 @@ export default {
       page: 1,
       length: 0,
       limit: 3,
-      searchTitle: "",
+      keyword: "",
       noDataMessage: "",
       loading: true,
     };
   },
   mounted() {
-    this.params = { limit: this.limit, offset: this.page };
+    this.params = { limit: this.limit, page: this.page };
     getPosts(this.page, this.params).then((data) => {
       this.posts = data.posts;
       this.length = data.length;
@@ -154,7 +117,7 @@ export default {
   },
   methods: {
     showPage: function () {
-      this.params["offset"] = this.page;
+      this.params["page"] = this.page;
       getPosts(this.page, this.params).then((data) => {
         this.posts = data.posts;
         this.length = data.length;
@@ -166,9 +129,9 @@ export default {
       }
       return likes;
     },
-    searchTitles: function () {
+    search: function () {
       this.noDataMessage = "";
-      this.params["title"] = this.searchTitle;
+      this.params["keyword"] = this.keyword;
       getPosts(this.page, this.params).then((data) => {
         if (data.length == 0) {
           this.noDataMessage = "検索結果は0件です";
