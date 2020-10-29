@@ -17,12 +17,6 @@ export default async function loginUser(email, password) {
     message = err.response.data;
   });
 
-  // TODO ダミー実装
-  document.cookie = 'token=dummy';
-  document.cookie = 'userId=' + 1;
-  document.cookie = 'authenticated=True';
-  window.location.href = "/";
-
   var data = { "success": success, "message": message }
   return data;
 }

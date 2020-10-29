@@ -18,10 +18,9 @@
       <v-spacer></v-spacer>
       <v-card-actions>
         <v-btn color="grey" to="/">Topに戻る</v-btn>
-        <!-- TODO ログイン -->
-        <!-- <v-btn v-show="!isAuthenticated" color="grey" to="/Login">
+        <v-btn v-show="!isAuthenticated" color="grey" to="/Login">
           <v-icon color="white">mdi-login</v-icon>ログイン
-        </v-btn>-->
+        </v-btn>
         <v-btn v-show="!isAuthenticated" color="grey" v-on:click="clickSimpleLogin">
           <v-icon color="white">mdi-login</v-icon>簡易ログイン
         </v-btn>
