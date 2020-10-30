@@ -98,14 +98,11 @@ export default {
         },
       };
       const postData = {
-        // UserId: getCookieDataByKey("userId"),
-        UserId: 1,
-        Title: this.title,
-        Speaker: this.speaker,
-        Detail: this.detail,
-        // photoUrl: url,
-        // MovieURL: null,
-        // storeInfo: this.storeInfo,
+        user_id: Number(getCookieDataByKey("userId")),
+        title: this.title,
+        speaker: this.speaker,
+        detail: this.detail,
+        // movie_url: null, // TODO 実装
       };
 
       axios

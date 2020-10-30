@@ -73,9 +73,9 @@ export default {
     await axios
       .get("/posts/" + this.$route.params.postId, config, {})
       .then(function (response) {
-        self.title = response.data.Title;
-        self.speaker = response.data.Speaker;
-        self.detail = response.data.Detail;
+        self.title = response.data.title;
+        self.speaker = response.data.speaker;
+        self.detail = response.data.detail;
         // self.storeInfo = response.data.storeInfo;
       })
       .catch((err) => {
@@ -91,9 +91,9 @@ export default {
         },
       };
       const postData = {
-        Title: this.title,
-        Speaker: this.speaker,
-        Detail: this.detail,
+        title: this.title,
+        speaker: this.speaker,
+        detail: this.detail,
         // storeInfo: this.storeInfo,
       };
       let postId = this.$route.params.postId;

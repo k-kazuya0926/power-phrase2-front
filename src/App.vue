@@ -34,7 +34,7 @@
           <v-icon color="white">mdi-pencil-box</v-icon>投稿作成
         </v-btn>
         <v-btn
-          v-show="isAuthenticated"
+          v-if="isAuthenticated"
           color="grey"
           :to="{name: 'DetailUser', params: {userId: userId}}"
         >
@@ -58,7 +58,7 @@ import getCookieDataByKey from "@/js/getCookieData.js";
 
 export default {
   data: () => ({
-    userId: null,
+    userId: 0,
   }),
   mounted: function () {
     this.userId = getCookieDataByKey("userId");

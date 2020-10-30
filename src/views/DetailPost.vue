@@ -5,17 +5,19 @@
       <v-row align="center" class="spacer" no-gutters>
         <v-col cols="12" md="1">
           <router-link :to="{name: 'DetailUser', params: {userId: userId}}">
-            <v-avatar size="60px" :to="{name: 'DetailUser', params: {userId: user.ID}}">
-              <img alt="Avatar" :src="user.ImageURL" />
+            <v-avatar size="60px" :to="{name: 'DetailUser', params: {userId: user.id}}">
+              <!-- TODO 実装 -->
+              <!-- <img alt="Avatar" :src="user.ImageURL" /> -->
+              <v-img src="https://randomuser.me/api/portraits/men/28.jpg" alt />
             </v-avatar>
           </router-link>
         </v-col>
         <v-col classs="ml-3 subtitle-1" cols="12" md="10">
-          <v-card-title class="headline">{{ user.Name }} {{ post.CreatedAt | moment }}</v-card-title>
+          <v-card-title class="headline">{{ user.Name }} {{ post.created_at | moment }}</v-card-title>
         </v-col>
         <v-col cols="12" md="12">
-          <v-card-title class=".font-weight-bold">{{ post.Title }}</v-card-title>
-          <v-card-subtitle class=".font-weight-bold">{{ post.Speaker }}</v-card-subtitle>
+          <v-card-title class=".font-weight-bold">{{ post.title }}</v-card-title>
+          <v-card-subtitle class=".font-weight-bold">{{ post.speaker }}</v-card-subtitle>
           <!-- <v-img
             :src="post.photoUrl"
             class="white--text align-end"
@@ -31,7 +33,7 @@
             class=".font-weight-bold"
             style="white-space:pre-wrap; word-wrap:break-word;"
           >
-            {{ post.Detail }}
+            {{ post.detail }}
             <!-- <div>{{ post.MovieURL }}</div> -->
           </v-card-text>
           <v-card-actions>
@@ -46,7 +48,7 @@
             </v-btn>-->
             <v-btn
               v-show="sameUser"
-              :to="{name: 'UpdatePost', params: {postId: post.ID}}"
+              :to="{name: 'UpdatePost', params: {postId: post.id}}"
               color="blue"
             >
               <v-icon color="white">mdi-update</v-icon>投稿を編集
@@ -143,7 +145,7 @@ export default {
   data: () => ({
     post: {},
     user: {},
-    userId: null,
+    userId: 0,
     clickLike: false,
     likeId: null,
     // sameUser: false,
@@ -175,7 +177,7 @@ export default {
       .get("/posts/" + this.$route.params.postId, config, {})
       .then(function (response) {
         self.post = response.data;
-        self.userId = response.data.UserID;
+        self.userId = response.data.user_id;
       })
       .catch((err) => {
         console.log(err);
@@ -184,7 +186,6 @@ export default {
     await axios
       .get("/users/" + this.userId, config, {})
       .then(function (response) {
-        // self.user = response.data.user;
         self.user = response.data;
       })
       .catch((err) => {
@@ -192,7 +193,7 @@ export default {
       });
 
     // await axios
-    //   .get("/likes/" + userId + "/" + this.post.ID, config, {})
+    //   .get("/likes/" + userId + "/" + this.post.id, config, {})
     //   .then(function (response) {
     //     if (response.data.liked == undefined) {
     //       self.clickLike = true;
@@ -227,12 +228,12 @@ export default {
     this.loading = false;
   },
   methods: {
-    showLikes: function (likes) {
-      if (likes == undefined) {
-        return 0;
-      }
-      return likes;
-    },
+    // showLikes: function (likes) {
+    //   if (likes == undefined) {
+    //     return 0;
+    //   }
+    //   return likes;
+    // },
     deletePost: function () {
       let axios = createAxios();
       const config = {
@@ -241,7 +242,7 @@ export default {
         },
       };
       axios
-        .delete("/posts/" + this.post.ID, config)
+        .delete("/posts/" + this.post.id, config)
         .then(function () {
           window.location.href = "/";
         })
@@ -250,111 +251,111 @@ export default {
           this.message = err.response.data;
         });
     },
-    createLike: function () {
-      if (this.post.likes == undefined) {
-        this.post.likes = 0;
-      }
-      this.post.likes = this.post.likes + 1;
-      this.clickLike = false;
+    // createLike: function () {
+    //   if (this.post.likes == undefined) {
+    //     this.post.likes = 0;
+    //   }
+    //   this.post.likes = this.post.likes + 1;
+    //   this.clickLike = false;
 
-      let axios = createAxios();
-      const config = {
-        headers: {
-          Authorization: getCookieDataByKey("token"),
-        },
-      };
-      let self = this;
-      axios
-        .post(
-          "/likes",
-          { userId: getCookieDataByKey("userId"), postId: self.post.id },
-          config
-        )
-        .then(function (response) {
-          self.likeId = response.data.id;
-          self.post.likes = response.data.count;
-        })
-        .catch((err) => {
-          console.log("err:", err.response.data);
-          this.message = err.response.data;
-        });
-    },
-    deleteLike: function () {
-      let axios = createAxios();
-      const config = {
-        headers: {
-          Authorization: getCookieDataByKey("token"),
-        },
-      };
-      let self = this;
-      this.clickLike = true;
+    //   let axios = createAxios();
+    //   const config = {
+    //     headers: {
+    //       Authorization: getCookieDataByKey("token"),
+    //     },
+    //   };
+    //   let self = this;
+    //   axios
+    //     .post(
+    //       "/likes",
+    //       { userId: getCookieDataByKey("userId"), postId: self.post.id },
+    //       config
+    //     )
+    //     .then(function (response) {
+    //       self.likeId = response.data.id;
+    //       self.post.likes = response.data.count;
+    //     })
+    //     .catch((err) => {
+    //       console.log("err:", err.response.data);
+    //       this.message = err.response.data;
+    //     });
+    // },
+    // deleteLike: function () {
+    //   let axios = createAxios();
+    //   const config = {
+    //     headers: {
+    //       Authorization: getCookieDataByKey("token"),
+    //     },
+    //   };
+    //   let self = this;
+    //   this.clickLike = true;
 
-      self.post.likes = self.post.likes - 1;
-      axios
-        .delete("/likes/" + self.likeId, config)
-        .then(function (response) {
-          self.post.likes = response.data.count;
-          self.likeId = null;
-        })
-        .catch((err) => {
-          this.message = err.response.data;
-        });
-    },
-    showComments: async function () {
-      let axios = createAxios();
-      const config = {
-        headers: {
-          Authorization: getCookieDataByKey("token"),
-        },
-      };
-      let self = this;
+    //   self.post.likes = self.post.likes - 1;
+    //   axios
+    //     .delete("/likes/" + self.likeId, config)
+    //     .then(function (response) {
+    //       self.post.likes = response.data.count;
+    //       self.likeId = null;
+    //     })
+    //     .catch((err) => {
+    //       this.message = err.response.data;
+    //     });
+    // },
+    // showComments: async function () {
+    //   let axios = createAxios();
+    //   const config = {
+    //     headers: {
+    //       Authorization: getCookieDataByKey("token"),
+    //     },
+    //   };
+    //   let self = this;
 
-      config.params = { limit: self.limit, offset: self.page };
-      await axios
-        .get("/posts/" + this.post.id + "/comments", config, {})
-        .then(function (response) {
-          self.comments = response.data.comments;
-          if (response.data.count != undefined) {
-            self.length = Math.ceil(response.data.count / self.limit);
-            self.commentsVisible = true;
-          } else {
-            self.length = 0;
-          }
-        })
-        .catch((err) => {
-          console.log("err:", err);
-        });
-    },
-    createComment: async function () {
-      if (!this.$refs.createCommentForm.validate()) {
-        return;
-      }
+    //   config.params = { limit: self.limit, offset: self.page };
+    //   await axios
+    //     .get("/posts/" + this.post.id + "/comments", config, {})
+    //     .then(function (response) {
+    //       self.comments = response.data.comments;
+    //       if (response.data.count != undefined) {
+    //         self.length = Math.ceil(response.data.count / self.limit);
+    //         self.commentsVisible = true;
+    //       } else {
+    //         self.length = 0;
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       console.log("err:", err);
+    //     });
+    // },
+    // createComment: async function () {
+    //   if (!this.$refs.createCommentForm.validate()) {
+    //     return;
+    //   }
 
-      // var axios = createAxios();
-      // const config = {
-      //   headers: {
-      //     Authorization: getCookieDataByKey("token"),
-      //   },
-      // };
-      // const postData = {
-      //   content: this.content,
-      //   userId: getCookieDataByKey("userId"),
-      // };
-      // axios
-      //   .post("/posts/" + this.post.id + "/comments", postData, config)
-      //   .then(function () {
-      //     location.reload();
-      //   })
-      //   .catch((err) => {
-      //     console.log("err:", err.response.data);
-      //   });
+    //   // var axios = createAxios();
+    //   // const config = {
+    //   //   headers: {
+    //   //     Authorization: getCookieDataByKey("token"),
+    //   //   },
+    //   // };
+    //   // const postData = {
+    //   //   content: this.content,
+    //   //   userId: getCookieDataByKey("userId"),
+    //   // };
+    //   // axios
+    //   //   .post("/posts/" + this.post.id + "/comments", postData, config)
+    //   //   .then(function () {
+    //   //     location.reload();
+    //   //   })
+    //   //   .catch((err) => {
+    //   //     console.log("err:", err.response.data);
+    //   //   });
 
-      // TODO ダミー実装
-      location.reload();
-    },
-    openStoreInfo: function (storeInfo) {
-      window.open(storeInfo, "_blank");
-    },
+    //   // TODO ダミー実装
+    //   location.reload();
+    // },
+    // openStoreInfo: function (storeInfo) {
+    //   window.open(storeInfo, "_blank");
+    // },
   },
   filters: {
     moment: function (date) {

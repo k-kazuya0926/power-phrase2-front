@@ -63,8 +63,8 @@ export default {
     await axios
       .get("/users/" + self.userId, config, {})
       .then(function (response) {
-        self.name = response.data.Name;
-        self.email = response.data.Email;
+        self.name = response.data.name;
+        self.email = response.data.email;
         self.loading = false;
       })
       .catch((err) => {
@@ -109,10 +109,10 @@ export default {
       //   console.log(err);
       // });
     },
-    selectedFile: function (e) {
-      let file = e[0];
-      this.file = file;
-    },
+    // selectedFile: function (e) {
+    //   let file = e[0];
+    //   this.file = file;
+    // },
   },
 };
 </script>

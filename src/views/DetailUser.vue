@@ -3,14 +3,16 @@
   <v-card max-width="800" class="mx-auto" v-else>
     <v-container>
       <v-row align="center" class="spacer" no-gutters>
-        <!-- <v-col cols="12" md="2">
+        <v-col cols="12" md="2">
           <v-avatar size="100px">
-            <img alt="Avatar" :src="user.photoUrl" />
+            <!--TODO 実装-->
+            <!-- <img alt="Avatar" :src="user.photoUrl" /> -->
+            <v-img src="https://randomuser.me/api/portraits/men/28.jpg" alt />
           </v-avatar>
-        </v-col>-->
+        </v-col>
         <v-col classs="ml-3 subtitle-1" cols="12" md="9">
           <!-- <v-card-title class="white--text headline">{{ user.Name }}</v-card-title> -->
-          <v-card-title class="headline">{{ user.Name }}</v-card-title>
+          <v-card-title class="headline">{{ user.name }}</v-card-title>
         </v-col>
       </v-row>
       <v-card-actions>
@@ -18,14 +20,14 @@
         <v-btn
           v-show="sameUser"
           class="white--text"
-          :to="{name: 'UpdateUser', params: {userId: user.ID}}"
+          :to="{name: 'UpdateUser', params: {userId: user.id}}"
           color="blue"
         >
           <v-icon color="white">mdi-update</v-icon>ユーザ情報を更新
         </v-btn>
       </v-card-actions>
 
-      <!-- <v-divider class="white my-10"></v-divider>
+      <v-divider class="white my-10"></v-divider>
 
       <v-layout justify-center>
         <v-card-title>ユーザの投稿一覧</v-card-title>
@@ -61,7 +63,7 @@
             </router-link>
           </v-card>
         </v-col>
-      </v-row>-->
+      </v-row>
     </v-container>
   </v-card>
 </template>
@@ -77,7 +79,7 @@ export default {
   data: () => ({
     posts: [],
     user: { photoUrl: "" },
-    userId: null,
+    userId: 0,
     page: 1,
     length: 0,
     loading: true,
@@ -113,9 +115,10 @@ export default {
         self.user = response.data;
         self.loading = false;
 
-        if (self.user.ID == getCookieDataByKey("userId")) {
-          self.sameUser = true;
-        }
+        // TODO 実装
+        // if (self.user.id == getCookieDataByKey("userId")) {
+        self.sameUser = true;
+        // }
       })
       .catch((err) => {
         console.log("err:", err);
