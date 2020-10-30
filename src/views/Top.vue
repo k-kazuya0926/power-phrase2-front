@@ -80,8 +80,8 @@ async function getPosts(page, params) {
     .get("/posts", { params: params })
     .then(function (response) {
       posts = response.data;
-      if (response.data.length != undefined) {
-        length = Math.ceil(response.data.length / params["limit"]);
+      if (response.data.posts.totalCount != undefined) {
+        length = Math.ceil(response.data.posts.totalCount / params["limit"]);
       } else {
         length = 0;
       }
@@ -110,8 +110,8 @@ export default {
   mounted() {
     this.params = { limit: this.limit, page: this.page };
     getPosts(this.page, this.params).then((data) => {
-      this.posts = data.posts;
-      this.length = data.length;
+      this.posts = data.posts.posts;
+      this.length = Math.ceil(data.posts.totalCount / this.limit);
       this.loading = false;
     });
   },
@@ -119,8 +119,8 @@ export default {
     showPage: function () {
       this.params["page"] = this.page;
       getPosts(this.page, this.params).then((data) => {
-        this.posts = data.posts;
-        this.length = data.length;
+        this.posts = data.posts.posts;
+        this.length = Math.ceil(data.posts.totalCount / this.limit);
       });
     },
     showLikes: function (likes) {
@@ -133,12 +133,12 @@ export default {
       this.noDataMessage = "";
       this.params["keyword"] = this.keyword;
       getPosts(this.page, this.params).then((data) => {
-        if (data.length == 0) {
+        if (data.posts.totalCount == 0) {
           this.noDataMessage = "検索結果は0件です";
           return;
         }
-        this.posts = data.posts;
-        this.length = data.length;
+        this.posts = data.posts.posts;
+        this.length = Math.ceil(data.posts.totalCount / this.limit);
       });
     },
   },
