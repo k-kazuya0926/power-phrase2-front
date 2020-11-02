@@ -13,7 +13,7 @@
           </router-link>
         </v-col>
         <v-col classs="ml-3 subtitle-1" cols="12" md="10">
-          <v-card-title class="headline">{{ user.Name }} {{ post.created_at | moment }}</v-card-title>
+          <v-card-title class="headline">{{ post.user_name }} {{ post.created_at | moment }}</v-card-title>
         </v-col>
         <v-col cols="12" md="12">
           <v-card-title class=".font-weight-bold">{{ post.title }}</v-card-title>
@@ -24,10 +24,10 @@
           >{{ post.detail }}</v-card-text>
           <v-card-text>
             <iframe
-              v-if="post.movie_url"
+              v-if="post.embed_movie_url"
               width="100%"
               height="400px"
-              :src="post.movie_url"
+              :src="post.embed_movie_url"
               frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
