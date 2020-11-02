@@ -24,22 +24,21 @@
       @input="showPage"
     ></v-pagination>
     <v-row dense class="mb-6">
-      <v-col class="pt-10" v-model="posts" v-for="post in posts" :key="post.id" cols="4">
+      <v-col class="pt-10" v-model="posts" v-for="post in posts" :key="post.id" cols="6">
         <v-card>
           <router-link :to="{name: 'DetailPost', params: {postId: post.id}}">
             <v-card-title>{{ post.title }}</v-card-title>
             <v-card-subtitle>{{ post.speaker }}</v-card-subtitle>
             <v-card-text>
-              {{ post.detail }}
-              <!--TODO 動画URL-->
-              <!-- <iframe
-                :src="post.movie_url"
+              <iframe
+                v-if="post.movie_url"
                 width="100%"
-                height="100%"
+                height="300px"
+                :src="post.movie_url"
                 frameborder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
-              ></iframe>-->
+              ></iframe>
             </v-card-text>
             <v-list>
               <v-list-item>
@@ -50,7 +49,7 @@
 
                 <v-list-item-content>
                   <!-- TODO ユーザー名 -->
-                  <v-list-item-title>ユーザー名 {{ post.created_at | moment }}</v-list-item-title>
+                  <v-list-item-title>{{post.user_name}} {{ post.created_at | moment }}</v-list-item-title>
                   <!-- TODO いいね -->
                   <!-- <v-list-item-subtitle>
                     <v-icon color="black">mdi-heart</v-icon>10
@@ -101,7 +100,7 @@ export default {
       posts: [],
       page: 1,
       length: 0,
-      limit: 3,
+      limit: 4,
       keyword: "",
       noDataMessage: "",
       loading: true,
