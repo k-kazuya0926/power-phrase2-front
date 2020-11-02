@@ -31,10 +31,10 @@
             <v-card-subtitle>{{ post.speaker }}</v-card-subtitle>
             <v-card-text>
               <iframe
-                v-if="post.movie_url"
+                v-if="post.embed_movie_url"
                 width="100%"
                 height="300px"
-                :src="post.movie_url"
+                :src="post.embed_movie_url"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
