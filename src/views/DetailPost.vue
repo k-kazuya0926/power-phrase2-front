@@ -23,17 +23,15 @@
             style="white-space:pre-wrap; word-wrap:break-word;"
           >{{ post.detail }}</v-card-text>
           <v-card-text>
-            <!--TODO 動画URL-->
-            {{ post.movie_url }}
-            <!-- <iframe
+            <iframe
               v-if="post.movie_url"
               width="100%"
-              height="300px"
+              height="400px"
               :src="post.movie_url"
               frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
-            ></iframe>-->
+            ></iframe>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
