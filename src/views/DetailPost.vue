@@ -18,26 +18,26 @@
         <v-col cols="12" md="12">
           <v-card-title class=".font-weight-bold">{{ post.title }}</v-card-title>
           <v-card-subtitle class=".font-weight-bold">{{ post.speaker }}</v-card-subtitle>
-          <!-- <v-img
-            :src="post.photoUrl"
-            class="white--text align-end"
-            gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-            height="400px"
-          ></v-img>-->
-          <!-- <v-card-text
-            class=".font-weight-bold"
-            style="white-space:pre-wrap; word-wrap:break-word;"
-            v-text="post.content"
-          ></v-card-text>-->
           <v-card-text
             class=".font-weight-bold"
             style="white-space:pre-wrap; word-wrap:break-word;"
-          >
-            {{ post.detail }}
-            <!-- <div>{{ post.MovieURL }}</div> -->
+          >{{ post.detail }}</v-card-text>
+          <v-card-text>
+            <!--TODO 動画URL-->
+            {{ post.movie_url }}
+            <!-- <iframe
+              v-if="post.movie_url"
+              width="100%"
+              height="300px"
+              :src="post.movie_url"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>-->
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
+            <!--TODO いいね-->
             <!-- <v-btn v-show="clickLike" @click="createLike">
               <v-icon color="pink">mdi-heart</v-icon>
               {{ showLikes(post.likes) }}
@@ -74,6 +74,7 @@
 
       <v-divider class="white my-10"></v-divider>
 
+      <!--TODO コメント-->
       <!-- <v-layout justify-center>
         <v-card-title>コメント</v-card-title>
       </v-layout>

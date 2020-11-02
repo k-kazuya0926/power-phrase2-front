@@ -93,7 +93,8 @@ export default {
       // photoUrl = self.photoUrl;
       // }
       // const postData = { name: this.name, photoUrl: photoUrl };
-      const postData = { name: this.name };
+      // const postData = { name: this.name };
+      const postData = { name: this.name, email: this.email };
 
       axios
         .put("/users/" + self.userId, postData, config)

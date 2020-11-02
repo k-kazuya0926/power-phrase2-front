@@ -28,24 +28,9 @@
             </template>
           </v-textarea>
         </v-col>
-        <!-- <v-col cols="12" sm="8">
-          <v-file-input
-            @change="selectedFile"
-            show-size counter multiple
-            :rules="[valueRequired]"
-            label="写真ファイル">
-          </v-file-input>
+        <v-col cols="12" sm="8">
+          <v-text-field v-model="movieUrl" label="動画URL" :rules="[urlCheck]"></v-text-field>
         </v-col>
-        <v-col
-          cols="12"
-          sm="8"
-        >
-          <v-text-field
-            v-model="storeInfo"
-            label="店情報のURL"
-            :rules="[urlCheck]"
-          ></v-text-field>
-        </v-col>-->
       </v-row>
     </v-form>
     <div class="text-right">
@@ -57,15 +42,12 @@
 <script>
 import createAxios from "@/js/createAxios.js";
 import getCookieDataByKey from "@/js/getCookieData.js";
-// import uploadFile from "@/js/upload.js";
 
 export default {
   data: () => ({
     title: "",
     speaker: "",
     detail: "",
-    // file: null,
-    // storeInfo: "",
     movieUrl: "",
     message: "",
     valueRequired: (value) => !!value || "必ず入力してください",
@@ -85,12 +67,6 @@ export default {
         return;
       }
 
-      // uploadFile(this.file)
-      //   .then((url) => {
-      //     if (url == null) {
-      //       return;
-      //     }
-
       var axios = createAxios();
       const config = {
         headers: {
@@ -102,7 +78,7 @@ export default {
         title: this.title,
         speaker: this.speaker,
         detail: this.detail,
-        // movie_url: null, // TODO 実装
+        movie_url: this.movieUrl,
       };
 
       axios
@@ -114,14 +90,6 @@ export default {
           console.log("err:", err.response.data);
           this.message = err.response.data;
         });
-      // })
-      // .catch((err) => {
-      //   console.log(err);
-      // });
-    },
-    selectedFile: function (e) {
-      let file = e[0];
-      this.file = file;
     },
   },
 };

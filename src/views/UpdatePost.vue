@@ -28,9 +28,9 @@
             </template>
           </v-textarea>
         </v-col>
-        <!-- <v-col cols="12" sm="8">
-          <v-text-field v-model="storeInfo" label="店情報のURL" :rules="[urlCheck]"></v-text-field>
-        </v-col>-->
+        <v-col cols="12" sm="8">
+          <v-text-field v-model="movieUrl" label="動画URL" :rules="[urlCheck]"></v-text-field>
+        </v-col>
       </v-row>
     </v-form>
     <div class="text-right">
@@ -49,7 +49,7 @@ export default {
     title: "",
     speaker: "",
     detail: "",
-    storeInfo: "",
+    movieUrl: "",
     valueRequired: (value) => !!value || "必ず入力してください",
     counterRequired: (counter) => !!counter || "必ず入力してください",
     limitLengthTitle: (value) =>
@@ -58,8 +58,8 @@ export default {
       value.length <= 100 || "100字以内にしてください",
     limitLengthDetail: (counter) =>
       counter.length <= 255 || "255字以内にしてください",
-    // urlCheck: (value) =>
-    //   !value || /https?:/.test(value) || "URLを入力してください",
+    urlCheck: (value) =>
+      !value || /https?:/.test(value) || "URLを入力してください",
   }),
   mounted: async function () {
     let axios = createAxios();
@@ -76,7 +76,7 @@ export default {
         self.title = response.data.title;
         self.speaker = response.data.speaker;
         self.detail = response.data.detail;
-        // self.storeInfo = response.data.storeInfo;
+        self.movieUrl = response.data.movie_url;
       })
       .catch((err) => {
         console.log(err);
@@ -94,7 +94,7 @@ export default {
         title: this.title,
         speaker: this.speaker,
         detail: this.detail,
-        // storeInfo: this.storeInfo,
+        movie_url: this.movieUrl,
       };
       let postId = this.$route.params.postId;
 
