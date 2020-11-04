@@ -11,7 +11,7 @@
         </v-col>
         <!-- TODO パスワード -->
         <!-- <v-col cols="12" sm="8">
-          <v-file-input @change="selectedFile" show-size counter multiple label="写真ファイル"></v-file-input>
+          <v-file-input @change="selectedFile" show-size counter multiple label="画像ファイル"></v-file-input>
         </v-col>-->
       </v-row>
     </v-form>

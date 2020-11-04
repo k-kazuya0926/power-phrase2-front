@@ -12,7 +12,14 @@
           <v-text-field v-model="password" label="パスワード" :rules="passwordRules"></v-text-field>
         </v-col>
         <v-col cols="12" sm="8">
-          <!-- <v-file-input @change="selectedFile" show-size counter multiple :rules="[valueRequired]" label="写真ファイル"></v-file-input> -->
+          <v-file-input
+            @change="selectedFile"
+            show-size
+            counter
+            multiple
+            :rules="[valueRequired]"
+            label="画像ファイル"
+          ></v-file-input>
         </v-col>
       </v-row>
     </v-form>
@@ -24,7 +31,7 @@
 
 <script>
 import createAxios from "@/js/createAxios.js";
-// import uploadFile from "@/js/upload.js"
+import uploadFile from "@/js/upload.js";
 
 export default {
   name: "CreateUsers",
@@ -57,35 +64,35 @@ export default {
         return;
       }
 
-      // uploadFile(this.file)
-      //   .then((url) => {
-      //     if (url == null) {
-      //       return;
-      //     }
-      const postData = {
-        Name: this.name,
-        Email: this.email,
-        Password: this.password,
-        // ImageURL: url,
-      };
-      var axios = createAxios();
-      axios
-        .post("/users", postData)
-        .then(function (response) {
-          // document.cookie = "token=" + response.data.token;
-          document.cookie = "token=" + "dummy";
-          document.cookie = "userId=" + response.data.ID;
-          document.cookie = "authenticated=True";
-          window.location.href = "/";
+      uploadFile(this.file)
+        .then((imageFilePath) => {
+          if (imageFilePath == null) {
+            return;
+          }
+          const postData = {
+            name: this.name,
+            email: this.email,
+            password: this.password,
+            image_file_path: imageFilePath,
+          };
+          var axios = createAxios();
+          axios
+            .post("/users", postData)
+            .then(function (response) {
+              // document.cookie = "token=" + response.data.token;
+              document.cookie = "token=" + "dummy"; // TODO 実装
+              document.cookie = "userId=" + response.data.ID;
+              document.cookie = "authenticated=True";
+              window.location.href = "/";
+            })
+            .catch((err) => {
+              console.log("err:", err.response.data);
+              this.message = err.response.data;
+            });
         })
         .catch((err) => {
-          console.log("err:", err.response.data);
-          this.message = err.response.data;
+          console.log(err);
         });
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
     },
 
     selectedFile: function (e) {
