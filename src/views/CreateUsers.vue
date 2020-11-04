@@ -79,9 +79,8 @@ export default {
           axios
             .post("/users", postData)
             .then(function (response) {
-              // document.cookie = "token=" + response.data.token;
-              document.cookie = "token=" + "dummy"; // TODO 実装
-              document.cookie = "userId=" + response.data.ID;
+              document.cookie = "token=" + response.data.token;
+              document.cookie = "userId=" + response.data.id;
               document.cookie = "authenticated=True";
               window.location.href = "/";
             })
