@@ -43,14 +43,10 @@
             <v-list>
               <v-list-item>
                 <v-list-item-avatar>
-                  <!--TODO アバター-->
-                  <!-- <v-img src="https://randomuser.me/api/portraits/men/28.jpg" alt /> -->
-                  <!-- <v-img :src="'http://localhost:1323/' + post.user_image_file_path" alt /> -->
                   <v-img :src="baseURL + post.user_image_file_path" alt />
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                  <!-- TODO ユーザー名 -->
                   <v-list-item-title>{{post.user_name}} {{ post.created_at | moment }}</v-list-item-title>
                   <!-- TODO いいね -->
                   <!-- <v-list-item-subtitle>
@@ -102,7 +98,7 @@ export default {
       posts: [],
       page: 1,
       length: 0,
-      limit: 4,
+      limit: 4, // TODO 共通化
       keyword: "",
       noDataMessage: "",
       loading: true,
@@ -154,6 +150,7 @@ export default {
     },
   },
   filters: {
+    // TODO 共通化
     moment: function (date) {
       return moment(date).format("YYYY/MM/DD HH:mm");
     },
