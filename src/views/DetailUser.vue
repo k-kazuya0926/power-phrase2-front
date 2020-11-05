@@ -5,12 +5,10 @@
       <v-row align="center" class="spacer" no-gutters>
         <v-col cols="12" md="2">
           <v-avatar size="100px">
-            <!--TODO 環境変数使用-->
-            <v-img :src="'http://localhost:1323/' + user.image_file_path" alt />
+            <v-img :src="baseURL + user.image_file_path" alt />
           </v-avatar>
         </v-col>
         <v-col classs="ml-3 subtitle-1" cols="12" md="9">
-          <!-- <v-card-title class="white--text headline">{{ user.Name }}</v-card-title> -->
           <v-card-title class="headline">{{ user.name }}</v-card-title>
         </v-col>
       </v-row>
@@ -83,6 +81,7 @@ export default {
     length: 0,
     loading: true,
     sameUser: false,
+    baseURL: process.env.VUE_APP_API_ENDPOINT,
   }),
   mounted: async function () {
     let self = this;

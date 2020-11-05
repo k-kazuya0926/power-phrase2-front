@@ -6,9 +6,7 @@
         <v-col cols="12" md="1">
           <router-link :to="{name: 'DetailUser', params: {userId: userId}}">
             <v-avatar size="60px" :to="{name: 'DetailUser', params: {userId: user.id}}">
-              <!-- TODO 実装 -->
-              <!-- <img alt="Avatar" :src="user.ImageURL" /> -->
-              <v-img src="https://randomuser.me/api/portraits/men/28.jpg" alt />
+              <v-img :src="baseURL + user.image_file_path" alt />
             </v-avatar>
           </router-link>
         </v-col>
@@ -157,6 +155,7 @@ export default {
     length: 0,
     limit: 3,
     content: "",
+    baseURL: process.env.VUE_APP_API_ENDPOINT,
     counterRequired: (counter) => !!counter || "必ず入力してください",
     limitLengthContent: (counter) =>
       counter.length <= 100 || "100字以内にしてください",

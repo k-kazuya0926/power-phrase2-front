@@ -44,7 +44,9 @@
               <v-list-item>
                 <v-list-item-avatar>
                   <!--TODO アバター-->
-                  <v-img src="https://randomuser.me/api/portraits/men/28.jpg" alt />
+                  <!-- <v-img src="https://randomuser.me/api/portraits/men/28.jpg" alt /> -->
+                  <!-- <v-img :src="'http://localhost:1323/' + post.user_image_file_path" alt /> -->
+                  <v-img :src="baseURL + post.user_image_file_path" alt />
                 </v-list-item-avatar>
 
                 <v-list-item-content>
@@ -104,6 +106,7 @@ export default {
       keyword: "",
       noDataMessage: "",
       loading: true,
+      baseURL: process.env.VUE_APP_API_ENDPOINT,
     };
   },
   mounted() {
