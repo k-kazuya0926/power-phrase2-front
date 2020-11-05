@@ -10,9 +10,9 @@
           <v-text-field v-model="email" label="email" :rules="emailRules"></v-text-field>
         </v-col>
         <!-- TODO パスワード -->
-        <!-- <v-col cols="12" sm="8">
+        <v-col cols="12" sm="8">
           <v-file-input @change="selectedFile" show-size counter multiple label="画像ファイル"></v-file-input>
-        </v-col>-->
+        </v-col>
       </v-row>
     </v-form>
     <div class="text-right">
@@ -24,7 +24,7 @@
 <script>
 import createAxios from "@/js/createAxios.js";
 import getCookieDataByKey from "@/js/getCookieData.js";
-// import uploadFile from "@/js/upload.js";
+import uploadFile from "@/js/upload.js";
 import Loading from "@/components/Loading";
 
 export default {
@@ -33,7 +33,6 @@ export default {
     name: "",
     email: "",
     file: null,
-    photoUrl: null,
     message: "",
     loading: true,
     userId: getCookieDataByKey("userId"),
@@ -77,43 +76,40 @@ export default {
         return;
       }
 
-      // uploadFile(this.file)
-      //   .then((url) => {
-      let self = this;
-      var axios = createAxios();
-      const config = {
-        headers: {
-          Authorization: getCookieDataByKey("token"),
-        },
-      };
+      uploadFile(this.file)
+        .then((imageFilePath) => {
+          let self = this;
+          var axios = createAxios();
+          const config = {
+            headers: {
+              Authorization: getCookieDataByKey("token"),
+            },
+          };
 
-      // TODO
-      // let photoUrl = url;
-      // if (url == null) {
-      // photoUrl = self.photoUrl;
-      // }
-      // const postData = { name: this.name, photoUrl: photoUrl };
-      // const postData = { name: this.name };
-      const postData = { name: this.name, email: this.email };
+          const postData = {
+            name: this.name,
+            email: this.email,
+            image_file_path: imageFilePath,
+          };
 
-      axios
-        .put("/users/" + self.userId, postData, config)
-        .then(function () {
-          window.location.href = "/users/" + self.userId;
+          axios
+            .put("/users/" + self.userId, postData, config)
+            .then(function () {
+              window.location.href = "/users/" + self.userId;
+            })
+            .catch((err) => {
+              console.log("err:", err.response.data);
+              this.message = err.response.data;
+            });
         })
         .catch((err) => {
-          console.log("err:", err.response.data);
-          this.message = err.response.data;
+          console.log(err);
         });
-      // })
-      // .catch((err) => {
-      //   console.log(err);
-      // });
     },
-    // selectedFile: function (e) {
-    //   let file = e[0];
-    //   this.file = file;
-    // },
+    selectedFile: function (e) {
+      let file = e[0];
+      this.file = file;
+    },
   },
 };
 </script>

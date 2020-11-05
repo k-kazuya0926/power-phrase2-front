@@ -5,9 +5,8 @@
       <v-row align="center" class="spacer" no-gutters>
         <v-col cols="12" md="2">
           <v-avatar size="100px">
-            <!--TODO 実装-->
-            <!-- <img alt="Avatar" :src="user.photoUrl" /> -->
-            <v-img src="https://randomuser.me/api/portraits/men/28.jpg" alt />
+            <!--TODO 環境変数使用-->
+            <v-img :src="'http://localhost:1323/' + user.image_file_path" alt />
           </v-avatar>
         </v-col>
         <v-col classs="ml-3 subtitle-1" cols="12" md="9">
