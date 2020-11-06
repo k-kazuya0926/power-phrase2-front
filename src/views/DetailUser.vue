@@ -125,10 +125,9 @@ export default {
         self.user = response.data;
         self.loading = false;
 
-        // TODO 実装
-        // if (self.user.id == getCookieDataByKey("userId")) {
-        self.sameUser = true;
-        // }
+        if (self.user.id == getCookieDataByKey("userId")) {
+          self.sameUser = true;
+        }
       })
       .catch((err) => {
         console.log("err:", err);

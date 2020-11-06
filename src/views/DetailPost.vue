@@ -145,8 +145,7 @@ export default {
     userId: 0,
     clickLike: false,
     likeId: null,
-    // sameUser: false,
-    sameUser: true, // TODO ダミー実装
+    sameUser: false,
     loading: true,
     dialog: false,
     commentsVisible: false,
