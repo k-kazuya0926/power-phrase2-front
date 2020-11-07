@@ -65,7 +65,7 @@ export default {
     let axios = createAxios();
     const config = {
       headers: {
-        Authorization: getCookieDataByKey("token"),
+        Authorization: "Bearer " + getCookieDataByKey("token"),
       },
     };
     let self = this;
@@ -87,7 +87,7 @@ export default {
       let axios = createAxios();
       const config = {
         headers: {
-          Authorization: getCookieDataByKey("token"),
+          Authorization: "Bearer " + getCookieDataByKey("token"),
         },
       };
       const postData = {

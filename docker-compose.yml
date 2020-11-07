@@ -8,6 +8,7 @@ services:
     container_name: power-phrase2-front
     volumes:
       - ./src:/app/src
+      - ./.env:/app/.env
     working_dir: /app
     ports:
       - 8080:8080

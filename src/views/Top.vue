@@ -102,7 +102,7 @@ export default {
       keyword: "",
       noDataMessage: "",
       loading: true,
-      baseURL: process.env.VUE_APP_API_ENDPOINT,
+      baseURL: process.env.VUE_APP_STATIC_FILE_ENDPOINT,
     };
   },
   mounted() {

@@ -70,7 +70,7 @@ export default {
       var axios = createAxios();
       const config = {
         headers: {
-          Authorization: getCookieDataByKey("token"),
+          Authorization: "Bearer " + getCookieDataByKey("token"),
         },
       };
       const postData = {

@@ -16,7 +16,7 @@
       </v-row>
     </v-form>
     <div class="text-right">
-      <v-btn class="ma-2 white--text" color="blue" v-on:click="createUsers">ユーザ情報更新</v-btn>
+      <v-btn class="ma-2 white--text" color="blue" v-on:click="updateUser">ユーザ情報更新</v-btn>
     </div>
   </v-container>
 </template>
@@ -28,7 +28,7 @@ import uploadFile from "@/js/upload.js";
 import Loading from "@/components/Loading";
 
 export default {
-  name: "CreateUsers",
+  name: "UpdateUsers",
   data: () => ({
     name: "",
     email: "",
@@ -54,7 +54,7 @@ export default {
     let axios = createAxios();
     const config = {
       headers: {
-        Authorization: getCookieDataByKey("token"),
+        Authorization: "Bearer " + getCookieDataByKey("token"),
       },
     };
     let self = this;
@@ -71,7 +71,7 @@ export default {
       });
   },
   methods: {
-    createUsers: function () {
+    updateUser: function () {
       if (!this.$refs.updateUsersForm.validate()) {
         return;
       }
@@ -82,7 +82,7 @@ export default {
           var axios = createAxios();
           const config = {
             headers: {
-              Authorization: getCookieDataByKey("token"),
+              Authorization: "Bearer " + getCookieDataByKey("token"),
             },
           };
 

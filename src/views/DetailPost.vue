@@ -154,7 +154,7 @@ export default {
     length: 0,
     limit: 3,
     content: "",
-    baseURL: process.env.VUE_APP_API_ENDPOINT,
+    baseURL: process.env.VUE_APP_STATIC_FILE_ENDPOINT,
     counterRequired: (counter) => !!counter || "必ず入力してください",
     limitLengthContent: (counter) =>
       counter.length <= 100 || "100字以内にしてください",
@@ -164,7 +164,7 @@ export default {
     let axios = createAxios();
     const config = {
       headers: {
-        Authorization: getCookieDataByKey("token"),
+        Authorization: "Bearer " + getCookieDataByKey("token"),
       },
     };
     let self = this;
@@ -235,7 +235,7 @@ export default {
       let axios = createAxios();
       const config = {
         headers: {
-          Authorization: getCookieDataByKey("token"),
+          Authorization: "Bearer " + getCookieDataByKey("token"),
         },
       };
       axios

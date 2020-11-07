@@ -93,7 +93,7 @@ export default {
     length: 0,
     loading: true,
     sameUser: false,
-    baseURL: process.env.VUE_APP_API_ENDPOINT,
+    baseURL: process.env.VUE_APP_STATIC_FILE_ENDPOINT,
   }),
   mounted: async function () {
     let self = this;
@@ -101,7 +101,7 @@ export default {
     let limit = 4; // TODO 共通化
     const config = {
       headers: {
-        Authorization: getCookieDataByKey("token"),
+        Authorization: "Bearer " + getCookieDataByKey("token"),
       },
     };
     self.userId = self.$route.params.userId;
