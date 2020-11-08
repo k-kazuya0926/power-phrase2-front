@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="indigo" dark>
-      <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
+    <v-app-bar clipped-left app color="primary" dark>
+      <v-toolbar-title>
         <a href="/">
           <span class="hidden-sm-and-down white--text">Power Phrase</span>
         </a>
@@ -16,39 +16,33 @@
         class="hidden-sm-and-down"
       ></v-text-field>-->
       <v-spacer></v-spacer>
-      <v-card-actions>
-        <v-btn color="grey" to="/">Topに戻る</v-btn>
-        <v-btn v-show="!isAuthenticated" color="grey" to="/Login">
+      <v-toolbar-items>
+        <v-btn text to="/">Topに戻る</v-btn>
+        <v-btn v-show="!isAuthenticated" text to="/Login">
           <v-icon color="white">mdi-login</v-icon>ログイン
         </v-btn>
-        <v-btn v-show="!isAuthenticated" color="grey" v-on:click="clickSimpleLogin">
+        <v-btn v-show="!isAuthenticated" text v-on:click="clickSimpleLogin">
           <v-icon color="white">mdi-login</v-icon>簡易ログイン
         </v-btn>
-        <v-btn v-show="!isAuthenticated" color="grey" to="/users/create">
+        <v-btn v-show="!isAuthenticated" text to="/users/create">
           <v-icon color="white">mdi-account</v-icon>ユーザー登録
         </v-btn>
-        <v-btn v-show="isAuthenticated" color="grey" v-on:click="deleteCookie">
+        <v-btn v-show="isAuthenticated" text v-on:click="deleteCookie">
           <v-icon color="white">mdi-logout</v-icon>ログアウト
         </v-btn>
-        <v-btn v-show="isAuthenticated" color="grey" to="/posts/create">
+        <v-btn v-show="isAuthenticated" text to="/posts/create">
           <v-icon color="white">mdi-pencil-box</v-icon>投稿作成
         </v-btn>
-        <v-btn
-          v-if="isAuthenticated"
-          color="grey"
-          :to="{name: 'DetailUser', params: {userId: userId}}"
-        >
+        <v-btn v-if="isAuthenticated" text :to="{name: 'DetailUser', params: {userId: userId}}">
           <v-icon color="white">mdi-account</v-icon>ユーザ画面
         </v-btn>
-      </v-card-actions>
+      </v-toolbar-items>
     </v-app-bar>
     <v-main color="blue" dark>
       <router-view></router-view>
     </v-main>
 
-    <v-footer color="indigo" app>
-      <span class="white--text">&copy; {{ new Date().getFullYear() }} Kazuya Kobayashi</span>
-    </v-footer>
+    <v-footer color="primary" dark app>&copy; {{ new Date().getFullYear() }} Kazuya Kobayashi</v-footer>
   </v-app>
 </template>
 
