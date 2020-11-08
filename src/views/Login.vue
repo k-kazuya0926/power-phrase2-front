@@ -38,7 +38,6 @@ export default {
   name: "Login",
   data: () => ({
     message: "",
-    toggle: false,
     email: "",
     password: "",
     showPassword: false,
@@ -46,12 +45,12 @@ export default {
       (value) => !!value || "必ず入力してください",
       (value) => {
         const pattern = /^(([^<>()[\]\\.,;:\s@]+(\.[^<>()[\]\\.,;:\s@]+)*)|(.+))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return pattern.test(value) || "Invalid e-mail.";
+        return pattern.test(value) || "正しい形式で入力してください";
       },
     ],
     passwordRules: [
       (value) => !!value || "必ず入力してください",
-      (value) => (value || "").length >= 8 || "最低8文字は入力してください",
+      (value) => (value || "").length >= 8 || "最低8文字入力してください",
     ],
   }),
   methods: {
