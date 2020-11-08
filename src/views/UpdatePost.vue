@@ -17,12 +17,7 @@
           ></v-text-field>
         </v-col>
         <v-col cols="12">
-          <v-textarea
-            v-model="detail"
-            color="teal"
-            outlined
-            :rules="[counterRequired, limitLengthDetail]"
-          >
+          <v-textarea v-model="detail" color="teal" outlined :rules="[limitLengthDetail]">
             <template v-slot:label>
               <div>本文(255字以下)</div>
             </template>
@@ -55,7 +50,6 @@ export default {
     detail: "",
     movieUrl: "",
     valueRequired: (value) => !!value || "必ず入力してください",
-    counterRequired: (counter) => !!counter || "必ず入力してください",
     limitLengthTitle: (value) =>
       value.length <= 100 || "100字以内にしてください",
     limitLengthSpeaker: (value) =>
