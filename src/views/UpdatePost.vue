@@ -29,7 +29,11 @@
           </v-textarea>
         </v-col>
         <v-col cols="12" sm="8">
-          <v-text-field v-model="movieUrl" label="動画URL" :rules="[urlCheck]"></v-text-field>
+          <v-text-field
+            v-model="movieUrl"
+            label="YouTube動画URL(https://www.youtube.com/watch?v=・・・)"
+            :rules="[urlCheck]"
+          ></v-text-field>
         </v-col>
       </v-row>
     </v-form>
