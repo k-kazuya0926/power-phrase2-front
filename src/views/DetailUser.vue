@@ -1,6 +1,5 @@
 <template>
   <Loading v-if="loading"></Loading>
-  <!-- <v-card max-width="800" class="mx-auto" v-else> -->
   <v-card class="mx-auto" v-else>
     <v-container>
       <v-row align="center" class="spacer" no-gutters>
@@ -25,14 +24,12 @@
         </v-btn>
       </v-card-actions>
 
-      <v-divider class="white my-10"></v-divider>
-
       <v-layout justify-center>
         <v-card-title>ユーザの投稿一覧</v-card-title>
       </v-layout>
       <v-pagination
         v-model="page"
-        :length="length"
+        :length="pageLength"
         :total-visible="10"
         class="my-4"
         @input="showPage"
@@ -62,10 +59,6 @@
 
                   <v-list-item-content>
                     <v-list-item-title>{{post.user_name}} {{ post.created_at | moment }}</v-list-item-title>
-                    <!-- TODO いいね -->
-                    <!-- <v-list-item-subtitle>
-                    <v-icon color="black">mdi-heart</v-icon>10
-                    </v-list-item-subtitle>-->
                   </v-list-item-content>
                 </v-list-item>
               </v-list>
@@ -91,7 +84,7 @@ export default {
     user: { photoUrl: "" },
     userId: 0,
     page: 1,
-    length: 0,
+    pageLength: 0,
     loading: true,
     sameUser: false,
     baseURL: process.env.VUE_APP_STATIC_FILE_ENDPOINT,
@@ -107,14 +100,13 @@ export default {
     };
     self.userId = self.$route.params.userId;
 
-    // TODO
     await axios
       .get("/posts", {
         params: { limit: limit, page: self.page, user_id: self.userId },
       })
       .then(function (response) {
         self.posts = response.data.posts;
-        self.length = Math.ceil(response.data.totalCount / limit);
+        self.pageLength = Math.ceil(response.data.totalCount / limit);
       })
       .catch((err) => {
         console.log("err:", err.response);
@@ -145,7 +137,7 @@ export default {
         })
         .then(function (response) {
           self.posts = response.data.posts;
-          self.length = Math.ceil(response.data.totalCount / limit);
+          self.pageLength = Math.ceil(response.data.totalCount / limit);
         })
         .catch((err) => {
           console.log("err:", err.response);

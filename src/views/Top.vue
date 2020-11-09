@@ -48,10 +48,6 @@
 
                 <v-list-item-content>
                   <v-list-item-title>{{post.user_name}} {{ post.created_at | moment }}</v-list-item-title>
-                  <!-- TODO いいね -->
-                  <!-- <v-list-item-subtitle>
-                    <v-icon color="black">mdi-heart</v-icon>10
-                  </v-list-item-subtitle>-->
                 </v-list-item-content>
               </v-list-item>
             </v-list>
@@ -125,12 +121,6 @@ export default {
         this.pageLength = Math.ceil(this.totalCount / this.limit);
       });
     },
-    // showLikes: function (likes) {
-    //   if (likes == undefined) {
-    //     return 0;
-    //   }
-    //   return likes;
-    // },
     search: function () {
       this.params["keyword"] = this.keyword;
       getPosts(this.page, this.params).then((data) => {
