@@ -1,7 +1,7 @@
 <template>
   <Loading v-if="loading"></Loading>
   <v-container class="top" v-else>
-    <v-row class="lighten-4" style="height: 200px;" justify="center" align-content="center">
+    <v-row class="lighten-4" style="height: 150px;" justify="center" align-content="center">
       <v-col md="4">
         <v-text-field
           v-model="keyword"
@@ -13,14 +13,14 @@
         ></v-text-field>
       </v-col>
       <v-col md="12">
-        <v-layout class="red--text" justify-center>{{ noDataMessage }}</v-layout>
+        <v-layout justify-center>{{ totalCount }}件</v-layout>
       </v-col>
     </v-row>
     <v-pagination
       v-model="page"
       :length="pageLength"
       :total-visible="10"
-      class="my-4"
+      class="my-0"
       @input="showPage"
     ></v-pagination>
     <v-row dense class="mb-6">
@@ -102,7 +102,7 @@ export default {
       pageLength: 0,
       limit: 4, // TODO 共通化
       keyword: "",
-      noDataMessage: "",
+      totalCount: 0,
       loading: true,
       baseURL: process.env.VUE_APP_STATIC_FILE_ENDPOINT,
     };
@@ -111,7 +111,8 @@ export default {
     this.params = { limit: this.limit, page: this.page };
     getPosts(this.page, this.params).then((data) => {
       this.posts = data.posts.posts;
-      this.pageLength = Math.ceil(data.posts.totalCount / this.limit);
+      this.totalCount = data.posts.totalCount;
+      this.pageLength = Math.ceil(this.totalCount / this.limit);
       this.loading = false;
     });
   },
@@ -120,23 +121,20 @@ export default {
       this.params["page"] = this.page;
       getPosts(this.page, this.params).then((data) => {
         this.posts = data.posts.posts;
-        this.pageLength = Math.ceil(data.posts.totalCount / this.limit);
+        this.totalCount = data.posts.totalCount;
+        this.pageLength = Math.ceil(this.totalCount / this.limit);
       });
     },
-    showLikes: function (likes) {
-      if (likes == undefined) {
-        return 0;
-      }
-      return likes;
-    },
+    // showLikes: function (likes) {
+    //   if (likes == undefined) {
+    //     return 0;
+    //   }
+    //   return likes;
+    // },
     search: function () {
-      this.noDataMessage = "";
       this.params["keyword"] = this.keyword;
       getPosts(this.page, this.params).then((data) => {
-        if (data.posts.totalCount == 0) {
-          this.noDataMessage = "検索結果は0件です";
-          return;
-        }
+        this.totalCount = data.posts.totalCount;
         this.posts = data.posts.posts;
         this.pageLength = Math.ceil(data.posts.totalCount / this.limit);
       });
