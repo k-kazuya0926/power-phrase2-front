@@ -13,7 +13,7 @@
         ></v-text-field>
       </v-col>
       <v-col md="12">
-        <v-layout justify-center>{{ totalCount }}件</v-layout>
+        <v-layout justify-center>投稿一覧({{ totalCount }}件)</v-layout>
       </v-col>
     </v-row>
     <v-pagination

@@ -25,7 +25,7 @@
       </v-card-actions>
 
       <v-layout justify-center>
-        <v-card-title>ユーザの投稿一覧</v-card-title>
+        <v-card-title>ユーザの投稿一覧({{ totalCount }}件)</v-card-title>
       </v-layout>
       <v-pagination
         v-model="page"
@@ -85,6 +85,7 @@ export default {
     userId: 0,
     page: 1,
     pageLength: 0,
+    totalCount: 0,
     loading: true,
     sameUser: false,
     baseURL: process.env.VUE_APP_STATIC_FILE_ENDPOINT,
@@ -107,6 +108,7 @@ export default {
       .then(function (response) {
         self.posts = response.data.posts;
         self.pageLength = Math.ceil(response.data.totalCount / limit);
+        self.totalCount = response.data.totalCount;
       })
       .catch((err) => {
         console.log("err:", err.response);
@@ -138,16 +140,11 @@ export default {
         .then(function (response) {
           self.posts = response.data.posts;
           self.pageLength = Math.ceil(response.data.totalCount / limit);
+          self.totalCount = response.data.totalCount;
         })
         .catch((err) => {
           console.log("err:", err.response);
         });
-    },
-    showLikes: function (likes) {
-      if (likes == undefined) {
-        return 0;
-      }
-      return likes;
     },
   },
   filters: {
