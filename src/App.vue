@@ -22,7 +22,7 @@
           <v-icon color="white">mdi-login</v-icon>ログイン
         </v-btn>
         <v-btn v-show="!isAuthenticated" text v-on:click="clickSimpleLogin">
-          <v-icon color="white">mdi-login</v-icon>簡易ログイン
+          <v-icon color="white">mdi-login</v-icon>動作確認用ログイン
         </v-btn>
         <v-btn v-show="!isAuthenticated" text to="/users/create">
           <v-icon color="white">mdi-account</v-icon>ユーザー登録
