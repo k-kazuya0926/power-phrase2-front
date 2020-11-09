@@ -18,7 +18,7 @@
     </v-row>
     <v-pagination
       v-model="page"
-      :length="length"
+      :length="pageLength"
       :total-visible="10"
       class="my-4"
       @input="showPage"
@@ -71,22 +71,24 @@ import moment from "moment";
 async function getPosts(page, params) {
   let axios = createAxios();
   let posts = [];
-  let length = 0;
+  let pageLength = 0;
 
   await axios
     .get("/posts", { params: params })
     .then(function (response) {
       posts = response.data;
       if (response.data.posts.totalCount != undefined) {
-        length = Math.ceil(response.data.posts.totalCount / params["limit"]);
+        pageLength = Math.ceil(
+          response.data.posts.totalCount / params["limit"]
+        );
       } else {
-        length = 0;
+        pageLength = 0;
       }
     })
     .catch((err) => {
       console.log("err:", err.response);
     });
-  let data = { posts: posts, length: length };
+  let data = { posts: posts, pageLength: pageLength };
   return data;
 }
 
@@ -97,7 +99,7 @@ export default {
     return {
       posts: [],
       page: 1,
-      length: 0,
+      pageLength: 0,
       limit: 4, // TODO 共通化
       keyword: "",
       noDataMessage: "",
@@ -109,7 +111,7 @@ export default {
     this.params = { limit: this.limit, page: this.page };
     getPosts(this.page, this.params).then((data) => {
       this.posts = data.posts.posts;
-      this.length = Math.ceil(data.posts.totalCount / this.limit);
+      this.pageLength = Math.ceil(data.posts.totalCount / this.limit);
       this.loading = false;
     });
   },
@@ -118,7 +120,7 @@ export default {
       this.params["page"] = this.page;
       getPosts(this.page, this.params).then((data) => {
         this.posts = data.posts.posts;
-        this.length = Math.ceil(data.posts.totalCount / this.limit);
+        this.pageLength = Math.ceil(data.posts.totalCount / this.limit);
       });
     },
     showLikes: function (likes) {
@@ -136,7 +138,7 @@ export default {
           return;
         }
         this.posts = data.posts.posts;
-        this.length = Math.ceil(data.posts.totalCount / this.limit);
+        this.pageLength = Math.ceil(data.posts.totalCount / this.limit);
       });
     },
   },
