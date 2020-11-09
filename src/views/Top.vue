@@ -3,14 +3,14 @@
   <v-container class="top" v-else>
     <v-row class="lighten-4" style="height: 200px;" justify="center" align-content="center">
       <v-col md="4">
-        <v-text-field v-model="keyword" label="検索" outlined></v-text-field>
-      </v-col>
-      <v-col md="12">
-        <v-layout justify-center>
-          <v-btn class="white--text" color="blue" @click="search">
-            <v-icon color="white">mdi-book-search</v-icon>検索
-          </v-btn>
-        </v-layout>
+        <v-text-field
+          v-model="keyword"
+          label="検索"
+          outlined
+          @keyup.enter="search"
+          clearable
+          prepend-inner-icon="mdi-magnify"
+        ></v-text-field>
       </v-col>
       <v-col md="12">
         <v-layout class="red--text" justify-center>{{ noDataMessage }}</v-layout>
