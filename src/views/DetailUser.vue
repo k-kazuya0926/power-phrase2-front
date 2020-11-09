@@ -1,6 +1,7 @@
 <template>
   <Loading v-if="loading"></Loading>
-  <v-card max-width="800" class="mx-auto" v-else>
+  <!-- <v-card max-width="800" class="mx-auto" v-else> -->
+  <v-card class="mx-auto" v-else>
     <v-container>
       <v-row align="center" class="spacer" no-gutters>
         <v-col cols="6" md="2">
@@ -36,8 +37,8 @@
         class="my-4"
         @input="showPage"
       ></v-pagination>
-      <v-row dense class="mb-6" justify="center">
-        <v-col class="pt-10" v-model="posts" v-for="post in posts" :key="post.id" cols="6" md="8">
+      <v-row dense class="mb-6">
+        <v-col class="pt-10" v-model="posts" v-for="post in posts" :key="post.id" cols="6">
           <v-card>
             <router-link :to="{name: 'DetailPost', params: {postId: post.id}}">
               <v-card-title>{{ post.title }}</v-card-title>

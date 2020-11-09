@@ -17,7 +17,7 @@
       ></v-text-field>-->
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <v-btn text to="/">Topに戻る</v-btn>
+        <v-btn text to="/">Top</v-btn>
         <v-btn v-show="!isAuthenticated" text to="/Login">
           <v-icon color="white">mdi-login</v-icon>ログイン
         </v-btn>
