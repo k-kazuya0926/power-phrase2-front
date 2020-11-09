@@ -9,7 +9,7 @@
           <v-text-field v-model="email" label="email" :rules="emailRules"></v-text-field>
         </v-col>
         <v-col cols="12" sm="8">
-          <v-text-field v-model="password" label="パスワード" :rules="passwordRules"></v-text-field>
+          <v-text-field v-model="password" type="password" label="パスワード" :rules="passwordRules"></v-text-field>
         </v-col>
         <v-col cols="12" sm="8">
           <v-file-input
