@@ -25,7 +25,7 @@
           <v-icon color="white">mdi-login</v-icon>動作確認用ログイン
         </v-btn>
         <v-btn v-show="!isAuthenticated" text to="/users/create">
-          <v-icon color="white">mdi-account</v-icon>ユーザー登録
+          <v-icon color="white">mdi-account</v-icon>ユーザーー登録
         </v-btn>
         <v-btn v-show="isAuthenticated" text v-on:click="deleteCookie">
           <v-icon color="white">mdi-logout</v-icon>ログアウト
@@ -34,7 +34,7 @@
           <v-icon color="white">mdi-pencil-box</v-icon>投稿作成
         </v-btn>
         <v-btn v-if="isAuthenticated" text :to="{name: 'DetailUser', params: {userId: userId}}">
-          <v-icon color="white">mdi-account</v-icon>ユーザ画面
+          <v-icon color="white">mdi-account</v-icon>ユーザー画面
         </v-btn>
       </v-toolbar-items>
     </v-app-bar>

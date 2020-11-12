@@ -20,12 +20,12 @@
           :to="{name: 'UpdateUser', params: {userId: user.id}}"
           color="blue"
         >
-          <v-icon color="white">mdi-update</v-icon>ユーザ情報を更新
+          <v-icon color="white">mdi-update</v-icon>ユーザー情報を更新
         </v-btn>
       </v-card-actions>
 
       <v-layout justify-center>
-        <v-card-title>ユーザの投稿一覧({{ totalCount }}件)</v-card-title>
+        <v-card-title>ユーザーの投稿一覧({{ totalCount }}件)</v-card-title>
       </v-layout>
       <v-pagination
         v-model="page"

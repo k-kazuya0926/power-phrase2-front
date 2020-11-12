@@ -18,7 +18,7 @@
       </v-row>
     </v-form>
     <div class="text-right">
-      <v-btn class="ma-2 white--text" color="blue" v-on:click="updateUser">ユーザ情報更新</v-btn>
+      <v-btn class="ma-2 white--text" color="blue" v-on:click="updateUser">ユーザー情報更新</v-btn>
     </div>
   </v-container>
 </template>
