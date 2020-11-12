@@ -36,7 +36,7 @@ jobs:
       - npm_install
       - run:
           name: build
-          command: VUE_APP_API_ENDPOINT=$VUE_APP_API_ENDPOINT npm run build
+          command: VUE_APP_API_ENDPOINT=$VUE_APP_API_ENDPOINT VUE_APP_STATIC_FILE_ENDPOINT=$VUE_APP_STATIC_FILE_ENDPOINT npm run build
       - aws-s3/sync:
           from: dist
           to: s3://www.power-phrase.com/dist
