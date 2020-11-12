@@ -82,6 +82,7 @@ export default {
   },
   methods: {
     updatePosts: function () {
+      let self = this;
       let axios = createAxios();
       const config = {
         headers: {
@@ -99,7 +100,7 @@ export default {
       axios
         .put("/posts/" + postId, postData, config)
         .then(function () {
-          window.location.href = "/posts/" + postId;
+          self.$router.push("/posts/" + postId);
         })
         .catch((err) => {
           console.log("err:", err.response.data);

@@ -103,7 +103,7 @@ export default {
           axios
             .put("/users/" + self.userId, postData, config)
             .then(function () {
-              window.location.href = "/users/" + self.userId;
+              self.$router.push("/users/" + self.userId);
             })
             .catch((err) => {
               console.log("err:", err.response.data);
