@@ -3,18 +3,9 @@
     <v-app-bar clipped-left app color="primary" dark>
       <v-toolbar-title>
         <a href="/">
-          <span class="hidden-sm-and-down white--text">Power Phrase</span>
+          <span class="hidden-sm-and-down white--text">Power Phrase -心に残る言葉-</span>
         </a>
       </v-toolbar-title>
-      <!-- TODO 検索 -->
-      <!-- <v-text-field
-        flat
-        solo-inverted
-        hide-details
-        prepend-inner-icon="mdi-magnify"
-        label="Search"
-        class="hidden-sm-and-down"
-      ></v-text-field>-->
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-btn text to="/">Top</v-btn>
