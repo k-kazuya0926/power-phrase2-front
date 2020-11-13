@@ -16,7 +16,7 @@
           <v-icon color="white">mdi-login</v-icon>動作確認用ログイン
         </v-btn>
         <v-btn v-show="!isAuthenticated" text to="/users/create">
-          <v-icon color="white">mdi-account</v-icon>ユーザーー登録
+          <v-icon color="white">mdi-account</v-icon>ユーザー登録
         </v-btn>
         <v-btn v-show="isAuthenticated" text v-on:click="deleteCookie">
           <v-icon color="white">mdi-logout</v-icon>ログアウト
