@@ -246,6 +246,7 @@ export default {
         });
     },
     createComment: async function () {
+      let self = this;
       if (!this.$refs.createCommentForm.validate()) {
         return;
       }
@@ -263,7 +264,10 @@ export default {
       axios
         .post("/posts/" + this.post.id + "/comments", postData, config)
         .then(function () {
-          location.reload();
+          self.$router.go({
+            path: self.$router.currentRoute.path,
+            force: true,
+          });
         })
         .catch((err) => {
           console.log("err:", err.response.data);
