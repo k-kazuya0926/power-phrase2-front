@@ -58,6 +58,65 @@
         </v-col>
         <v-col cols="12" md="12"></v-col>
       </v-row>
+
+      <v-divider class="white my-10"></v-divider>
+
+      <v-layout justify-center>
+        <v-card-title>コメント</v-card-title>
+      </v-layout>
+      <v-pagination
+        v-model="page"
+        :length="length"
+        :total-visible="10"
+        class="my-4"
+        v-show="commentsVisible"
+        @input="showComments"
+      ></v-pagination>
+      <v-row dense class="mb-6" justify="center" v-show="commentsVisible">
+        <v-col
+          class="pt-10"
+          v-model="comments"
+          v-for="comment in comments"
+          :key="comment.id"
+          cols="12"
+          md="8"
+        >
+          <v-card>
+            <v-card-actions>
+              <v-list-item class="grow">
+                <router-link :to="{name: 'DetailUser', params: {userId: comment.user_id}}">
+                  <v-list-item-avatar color="grey darken-3">
+                    <v-img :src="baseURL + comment.user_image_file_path" alt />
+                  </v-list-item-avatar>
+                </router-link>
+                <v-list-item-content>
+                  <v-list-item-title>{{ comment.user_name }} {{ comment.created_at | moment }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-card-actions>
+
+            <v-card-text
+              class=".font-weight-bold"
+              style="white-space:pre-wrap; word-wrap:break-word;"
+            >{{ comment.body }}</v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-form ref="createCommentForm">
+        <v-textarea
+          v-model="commentBody"
+          color="teal"
+          outlined
+          :rules="[counterRequired, limitLengthContent]"
+        >
+          <template v-slot:label>
+            <div>コメント作成(100字以下)</div>
+          </template>
+        </v-textarea>
+      </v-form>
+      <div class="text-right">
+        <v-btn class="ma-2 white--text" color="blue" v-on:click="createComment">コメント作成</v-btn>
+      </div>
     </v-container>
   </v-card>
 </template>
@@ -83,8 +142,8 @@ export default {
     comments: [],
     page: 1,
     length: 0,
-    limit: 3,
-    content: "",
+    limit: 10,
+    commentBody: "",
     baseURL: process.env.VUE_APP_STATIC_FILE_ENDPOINT,
     counterRequired: (counter) => !!counter || "必ず入力してください",
     limitLengthContent: (counter) =>
@@ -120,6 +179,22 @@ export default {
         console.log("err:", err);
       });
 
+    config.params = { limit: self.limit, page: self.page };
+    await axios
+      .get("/posts/" + this.post.id + "/comments", config, {})
+      .then(function (response) {
+        self.comments = response.data.comments;
+        if (response.data.totalCount != undefined) {
+          self.length = Math.ceil(response.data.totalCount / self.limit);
+          self.commentsVisible = true;
+        } else {
+          self.length = 0;
+        }
+      })
+      .catch((err) => {
+        console.log("err:", err);
+      });
+
     if (this.userId == userId) {
       this.sameUser = true;
     }
@@ -142,6 +217,56 @@ export default {
         .catch((err) => {
           console.log("err:", err.response.data);
           this.message = err.response.data;
+        });
+    },
+    // コメント一覧取得
+    showComments: async function () {
+      let axios = createAxios();
+      const config = {
+        headers: {
+          Authorization: "Bearer " + getCookieDataByKey("token"),
+        },
+      };
+      let self = this;
+
+      config.params = { limit: self.limit, page: self.page };
+      await axios
+        .get("/posts/" + this.post.id + "/comments", config, {})
+        .then(function (response) {
+          self.comments = response.data.comments;
+          if (response.data.totalCount != undefined) {
+            self.length = Math.ceil(response.data.totalCount / self.limit);
+            self.commentsVisible = true;
+          } else {
+            self.length = 0;
+          }
+        })
+        .catch((err) => {
+          console.log("err:", err);
+        });
+    },
+    createComment: async function () {
+      if (!this.$refs.createCommentForm.validate()) {
+        return;
+      }
+
+      var axios = createAxios();
+      const config = {
+        headers: {
+          Authorization: "Bearer " + getCookieDataByKey("token"),
+        },
+      };
+      const postData = {
+        body: this.commentBody,
+        user_id: Number(getCookieDataByKey("userId")),
+      };
+      axios
+        .post("/posts/" + this.post.id + "/comments", postData, config)
+        .then(function () {
+          location.reload();
+        })
+        .catch((err) => {
+          console.log("err:", err.response.data);
         });
     },
   },
