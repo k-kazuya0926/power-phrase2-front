@@ -99,6 +99,27 @@
               class=".font-weight-bold"
               style="white-space:pre-wrap; word-wrap:break-word;"
             >{{ comment.body }}</v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                v-show="comment.user_id === userId"
+                @click.stop="onDeleteCommentBtn(comment)"
+                color="blue"
+              >
+                <v-icon color="white">mdi-delete</v-icon>削除
+              </v-btn>
+            </v-card-actions>
+            <v-dialog v-model="showsDeleteCommentDialog" v-if="currentComment" max-width="290">
+              <v-card>
+                <v-card-title class="headline">本当に削除しますか？</v-card-title>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="green darken-1" text @click="showsDeleteCommentDialog = false">キャンセル</v-btn>
+
+                  <v-btn color="green darken-1" text @click="deleteComment(currentComment.id)">削除</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-card>
         </v-col>
       </v-row>
@@ -138,6 +159,8 @@ export default {
     sameUser: false,
     loading: true,
     dialog: false,
+    currentComment: null,
+    showsDeleteCommentDialog: false,
     commentsVisible: false,
     comments: [],
     page: 1,
@@ -202,6 +225,7 @@ export default {
     this.loading = false;
   },
   methods: {
+    // 投稿削除
     deletePost: function () {
       let axios = createAxios();
       const config = {
@@ -245,6 +269,7 @@ export default {
           console.log("err:", err);
         });
     },
+    // コメント登録
     createComment: async function () {
       let self = this;
       if (!this.$refs.createCommentForm.validate()) {
@@ -271,6 +296,35 @@ export default {
         })
         .catch((err) => {
           console.log("err:", err.response.data);
+        });
+    },
+    // コメント削除ボタンのイベントハンドラ
+    onDeleteCommentBtn(comment) {
+      this.currentComment = comment;
+      this.showsDeleteCommentDialog = true;
+    },
+    // コメント削除
+    deleteComment: function (id) {
+      console.log(id);
+      let self = this;
+      let axios = createAxios();
+      const config = {
+        headers: {
+          Authorization: "Bearer " + getCookieDataByKey("token"),
+        },
+      };
+      axios
+        .delete("/comments/" + id, config)
+        .then(function () {
+          // window.location.href = "/"; // TODO リロード
+          self.$router.go({
+            path: self.$router.currentRoute.path,
+            force: true,
+          });
+        })
+        .catch((err) => {
+          console.log("err:", err.response.data);
+          this.message = err.response.data;
         });
     },
   },
