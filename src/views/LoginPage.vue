@@ -71,7 +71,6 @@ export default {
         })
         .then(() => {
           if (this.isLoggedIn) {
-            console.log("ログイン成功");
             this.$store.dispatch("message/setSuccessMessage", {
               message: "ログインしました",
             });

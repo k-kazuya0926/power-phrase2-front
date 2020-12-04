@@ -88,6 +88,23 @@
                     ></v-text-field>
                   </ValidationProvider>
 
+                  <!-- TODO vee-validateを使うよう変更 -->
+                  <!-- <ValidationProvider
+                    mode="lazy"
+                    name="画像ファイル"
+                    rules="image"
+                    v-slot="{ errors }"
+                    vid="imageFile"
+                  >-->
+                  <v-file-input
+                    @change="imageFileSelected"
+                    show-size
+                    counter
+                    :rules="[valueRequired]"
+                    label="画像ファイル"
+                  ></v-file-input>
+                  <!-- </ValidationProvider> -->
+
                   <v-btn block elevation="2" class="mr-4 mt-4" type="submit" :disabled="invalid">送信</v-btn>
                 </form>
               </ValidationObserver>
@@ -109,19 +126,27 @@ import {
   localize,
 } from "vee-validate";
 import ja from "vee-validate/dist/locale/ja.json";
-import { required, max, min, email, confirmed } from "vee-validate/dist/rules";
+import {
+  required,
+  max,
+  min,
+  email,
+  confirmed,
+  image,
+} from "vee-validate/dist/rules";
 
 extend("required", required);
 extend("max", max);
 extend("min", min);
 extend("email", email);
-extend("confirmed", confirmed);
 extend("password", (password1) => {
   if (password1.match(/\d/) && password1.match(/[a-z]/)) {
     return true;
   }
   return "半角英小文字、数字をそれぞれ1種類以上含めてください";
 });
+extend("confirmed", confirmed);
+extend("image", image);
 localize("ja", ja);
 
 export default {
@@ -139,23 +164,33 @@ export default {
       isLoading: false,
       show1: false,
       show2: false,
+      imageFile: null,
+      valueRequired: (value) => !!value || "必ず入力してください",
     };
   },
   methods: {
     submitUser() {
+      const data = new FormData();
+      data.append("ImageFile", this.imageFile);
       api
-        .post("/users", {
-          name: this.username,
-          email: this.email,
-          password: this.password1,
-          image_file_path: "", // TODO
-        })
+        .post("/users/images", data)
         .then((response) => {
-          console.log("送信内容: " + response.data);
-          this.autoLogin();
+          api
+            .post("/users", {
+              name: this.username,
+              email: this.email,
+              password: this.password1,
+              image_file_path: response.data,
+            })
+            .then(() => {
+              this.autoLogin();
+            })
+            .catch((error) => {
+              console.log("response: ", error);
+            });
         })
         .catch((error) => {
-          console.log("response: ", error);
+          console.log("response: " + error);
         });
     },
     // 自動ログイン
@@ -168,7 +203,6 @@ export default {
         })
         .then(() => {
           if (this.isLoggedIn) {
-            console.log("ログイン成功");
             this.$store.dispatch("message/setInfoMessage", {
               message: "登録完了",
             });
@@ -193,6 +227,9 @@ export default {
             console.log(error);
           }
         });
+    },
+    imageFileSelected: function (imageFile) {
+      this.imageFile = imageFile;
     },
   },
   computed: {
