@@ -17,7 +17,7 @@
         <v-btn v-show="!isLoggedIn" text v-on:click="simpleLogin">
           <v-icon color="white">mdi-login</v-icon>動作確認用ログイン
         </v-btn>
-        <v-btn v-show="!isLoggedIn" text to="/users/create">
+        <v-btn v-show="!isLoggedIn" text to="/signup">
           <v-icon color="white">mdi-account-plus</v-icon>ユーザー登録
         </v-btn>
         <v-btn v-show="isLoggedIn" text v-on:click="clickLogout">
@@ -43,19 +43,12 @@
 </template>
 
 <script>
-import loginUser from "@/js/auth.js";
-import getCookieDataByKey from "@/js/getCookieData.js";
+import { mapGetters } from "vuex";
 import GlobalMessage from "@/components/GlobalMessage";
 
 export default {
   components: {
     GlobalMessage,
-  },
-  data: () => ({
-    userId: 0,
-  }),
-  mounted: function () {
-    this.userId = getCookieDataByKey("userId");
   },
   methods: {
     deleteCookie: function () {
@@ -68,17 +61,11 @@ export default {
     clickLogout: function () {
       sessionStorage.clear();
       this.$store.dispatch("auth/logout");
-      // this.$store.dispatch("user/logout");
+      this.$store.dispatch("user/logout");
       this.$store.dispatch("message/setSuccessMessage", {
         message: "ログアウトしました",
       });
       this.$router.replace("/login");
-    },
-    clickSimpleLogin: function () {
-      loginUser(
-        process.env.VUE_APP_LOGIN_EMAIL,
-        process.env.VUE_APP_LOGIN_PASSWORD
-      );
     },
     // 動作確認用ログイン
     simpleLogin() {
@@ -89,16 +76,16 @@ export default {
         })
         .then(() => {
           if (this.isLoggedIn) {
-            console.log("ログイン成功");
             this.$store.dispatch("message/setSuccessMessage", {
               message: "ログインしました",
             });
-            // TODO
-            // this.$store
-            //   .dispatch("user/load", { id: this.id })
-            //   .catch((error) => {
-            //     if (process.env.NODE_ENV !== "production") console.log(error);
-            //   });
+            this.$store
+              .dispatch("user/load", { id: this.userId })
+              .catch((error) => {
+                if (process.env.NODE_ENV !== "production") {
+                  console.log(error);
+                }
+              });
             // クエリ文字列に「next」がなければ、ホーム画面へ
             const next = this.$route.query.next || "/";
             this.$router.push(next).catch(() => {});
@@ -115,6 +102,9 @@ export default {
     },
   },
   computed: {
+    ...mapGetters("auth", {
+      userId: "id",
+    }),
     isLoggedIn: function () {
       return this.$store.getters["auth/isLoggedIn"];
     },

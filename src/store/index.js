@@ -5,27 +5,24 @@ import api from '@/services/api'
 Vue.use(Vuex)
 
 // 認証情報
+// TODO userModuleへ統合する
 const authModule = {
   strict: process.env.NODE_ENV !== 'production',
   namespaced: true,
   state: {
-    username: '',
     isLoggedIn: false,
     id: '',
   },
   getters: {
-    username: state => state.username,
     isLoggedIn: state => state.isLoggedIn,
     id: state => state.id,
   },
   mutations: {
     set(state, payload) {
-      state.username = payload.user.username
       state.isLoggedIn = true
       state.id = payload.user.id
     },
     clear(state) {
-      state.username = ''
       state.isLoggedIn = false
       state.id = ''
     }
@@ -58,7 +55,6 @@ const authModule = {
     },
     // ユーザー情報更新
     reload(context, payload) {
-      console.log('payload.id: ' + payload.id)
       return api.get('/users/' + payload.id)
         .then(response => {
           const user = response.data
@@ -93,7 +89,6 @@ const messageModule = {
   },
   mutations: {
     set(state, payload) {
-      console.log('set payload.success=' + payload.success)
       if (payload.success) {
         state.success = payload.success
       }
@@ -117,7 +112,6 @@ const messageModule = {
   actions: {
     // サクセスメッセージ表示
     setSuccessMessage(context, payload) {
-      console.log('setSuccessMessage')
       context.commit('set', {
         'success': payload.message
       })
@@ -165,15 +159,65 @@ const messageModule = {
   }
 }
 
-export default new Vuex.Store({
+// ユーザー情報
+const userModule = {
+  srtict: process.env.NODE_ENV !== 'production',
+  namespaced: true,
   state: {
+    id: '',
+    name: '',
+    image_file_path: '',
+  },
+  getters: {
+    id: state => state.id,
+    name: state => state.name,
+    image_file_path: state => state.image_file_path,
+    getUser: state => {
+      return {
+        id: state.id,
+        name: state.name,
+        image_file_path: state.image_file_path,
+      }
+    }
   },
   mutations: {
+    set(state, payload) {
+      state.id = payload.user.id
+      state.name = payload.user.name
+      state.image_file_path = payload.user.image_file_path
+    },
+    clear(state) {
+      state.id = ''
+      state.name = ''
+      state.image_file_path = ''
+    }
   },
   actions: {
-  },
+    load(context, payload) {
+      return api.get('/users/' + payload.id)
+        .catch(error => {
+          console.log(error)
+        })
+        .then(response => {
+          const user = response.data
+          // storeのユーザー情報を更新
+          context.commit('set', {
+            user: user
+          })
+          return user
+        })
+    },
+    logout(context) {
+      // storeのユーザー情報をクリア
+      context.commit('clear')
+    }
+  }
+}
+
+export default new Vuex.Store({
   modules: {
     auth: authModule,
     message: messageModule,
+    user: userModule,
   }
 })

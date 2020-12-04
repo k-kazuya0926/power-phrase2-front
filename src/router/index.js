@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 import LoginPage from '@/views/LoginPage'
 import Top from '@/views/Top'
 import CreatePosts from '@/views/CreatePosts'
-import CreateUsers from '@/views/CreateUsers'
 import SignUpPage from '@/views/SignUpPage'
 import DetailPost from '@/views/DetailPost'
 import UpdatePost from '@/views/UpdatePost'
@@ -27,11 +26,6 @@ const routes = [
     name: 'CreatePosts',
     component: CreatePosts,
     meta: { requiredAuth: true }
-  },
-  {
-    path: '/users/create',
-    name: 'CreateUsers',
-    component: CreateUsers
   },
   {
     path: '/signup',
