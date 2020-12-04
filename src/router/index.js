@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '@/views/Login'
+import LoginPage from '@/views/LoginPage'
 import Top from '@/views/Top'
 import CreatePosts from '@/views/CreatePosts'
 import CreateUsers from '@/views/CreateUsers'
+import SignUpPage from '@/views/SignUpPage'
 import DetailPost from '@/views/DetailPost'
 import UpdatePost from '@/views/UpdatePost'
 import DetailUser from '@/views/DetailUser'
@@ -19,8 +20,7 @@ const routes = [
   },
   {
     path: '/login',
-    name: 'Login',
-    component: Login
+    component: LoginPage
   },
   {
     path: '/posts/create',
@@ -32,6 +32,10 @@ const routes = [
     path: '/users/create',
     name: 'CreateUsers',
     component: CreateUsers
+  },
+  {
+    path: '/signup',
+    component: SignUpPage
   },
   {
     path: '/posts/:postId',
@@ -67,11 +71,11 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
-  scrollBehavior (to, from, savedPosition) {
+  scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
-       return savedPosition
+      return savedPosition
     } else {
-       return { x: 0, y: 0 }
+      return { x: 0, y: 0 }
     }
   }
 })

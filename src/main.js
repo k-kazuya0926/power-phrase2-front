@@ -3,12 +3,14 @@ import App from './App.vue'
 import router from './router'
 import vuetify from './plugins/vuetify'
 import getCookieDataByKey from "@/js/getCookieData.js"
+import store from './store'
 
 Vue.config.productionTip = false
 
 new Vue({
   router,
   vuetify,
+  store,
   render: h => h(App)
 }).$mount('#app')
 

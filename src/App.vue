@@ -29,7 +29,10 @@
         </v-btn>
       </v-toolbar-items>
     </v-app-bar>
+
     <v-main color="blue" dark>
+      <!-- TODO 位置変更 -->
+      <GlobalMessage />
       <router-view></router-view>
     </v-main>
 
@@ -40,8 +43,12 @@
 <script>
 import loginUser from "@/js/auth.js";
 import getCookieDataByKey from "@/js/getCookieData.js";
+import GlobalMessage from "@/components/GlobalMessage";
 
 export default {
+  components: {
+    GlobalMessage,
+  },
   data: () => ({
     userId: 0,
   }),
