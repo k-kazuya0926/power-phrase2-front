@@ -56,5 +56,17 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.message {
+  text-align: center;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  min-width: 40%;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  font-weight: bold;
+  z-index: 1000;
+}
 </style>

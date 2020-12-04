@@ -32,11 +32,11 @@
               elevation="2"
               class="mr-4 mt-4"
               @click="submitLogin()"
-            >かんたんログイン</v-btn>
+            >動作確認用ログイン</v-btn>
 
             <div class="pa-4 text-center">
               登録していない方
-              <router-link id="to_signup" class="router-link" to="/signup">アカウント作成</router-link>
+              <router-link id="to_signup" class="router-link" to="/signup">ユーザー登録</router-link>
             </div>
           </div>
         </v-card>
@@ -60,10 +60,10 @@ export default {
   },
   methods: {
     // ログイン
-    submitLogin(email = "testuser@example.com", password = "testuser") {
-      this.form.email = email;
-      this.form.password = password;
-      // ログイン
+    submitLogin(
+      email = process.env.VUE_APP_LOGIN_EMAIL,
+      password = process.env.VUE_APP_LOGIN_PASSWORD
+    ) {
       this.$store
         .dispatch("auth/login", {
           email: email,
