@@ -203,7 +203,7 @@ export default {
         })
         .then(() => {
           if (this.isLoggedIn) {
-            this.$store.dispatch("message/setInfoMessage", {
+            this.$store.dispatch("message/setSuccessMessage", {
               message: "登録完了",
             });
             // ユーザー情報取得
