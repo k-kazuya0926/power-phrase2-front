@@ -41,7 +41,7 @@
 
         <!-- タブ -->
         <v-tabs centered show-arrows>
-          <v-tab :to="{ name: 'DetailUser', params: { userId: userId } }">
+          <v-tab :to="{ name: 'DetailUserPage', params: { userId: userId } }">
             <v-icon left>mdi-history</v-icon>
             <!-- <v-badge :content="previousPostsNum" :value="previousPostsNum">
               <span>これまでの投稿</span>

@@ -4,8 +4,8 @@
     <v-container>
       <v-row align="center" class="spacer" no-gutters>
         <v-col cols="12" md="1">
-          <router-link :to="{name: 'DetailUser', params: {userId: userId}}">
-            <v-avatar size="60px" :to="{name: 'DetailUser', params: {userId: user.id}}">
+          <router-link :to="{name: 'DetailUserPage', params: {userId: userId}}">
+            <v-avatar size="60px" :to="{name: 'DetailUserPage', params: {userId: user.id}}">
               <v-img :src="baseURL + user.image_file_path" alt />
             </v-avatar>
           </router-link>
@@ -84,7 +84,7 @@
           <v-card>
             <v-card-actions>
               <v-list-item class="grow">
-                <router-link :to="{name: 'DetailUser', params: {userId: comment.user_id}}">
+                <router-link :to="{name: 'DetailUserPage', params: {userId: comment.user_id}}">
                   <v-list-item-avatar color="grey darken-3">
                     <v-img :src="baseURL + comment.user_image_file_path" alt />
                   </v-list-item-avatar>

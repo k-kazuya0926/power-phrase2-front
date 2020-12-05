@@ -7,7 +7,6 @@ import CreatePosts from '@/views/CreatePosts'
 import SignUpPage from '@/views/SignUpPage'
 import DetailPost from '@/views/DetailPost'
 import UpdatePost from '@/views/UpdatePost'
-// import DetailUser from '@/views/DetailUser'
 import DetailUserPage from '@/views/DetailUserPage'
 import UpdateUser from '@/views/UpdateUser'
 
@@ -45,19 +44,13 @@ const routes = [
     component: UpdatePost,
     meta: { requiresAuth: true }
   },
-  // {
-  //   path: '/users/:userId',
-  //   name: 'DetailUser',
-  //   component: DetailUser,
-  //   meta: { requiresAuth: true }
-  // },
   {
     path: '/users/:userId',
     component: DetailUserPage,
     props: true,
     children: [{
       path: '',
-      name: 'DetailUser', // TODO DetailUserPageに変更
+      name: 'DetailUserPage',
       // component: PreviousPosts,
       props: true,
     },],

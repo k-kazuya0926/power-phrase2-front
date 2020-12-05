@@ -42,7 +42,7 @@
             </v-card-text>
             <v-list>
               <v-list-item>
-                <router-link :to="{name: 'DetailUser', params: {userId: post.user_id}}">
+                <router-link :to="{name: 'DetailUserPage', params: {userId: post.user_id}}">
                   <v-list-item-avatar>
                     <v-img :src="baseURL + post.user_image_file_path" alt />
                   </v-list-item-avatar>

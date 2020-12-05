@@ -26,7 +26,7 @@
         <v-btn v-show="isLoggedIn" text to="/posts/create">
           <v-icon color="white">mdi-pencil-box</v-icon>投稿作成
         </v-btn>
-        <v-btn v-if="isLoggedIn" text :to="{name: 'DetailUser', params: {userId: userId}}">
+        <v-btn v-if="isLoggedIn" text :to="{name: 'DetailUserPage', params: {userId: userId}}">
           <v-icon color="white">mdi-account</v-icon>マイページ
         </v-btn>
       </v-toolbar-items>
