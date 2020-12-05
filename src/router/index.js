@@ -1,12 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import LoginPage from '@/views/LoginPage'
+import store from '@/store'
 import Top from '@/views/Top'
 import CreatePosts from '@/views/CreatePosts'
 import SignUpPage from '@/views/SignUpPage'
 import DetailPost from '@/views/DetailPost'
 import UpdatePost from '@/views/UpdatePost'
-import DetailUser from '@/views/DetailUser'
+// import DetailUser from '@/views/DetailUser'
+import DetailUserPage from '@/views/DetailUserPage'
 import UpdateUser from '@/views/UpdateUser'
 
 Vue.use(VueRouter)
@@ -25,7 +27,7 @@ const routes = [
     path: '/posts/create',
     name: 'CreatePosts',
     component: CreatePosts,
-    meta: { requiredAuth: true }
+    meta: { requiresAuth: true }
   },
   {
     path: '/signup',
@@ -35,25 +37,37 @@ const routes = [
     path: '/posts/:postId',
     name: 'DetailPost',
     component: DetailPost,
-    meta: { requiredAuth: true }
+    meta: { requiresAuth: true }
   },
   {
     path: '/posts/:postId/update',
     name: 'UpdatePost',
     component: UpdatePost,
-    meta: { requiredAuth: true }
+    meta: { requiresAuth: true }
   },
+  // {
+  //   path: '/users/:userId',
+  //   name: 'DetailUser',
+  //   component: DetailUser,
+  //   meta: { requiresAuth: true }
+  // },
   {
     path: '/users/:userId',
-    name: 'DetailUser',
-    component: DetailUser,
-    meta: { requiredAuth: true }
+    component: DetailUserPage,
+    props: true,
+    children: [{
+      path: '',
+      name: 'DetailUser', // TODO DetailUserPageに変更
+      // component: PreviousPosts,
+      props: true,
+    },],
+    meta: { requiresAuth: true }
   },
   {
     path: '/users/:userId/update',
     name: 'UpdateUser',
     component: UpdateUser,
-    meta: { requiredAuth: true }
+    meta: { requiresAuth: true }
   },
   {
     path: '*',
@@ -71,6 +85,32 @@ const router = new VueRouter({
     } else {
       return { x: 0, y: 0 }
     }
+  }
+})
+
+router.beforeEach((to, from, next) => {
+  const isLoggedIn = store.getters['auth/isLoggedIn']
+
+  // ログインが必要な画面に遷移しようとした場合
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+
+    // ログインしている状態の場合
+    if (isLoggedIn) {
+      next()
+
+    } else {
+      next({
+        path: '/login',
+        // 遷移先のURLはクエリ文字列として付加
+        query: {
+          next: to.fullPath
+        }
+      })
+    }
+
+  } else {
+    // ログインが不要な画面であればそのまま次へ
+    next()
   }
 })
 
