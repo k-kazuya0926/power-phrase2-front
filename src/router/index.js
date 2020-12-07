@@ -2,7 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import LoginPage from '@/views/LoginPage'
 import store from '@/store'
-import Top from '@/views/Top'
+import HomePage from '@/views/HomePage'
+import LatestPosts from '@/components/LatestPosts'
 import CreatePosts from '@/views/CreatePosts'
 import SignUpPage from '@/views/SignUpPage'
 import DetailPost from '@/views/DetailPost'
@@ -15,8 +16,14 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Top',
-    component: Top
+    component: HomePage,
+    children: [
+      {
+        path: '',
+        name: 'latest',
+        component: LatestPosts
+      },
+    ]
   },
   {
     path: '/login',
