@@ -330,7 +330,6 @@ export default {
         .get("/posts/" + this.postId + "/comments?limit=100&page=1")
         .then((response) => {
           this.comments = response.data.comments;
-          // TODO タイミング変更
           this.isLoading = false;
         });
     },

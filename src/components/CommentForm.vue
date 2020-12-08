@@ -7,15 +7,13 @@
             class="ma-0 pa-0"
             solo
             rows="2"
-            v-model="text"
+            v-model="body"
             placeholder="コメントを入力してください"
             hide-details
-          >
-          </v-textarea>
-            <v-btn type="submit" block class="mt-1" dark color="blue-grey darken-1">
-              <v-icon>mdi-send</v-icon>
-              送信
-            </v-btn>
+          ></v-textarea>
+          <v-btn type="submit" block class="mt-1" dark color="blue-grey darken-1">
+            <v-icon>mdi-send</v-icon>送信
+          </v-btn>
         </div>
       </div>
     </form>
@@ -28,8 +26,8 @@ export default {
   props: ["post"],
   data() {
     return {
-      text: "",
-      author_name: this.$store.getters["auth/id"],
+      body: "",
+      userId: this.$store.getters["auth/id"],
     };
   },
   computed: {
@@ -39,30 +37,28 @@ export default {
   },
   methods: {
     submitText: function () {
-      if (this.text) {
+      if (this.body) {
         api
-          .post("/comments/", {
-            post: this.post.id,
-            author_name: this.author_name,
-            text: this.text,
+          .post("/posts/" + this.post.id + "/comments", {
+            user_id: this.userId,
+            body: this.body,
           })
-          .then((response) => {
+          .then(() => {
             // 親コンポーネントでCommentGetメソッドを実行
             this.$emit("CommentGet");
-            console.log("送信内容: " + response.data);
           })
           .catch((error) => {
             console.log("response: ", error.response.data);
           });
         // 入力後、フォーム内の文字列をクリア
-        this.text = "";
+        this.body = "";
       }
     },
     post_comment() {
       if (this.isLoggedIn == false) {
         this.$store.dispatch("message/setInfoMessage", {
-              message: "ログインが必要です",
-            });
+          message: "ログインが必要です",
+        });
         this.$router.replace("/login");
       }
     },
