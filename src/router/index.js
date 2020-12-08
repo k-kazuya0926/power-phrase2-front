@@ -6,7 +6,7 @@ import HomePage from '@/views/HomePage'
 import LatestPosts from '@/components/LatestPosts'
 import CreatePosts from '@/views/CreatePosts'
 import SignUpPage from '@/views/SignUpPage'
-import DetailPost from '@/views/DetailPost'
+import DetailPostPage from '@/views/DetailPostPage'
 import UpdatePost from '@/views/UpdatePost'
 import DetailUserPage from '@/views/DetailUserPage'
 import UpdateUser from '@/views/UpdateUser'
@@ -41,8 +41,9 @@ const routes = [
   },
   {
     path: '/posts/:postId',
-    name: 'DetailPost',
-    component: DetailPost,
+    name: 'DetailPostPage',
+    props: true,
+    component: DetailPostPage,
     meta: { requiresAuth: true }
   },
   {

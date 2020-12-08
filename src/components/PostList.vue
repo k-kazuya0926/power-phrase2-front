@@ -25,7 +25,7 @@
                 <v-card :elevation="hover ? 15 : 3" color="blue-grey lighten-5">
                   <router-link
                     style="text-decoration: none"
-                    :to="{ name: 'DetailPost', params: { postId: post.id } }"
+                    :to="{ name: 'DetailPostPage', params: { postId: post.id } }"
                   >
                     <!-- タイトル -->
                     <v-card-title>{{ post.title }}</v-card-title>
