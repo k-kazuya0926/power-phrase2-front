@@ -27,7 +27,7 @@
             max-width="1200px"
           >
             <div class="pa-6">
-              <h3 v-if="post_id" class="text-center">投稿編集</h3>
+              <h3 v-if="postId" class="text-center">投稿編集</h3>
               <h3 v-else class="text-center">新規投稿</h3>
               <ValidationObserver v-slot="{ invalid }">
                 <form @submit.prevent="submitPost()">
@@ -109,7 +109,7 @@
                     :disabled="invalid"
                     color="blue-grey lighten-2"
                   >
-                    <span v-if="post_id">
+                    <span v-if="postId">
                       <v-icon>mdi-content-save</v-icon>変更を保存
                     </span>
                     <span v-else>
@@ -152,7 +152,7 @@ export default {
     ValidationProvider,
     ValidationObserver,
   },
-  props: ["post_id"],
+  props: ["postId"],
   data() {
     return {
       loginUserId: this.$store.getters["auth/id"],
@@ -181,9 +181,9 @@ export default {
         detail: this.detail,
         movie_url: this.movieUrl,
       };
-      if (this.post_id) {
+      if (this.postId) {
         // 更新
-        api.patch("/posts/" + this.post_id, postData).then(() => {
+        api.put("/posts/" + this.postId, postData).then(() => {
           this.$router.replace("/");
         });
       } else {
@@ -197,8 +197,8 @@ export default {
   created() {
     this.clearSession();
     // 編集モードである場合
-    if (this.post_id) {
-      api.get("/posts/" + this.post_id).then((response) => {
+    if (this.postId) {
+      api.get("/posts/" + this.postId).then((response) => {
         this.title = response.data.title;
         this.speaker = response.data.speaker;
         this.detail = response.data.detail;

@@ -120,16 +120,16 @@
                     </v-card-actions>
                   </router-link>
 
-                  <!-- TODO 投稿者 = ログインユーザーである場合、編集、削除ボタン表示 -->
-                  <div v-if="post.user_id == user_id">
+                  <!-- 投稿者 = ログインユーザーである場合、編集、削除ボタン表示 -->
+                  <div v-if="post.user_id === loginUserId">
                     <v-divider class="mx-4 my-0"></v-divider>
                     <v-card-actions>
                       <v-btn
                         text
                         style="text-decoration: none"
                         :to="{
-                          name: 'post_edit',
-                          params: { post_id: post.id },
+                          name: 'EditPostPage',
+                          params: { postId: post.id },
                         }"
                       >
                         <v-icon>mdi-pencil</v-icon>編集
@@ -184,20 +184,14 @@ import api from "@/services/api";
 import { watchScrollPosition, clearSession } from "@/mixins/utility";
 
 export default {
-  props: [
-    "postType",
-    "user_id",
-    "isLoading",
-    "nextPage",
-    "postURL",
-    "sessionKey",
-  ],
+  props: ["postType", "isLoading", "nextPage", "postURL", "sessionKey"],
   data() {
     return {
       page: 1,
       dialog: false, // 削除確認ダイアログを表示するか
       currentPost: null, // 削除対象投稿
       baseURL: process.env.VUE_APP_STATIC_FILE_ENDPOINT,
+      loginUserId: this.$store.getters["auth/id"],
     };
   },
   mixins: [watchScrollPosition, clearSession],
@@ -206,7 +200,7 @@ export default {
     DestroyPost(post_id) {
       this.dialog = false;
       this.clearSession(); // 無限スクロール関連をsessionStorageから削除
-      this.$emit("parentPostDelete", post_id); // TODO 不明
+      this.$emit("parentPostDelete", post_id); // イベント発行
     },
     infiniteHandler($state) {
       this.page += 1;

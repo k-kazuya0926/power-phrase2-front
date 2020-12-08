@@ -33,7 +33,6 @@ export default {
     };
   },
   async mounted() {
-    console.log("LatestPosts mounted");
     // 無限スクロールのデータがある場合
     if (sessionStorage.getItem(this.sessionKey)) {
       const page_infinite = sessionStorage.getItem(this.sessionKey);

@@ -7,7 +7,6 @@ import LatestPosts from '@/components/LatestPosts'
 import NewEditPostPage from '@/views/NewEditPostPage'
 import SignUpPage from '@/views/SignUpPage'
 import DetailPostPage from '@/views/DetailPostPage'
-import UpdatePost from '@/views/UpdatePost'
 import DetailUserPage from '@/views/DetailUserPage'
 import UpdateUser from '@/views/UpdateUser'
 
@@ -46,9 +45,10 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/posts/:postId/update',
-    name: 'UpdatePost',
-    component: UpdatePost,
+    path: '/posts/:postId/edit',
+    name: 'EditPostPage',
+    component: NewEditPostPage,
+    props: true,
     meta: { requiresAuth: true }
   },
   {

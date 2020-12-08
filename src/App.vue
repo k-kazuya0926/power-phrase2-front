@@ -76,9 +76,7 @@ export default {
         })
         .then(() => {
           if (this.isLoggedIn) {
-            this.$store.dispatch("message/setSuccessMessage", {
-              message: "ログインしました",
-            });
+            // ユーザー情報取得
             this.$store
               .dispatch("user/load", { id: this.userId })
               .catch((error) => {
@@ -88,7 +86,8 @@ export default {
               });
             // クエリ文字列に「next」がなければ、ホーム画面へ
             const next = this.$route.query.next || "/";
-            this.$router.push(next).catch(() => {});
+            // 編集ボタン、削除ボタンを表示させるため、リロード
+            this.$router.go({ path: next, force: true }).catch(() => {});
           } else {
             console.log("ログイン失敗");
             this.$store.dispatch("message/setErrorMessage", {

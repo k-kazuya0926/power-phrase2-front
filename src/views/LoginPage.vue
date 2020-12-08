@@ -71,10 +71,6 @@ export default {
         })
         .then(() => {
           if (this.isLoggedIn) {
-            this.$store.dispatch("message/setSuccessMessage", {
-              message: "ログインしました",
-            });
-
             // ユーザー情報取得
             this.$store
               .dispatch("user/load", { id: this.id })

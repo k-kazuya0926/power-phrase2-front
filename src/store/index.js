@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import api from '@/services/api'
 
+import createPersistedState from 'vuex-persistedstate'
+
 Vue.use(Vuex)
 
 // 認証情報
@@ -219,5 +221,6 @@ export default new Vuex.Store({
     auth: authModule,
     message: messageModule,
     user: userModule,
-  }
+  },
+  plugins: [createPersistedState()]
 })
