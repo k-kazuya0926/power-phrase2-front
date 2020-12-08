@@ -153,7 +153,7 @@
                           <v-btn @click="dialog = false">キャンセル</v-btn>
                           <v-btn
                             color="blue-grey lighten-3"
-                            @click="DestroyPost(currentPost.id)"
+                            @click="deletePost(currentPost.id)"
                             class="ml-4"
                           >OK</v-btn>
                         </v-card-actions>
@@ -197,10 +197,11 @@ export default {
   mixins: [watchScrollPosition, clearSession],
 
   methods: {
-    DestroyPost(post_id) {
+    // 投稿削除
+    deletePost(postId) {
       this.dialog = false;
       this.clearSession(); // 無限スクロール関連をsessionStorageから削除
-      this.$emit("parentPostDelete", post_id); // イベント発行
+      this.$emit("deletePost", postId); // イベント発行
     },
     infiniteHandler($state) {
       this.page += 1;

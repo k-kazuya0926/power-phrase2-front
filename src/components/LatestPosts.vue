@@ -7,6 +7,7 @@
       :nextPage="nextPage"
       :postURL="postURL"
       :sessionKey="sessionKey"
+      @deletePost="deletePost"
     />
   </div>
 </template>
@@ -59,6 +60,7 @@ export default {
     }
   },
   methods: {
+    // 投稿一覧取得
     async getPosts() {
       await api.get(this.postURL).then((response) => {
         this.latestPosts = response.data.posts;
@@ -70,6 +72,16 @@ export default {
         }
       });
       this.isLoading = false;
+    },
+    // 投稿削除
+    async deletePost(postId) {
+      await api
+        .delete("/posts/" + postId)
+        .then(this.getPosts)
+        .catch((error) => {
+          console.log("投稿削除エラー");
+          console.log(error);
+        });
     },
   },
 };
