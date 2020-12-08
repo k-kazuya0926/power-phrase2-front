@@ -4,7 +4,7 @@ import LoginPage from '@/views/LoginPage'
 import store from '@/store'
 import HomePage from '@/views/HomePage'
 import LatestPosts from '@/components/LatestPosts'
-import CreatePosts from '@/views/CreatePosts'
+import NewEditPostPage from '@/views/NewEditPostPage'
 import SignUpPage from '@/views/SignUpPage'
 import DetailPostPage from '@/views/DetailPostPage'
 import UpdatePost from '@/views/UpdatePost'
@@ -31,8 +31,7 @@ const routes = [
   },
   {
     path: '/posts/create',
-    name: 'CreatePosts',
-    component: CreatePosts,
+    component: NewEditPostPage,
     meta: { requiresAuth: true }
   },
   {

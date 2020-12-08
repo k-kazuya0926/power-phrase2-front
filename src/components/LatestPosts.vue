@@ -28,7 +28,7 @@ export default {
       latestPosts: [],
       isLoading: true,
       nextPage: false, // 次のページがあるか
-      postURL: "/posts?limit=4&page=1",
+      postURL: "/posts?limit=9&page=1",
       sessionKey: "infinitePage_latest",
     };
   },
