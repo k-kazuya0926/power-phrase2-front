@@ -8,6 +8,7 @@ import NewEditPostPage from '@/views/NewEditPostPage'
 import SignUpPage from '@/views/SignUpPage'
 import DetailPostPage from '@/views/DetailPostPage'
 import DetailUserPage from '@/views/DetailUserPage'
+import PreviousPosts from '@/components/PreviousPosts'
 import UpdateUser from '@/views/UpdateUser'
 
 Vue.use(VueRouter)
@@ -58,9 +59,10 @@ const routes = [
     children: [{
       path: '',
       name: 'DetailUserPage',
-      // component: PreviousPosts,
+      component: PreviousPosts,
       props: true,
-    },],
+    },
+    ],
     meta: { requiresAuth: true }
   },
   {

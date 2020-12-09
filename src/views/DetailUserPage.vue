@@ -1,30 +1,55 @@
 <template>
   <div>
-    <v-btn class="mx-2 d-none d-sm-flex" @click="$router.back()" fab fixed dark small>
+    <!-- 戻るボタン -->
+    <v-btn
+      class="mx-2 d-none d-sm-flex"
+      @click="$router.back()"
+      fab
+      fixed
+      dark
+      small
+      color="blue-grey lighten-2"
+    >
       <v-icon dark>mdi-arrow-left</v-icon>
     </v-btn>
 
+    <v-btn
+      class="mx-2 d-flex d-sm-none"
+      fab
+      large
+      fixed
+      right
+      bottom
+      dark
+      color="blue-grey lighten-2"
+      to="/newpostpage"
+    >
+      <v-icon dark>mdi-plus</v-icon>
+    </v-btn>
     <div class="content">
+      <!--loading-->
       <div v-show="isLoading" class="text-center">
-        <v-progress-circular indeterminate></v-progress-circular>
+        <v-progress-circular indeterminate color="blue-gray"></v-progress-circular>
       </div>
 
       <div v-show="!isLoading">
-        <v-card class="mb-2">
+        <v-card class="mb-2" color="blue-grey lighten-5">
           <v-row no-gutters>
-            <!-- アイコン -->
-            <v-col cols="6" lg="3" sm="3" xs="3">TODO アイコン</v-col>
+            <!--アイコン-->
+            <v-col cols="6" lg="3" md="3" sm="3" xs="3">
+              <v-img v-if="Person.image_file_path" eager :src="baseURL + Person.image_file_path"></v-img>
+            </v-col>
 
             <v-col cols="6" lg="4" md="3" sm="9" xs="3" class="pa-md-3">
-              <!-- TODO 本人である場合 -->
+              <!--本人である場合-->
               <v-card-title
-                v-if="true"
+                v-if="userId == login_user_id"
                 class="text-h5 text-sm-h4 text-md-h4 text-lg-h3 pa-2 pa-sm-4"
               >
-                {{ login_username }}
-                <!-- TODO 編集ボタン -->
+                {{ login_user_username }}
+                <!--編集ボタン-->
                 <v-btn
-                  v-if="true"
+                  v-if="userId == login_user_id"
                   style="text-decoration: none"
                   fab
                   x-small
@@ -35,96 +60,137 @@
                   <v-icon>mdi-account-edit</v-icon>
                 </v-btn>
               </v-card-title>
+
+              <!--本人でない場合-->
+              <v-card-title
+                v-else
+                class="text-h5 text-sm-h4 text-md-h4 text-lg-h3"
+              >{{ Person.name }}</v-card-title>
             </v-col>
           </v-row>
         </v-card>
 
-        <!-- タブ -->
-        <v-tabs centered show-arrows>
+        <!--投稿一覧-->
+        <v-tabs color="blue-grey lighten-2" centered show-arrows>
           <v-tab :to="{ name: 'DetailUserPage', params: { userId: userId } }">
             <v-icon left>mdi-history</v-icon>
-            <!-- <v-badge :content="previousPostsNum" :value="previousPostsNum">
+            <v-badge
+              color="blue-grey darken-1"
+              :content="previousPostsNum"
+              :value="previousPostsNum"
+            >
               <span>これまでの投稿</span>
-            </v-badge>-->
+            </v-badge>
           </v-tab>
         </v-tabs>
 
-        <!-- 投稿一覧-->
-        <!-- <div class="content">
+        <!--投稿一覧-->
+        <div class="content">
           <transition appear>
             <router-view @deletePost="get_previous_posts" />
           </transition>
-        </div>-->
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// import { mapGetters } from "vuex";
-// import api from "@/services/api";
+import { mapGetters } from "vuex";
+import api from "@/services/api";
 
 export default {
   props: ["userId"],
   data() {
     return {
-      loaded: true, // TODO false
+      loaded: false,
       previousPostsNum: 0,
       Person: {},
       previousPosts: [], // これまでの投稿
       login_user_icon_image: this.$store.getters["user/image_file_path"],
-      login_username: this.$store.getters["user/name"],
-      isLoading: false, // TODO true
+      login_user_username: this.$store.getters["user/name"],
+      isLoading: true,
+      baseURL: process.env.VUE_APP_STATIC_FILE_ENDPOINT,
     };
   },
-  // computed: {
-  //   ...mapGetters("user", {
-  //     login_user_id: "id",
-  //   }),
-  //   isLoggedIn() {
-  //     return this.$store.getters["auth/isLoggedIn"];
-  //   },
-  // },
-  // watch: {
-  //   userId() {
-  //     this.setPerson();
-  //     this.loaded = false;
-  //     this.get_previous_posts();
-  //   },
-  // },
-  // craeted() {
-  //   console.log("created");
-  //   this.get_previous_posts();
-  // },
-  // async mounted() {
-  //   console.log("mouted");
-  //   this.setPerson();
-  //   this.loaded = false;
-  //   await api
-  //     .get("/posts?limit=4&page=1&user_id=" + this.userId)
-  //     .then((response) => {
-  //       this.previousPosts = response.data.posts;
-  //     });
-  // },
-  // methods: {
-  //   get_previous_posts() {
-  //     console.log("get_previous_posts");
-  //     api
-  //       .get("/posts?limit=4&page=1&user_id=" + this.userId)
-  //       .then((response) => {
-  //         this.previousPosts = response.data.posts;
-  //         this.previousPostsNum = response.data.totalCount;
-  //       });
-  //   },
-  //   async setPerson() {
-  //     await api.get("/users/" + this.userId + "/").then((response) => {
-  //       this.Person = response.data;
-  //     });
-  //     this.isLoading = false;
-  //   },
-  // },
+  computed: {
+    ...mapGetters("user", {
+      login_user_id: "id",
+    }),
+    isLoggedIn() {
+      return this.$store.getters["auth/isLoggedIn"];
+    },
+  },
+
+  watch: {
+    userId() {
+      console.log("watch!!!!");
+      this.setPerson();
+      this.loaded = false;
+      this.get_previous_posts();
+    },
+  },
+  created() {
+    console.log("created!!!!");
+    this.get_previous_posts();
+  },
+  async mounted() {
+    console.log("mounted!!!!");
+    this.setPerson();
+    this.loaded = false;
+    // TODO 必要か？
+    // await api.get("/posts/mini/?author=" + this.userId).then((response) => {
+    //   this.previousPosts = response.data;
+    //   this.options.animation.animateRotate = true;
+    //   // this.set_category_data();
+    //   this.options.animation.animateRotate = false;
+    // });
+  },
+  methods: {
+    get_previous_posts() {
+      console.log("get_previous_posts!!!!");
+      // TODO 件数
+      api
+        .get("/posts?limit=100&page=1&user_id=" + this.userId)
+        .then((response) => {
+          this.previousPosts = response.data.posts;
+          this.previousPostsNum = response.data.totalCount;
+        });
+    },
+    async setPerson() {
+      await api.get("/users/" + this.userId).then((response) => {
+        this.Person = response.data;
+      });
+      this.isLoading = false;
+    },
+  },
 };
 </script>
 
-<style>
+<style scoped>
+@import "../assets/common.css";
+
+.v-tabs {
+  border-bottom: 1px solid rgb(223, 211, 211);
+}
+
+.v-tabs a {
+  text-decoration: none;
+}
+
+.v-tab span {
+  font-size: 16px;
+}
+
+.content {
+  margin: 20px auto;
+  max-width: 1200px;
+  font-size: 20px;
+}
+
+.chart {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
 </style>

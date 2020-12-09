@@ -222,5 +222,8 @@ export default new Vuex.Store({
     message: messageModule,
     user: userModule,
   },
-  plugins: [createPersistedState()]
+  plugins: [createPersistedState({
+    key: 'example',
+    storage: window.sessionStorage
+  })]
 })

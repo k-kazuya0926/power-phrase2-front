@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- SP用+ボタン-->
+    <!-- SP用、投稿登録ボタン-->
     <v-btn
       class="mx-2 d-flex d-sm-none"
       fab
@@ -15,27 +15,11 @@
       <v-icon dark>mdi-plus</v-icon>
     </v-btn>
 
-    <!--タブ-->
+    <!-- タブ -->
     <v-tabs color="blue-grey lighten-2" centered show-arrows>
       <v-tab to="/">
         <v-icon left>mdi-history</v-icon>
         <span>新着投稿</span>
-      </v-tab>
-      <v-tab to="/popular">
-        <v-icon left>mdi-heart</v-icon>
-        <span>人気投稿</span>
-      </v-tab>
-      <!-- <v-tab to="/category">
-        <v-icon left>mdi-shape</v-icon>
-        <span>カテゴリ</span>
-      </v-tab>
-      <v-tab to="/map">
-        <v-icon left>mdi-map-marker</v-icon>
-        <span>マップ</span>
-      </v-tab>-->
-      <v-tab to="/search">
-        <v-icon left>mdi-magnify</v-icon>
-        <span>検索</span>
       </v-tab>
     </v-tabs>
 
@@ -54,10 +38,6 @@ export default {
     isLoggedIn() {
       return this.$store.getters["auth/isLoggedIn"];
     },
-  },
-  mounted() {
-    // // カテゴリ取得
-    // this.$store.dispatch("category/getAllCategories");
   },
 };
 </script>

@@ -68,6 +68,7 @@ export default {
       this.$router.replace("/login");
     },
     // 動作確認用ログイン
+    // TODO 動作が怪しい
     simpleLogin() {
       this.$store
         .dispatch("auth/login", {
