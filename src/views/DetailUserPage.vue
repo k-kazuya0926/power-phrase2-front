@@ -125,18 +125,15 @@ export default {
 
   watch: {
     userId() {
-      console.log("watch!!!!");
       this.setPerson();
       this.loaded = false;
       this.get_previous_posts();
     },
   },
   created() {
-    console.log("created!!!!");
     this.get_previous_posts();
   },
   async mounted() {
-    console.log("mounted!!!!");
     this.setPerson();
     this.loaded = false;
     // TODO 必要か？
@@ -149,7 +146,6 @@ export default {
   },
   methods: {
     get_previous_posts() {
-      console.log("get_previous_posts!!!!");
       // TODO 件数
       api
         .get("/posts?limit=100&page=1&user_id=" + this.userId)
