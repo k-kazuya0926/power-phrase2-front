@@ -2,11 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import LoginPage from '@/views/LoginPage'
 import store from '@/store'
-import HomePage from '@/views/HomePage'
+import ListPostsPage from '@/views/ListPostsPage'
 import LatestPosts from '@/components/LatestPosts'
-import NewEditPostPage from '@/views/NewEditPostPage'
-import SignUpPage from '@/views/SignUpPage'
-import ProfileEditPage from '@/views/ProfileEditPage'
+import CreateOrUpdatePostPage from '@/views/CreateOrUpdatePostPage'
+import CreateUserPage from '@/views/CreateUserPage'
+import UpdateUserPage from '@/views/UpdateUserPage'
 import DetailPostPage from '@/views/DetailPostPage'
 import DetailUserPage from '@/views/DetailUserPage'
 import PreviousPosts from '@/components/PreviousPosts'
@@ -16,7 +16,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    component: HomePage,
+    component: ListPostsPage,
     children: [
       {
         path: '',
@@ -31,12 +31,12 @@ const routes = [
   },
   {
     path: '/posts/create',
-    component: NewEditPostPage,
+    component: CreateOrUpdatePostPage,
     meta: { requiresAuth: true }
   },
   {
     path: '/signup',
-    component: SignUpPage
+    component: CreateUserPage
   },
   {
     path: '/posts/:postId',
@@ -48,7 +48,7 @@ const routes = [
   {
     path: '/posts/:postId/edit',
     name: 'EditPostPage',
-    component: NewEditPostPage,
+    component: CreateOrUpdatePostPage,
     props: true,
     meta: { requiresAuth: true }
   },
@@ -67,7 +67,7 @@ const routes = [
   },
   {
     path: '/profile_edit',
-    component: ProfileEditPage,
+    component: UpdateUserPage,
     meta: { requiresAuth: true }
   },
   {
