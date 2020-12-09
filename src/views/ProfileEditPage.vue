@@ -26,8 +26,8 @@
             max-width="800px"
           >
             <div class="pa-8">
-              <!--ゲストユーザーの場合-->
               <span v-if="disabled" style="color: red">※動作確認用ユーザーは編集及びアカウント削除ができません。</span>
+
               <ValidationObserver v-slot="{ invalid }">
                 <form @submit.prevent="submitPost()">
                   <v-row>
@@ -84,7 +84,27 @@
                         ></v-text-field>
                       </ValidationProvider>
 
-                      <!-- TODO パスワード -->
+                      <ValidationProvider
+                        mode="lazy"
+                        name="パスワード"
+                        rules="required|min:8|password"
+                        v-slot="{ errors }"
+                        vid="password1"
+                      >
+                        <v-text-field
+                          v-model="password1"
+                          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                          :type="show1 ? 'text' : 'password'"
+                          counter
+                          :error-messages="errors"
+                          required
+                          placeholder="パスワード"
+                          hint="8文字以上（半角英小文字,数字を含む）"
+                          persistent-hint
+                          @click:append="show1 = !show1"
+                          prepend-inner-icon="mdi-lock"
+                        ></v-text-field>
+                      </ValidationProvider>
 
                       <v-btn
                         block
@@ -156,6 +176,12 @@ extend("required", required);
 extend("max", max);
 extend("min", min);
 extend("email", email);
+extend("password", (password1) => {
+  if (password1.match(/\d/) && password1.match(/[a-z]/)) {
+    return true;
+  }
+  return "半角英小文字、数字をそれぞれ1種類以上含めてください";
+});
 localize("ja", ja);
 
 export default {
@@ -176,7 +202,9 @@ export default {
       icon_image: "", // 選択された画像
       previewImage: "",
       username: this.$store.getters["user/name"],
-      email: this.$store.getters["user/email"], // TODO 画面を開いたタイミングで取得する
+      email: this.$store.getters["user/email"],
+      password1: "",
+      show1: false,
       disabled: false,
       dialog: false,
     };
@@ -197,18 +225,21 @@ export default {
       const postData = {
         name: this.username,
         email: this.email,
-        // TODO パスワード、画像
+        password: this.password1,
+        // TODO 画像
       };
       api.put("/users/" + this.id, postData).then(async () => {
-        this.$store.dispatch("message/setInfoMessage", {
+        this.$store.dispatch("message/setSuccessMessage", {
           message: "更新完了",
         });
         // storeのユーザー情報を更新
-        await this.$store.dispatch("auth/reload");
-        await this.$store.dispatch("user/load", {
-          id: this.$store.getters["auth/id"],
+        await this.$store.dispatch("auth/reload", {
+          id: this.id,
         });
-        this.$router.replace("/users/" + this.id + "/");
+        await this.$store.dispatch("user/load", {
+          id: this.id,
+        });
+        this.$router.replace("/users/" + this.id);
       });
     },
     createImage(file) {
