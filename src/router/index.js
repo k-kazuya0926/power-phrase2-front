@@ -6,10 +6,10 @@ import HomePage from '@/views/HomePage'
 import LatestPosts from '@/components/LatestPosts'
 import NewEditPostPage from '@/views/NewEditPostPage'
 import SignUpPage from '@/views/SignUpPage'
+import ProfileEditPage from '@/views/ProfileEditPage'
 import DetailPostPage from '@/views/DetailPostPage'
 import DetailUserPage from '@/views/DetailUserPage'
 import PreviousPosts from '@/components/PreviousPosts'
-import UpdateUser from '@/views/UpdateUser'
 
 Vue.use(VueRouter)
 
@@ -66,9 +66,8 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/users/:userId/update',
-    name: 'UpdateUser',
-    component: UpdateUser,
+    path: '/profile_edit',
+    component: ProfileEditPage,
     meta: { requiresAuth: true }
   },
   {
