@@ -128,7 +128,7 @@
                         text
                         style="text-decoration: none"
                         :to="{
-                          name: 'EditPostPage',
+                          name: 'UpdatePostPage',
                           params: { postId: post.id },
                         }"
                       >

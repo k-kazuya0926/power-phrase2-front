@@ -36,7 +36,7 @@
 
             <div class="pa-4 text-center">
               登録していない方
-              <router-link id="to_signup" class="router-link" to="/signup">ユーザー登録</router-link>
+              <router-link class="router-link" to="/users/create">ユーザー登録</router-link>
             </div>
           </div>
         </v-card>

@@ -17,7 +17,7 @@
         <v-btn v-show="!isLoggedIn" text v-on:click="simpleLogin">
           <v-icon color="white">mdi-login</v-icon>動作確認用ログイン
         </v-btn>
-        <v-btn v-show="!isLoggedIn" text to="/signup">
+        <v-btn v-show="!isLoggedIn" text to="/users/create">
           <v-icon color="white">mdi-account-plus</v-icon>ユーザー登録
         </v-btn>
         <v-btn v-show="isLoggedIn" text v-on:click="clickLogout">
