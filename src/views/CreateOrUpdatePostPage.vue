@@ -3,6 +3,7 @@
     <div v-show="isLoading" class="text-center">
       <v-progress-circular indeterminate color="blue-gray"></v-progress-circular>
     </div>
+
     <div v-show="!isLoading">
       <!-- 戻るボタン -->
       <v-btn
@@ -24,15 +25,16 @@
             shaped
             color="blue-grey lighten-5"
             class="mx-auto"
-            max-width="1200px"
+            max-width="800px"
           >
             <div class="pa-6">
               <h3 v-if="postId" class="text-center">投稿編集</h3>
               <h3 v-else class="text-center">新規投稿</h3>
+
               <ValidationObserver v-slot="{ invalid }">
                 <form @submit.prevent="submitPost()">
                   <v-row>
-                    <v-col cols="12" md="10">
+                    <v-col cols="12">
                       <!-- タイトル -->
                       <ValidationProvider
                         mode="aggressive"
@@ -73,10 +75,18 @@
                       <ValidationProvider
                         mode="aggressive"
                         name="詳細"
-                        rules="required"
+                        rules="required|max:200"
                         v-slot="{ errors }"
                       >
-                        <v-textarea label="詳細" rows="4" :error-messages="errors" v-model="detail"></v-textarea>
+                        <v-textarea
+                          label="詳細"
+                          rows="4"
+                          :error-messages="errors"
+                          v-model="detail"
+                          :counter="200"
+                          hint="200文字以下"
+                          persistent-hint
+                        ></v-textarea>
                       </ValidationProvider>
 
                       <!-- YouTube動画URL -->
@@ -101,8 +111,8 @@
 
                   <!-- 投稿、保存ボタン -->
                   <v-btn
-                    block
                     large
+                    block
                     elevation="2"
                     class="mr-4 mt-4"
                     type="submit"
@@ -128,6 +138,7 @@
 
 <script>
 import api from "@/services/api";
+
 // vee-validate
 import {
   ValidationProvider,
@@ -137,7 +148,6 @@ import {
 } from "vee-validate";
 import ja from "vee-validate/dist/locale/ja.json";
 import { required, max, min, email, image } from "vee-validate/dist/rules";
-import { clearSession } from "@/mixins/utility";
 
 extend("required", required);
 extend("max", max);
@@ -147,7 +157,6 @@ extend("image", image);
 localize("ja", ja);
 
 export default {
-  mixins: [clearSession],
   components: {
     ValidationProvider,
     ValidationObserver,
@@ -155,7 +164,6 @@ export default {
   props: ["postId"],
   data() {
     return {
-      loginUserId: this.$store.getters["user/id"],
       title: "",
       speaker: "",
       detail: "",
@@ -163,19 +171,10 @@ export default {
       isLoading: true,
     };
   },
-  watch: {
-    $route() {
-      (this.loginUserId = this.$store.getters["user/id"]),
-        (this.title = ""),
-        (this.speaker = ""),
-        (this.detail = ""),
-        (this.movieUrl = "");
-    },
-  },
   methods: {
     submitPost() {
       const postData = {
-        user_id: this.loginUserId,
+        user_id: this.$store.getters["user/id"],
         title: this.title,
         speaker: this.speaker,
         detail: this.detail,
@@ -195,7 +194,6 @@ export default {
     },
   },
   created() {
-    this.clearSession();
     // 編集モードである場合
     if (this.postId) {
       api.get("/posts/" + this.postId).then((response) => {
@@ -203,84 +201,13 @@ export default {
         this.speaker = response.data.speaker;
         this.detail = response.data.detail;
         this.movieUrl = response.data.movie_url;
-        this.isLoading = false;
       });
-    } else {
-      this.isLoading = false;
     }
+
+    this.isLoading = false;
   },
 };
 </script>
 
 <style scoped>
-@import "../assets/common.css";
-
-#form_custom {
-  width: 540px;
-  background-color: rgb(255, 255, 255);
-  border: 2px solid #ccc;
-}
-
-#form_custom:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-  z-index: 100;
-}
-
-.uk-placeholder {
-  padding-top: 75%;
-  padding-bottom: 0px;
-  margin-bottom: 0px;
-}
-
-.camera-choice {
-  width: 180px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  display: table-cell;
-  vertical-align: middle;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
-
-#preview {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  right: 0px;
-  top: 0px;
-  z-index: 100;
-  pointer-events: none;
-}
-#preview_image {
-  width: 100%;
-  height: 100%;
-}
-.uk-modal-body {
-  border-radius: 5px;
-}
-
-.uk-modal-dialog {
-  position: relative;
-  box-sizing: border-box;
-  margin: 0 auto;
-  width: 1000px;
-  max-width: calc(100% - 0.01px) !important;
-  background: rgb(240, 240, 240);
-  transform: translateY(-100px);
-  transition: 0.3s linear;
-  transition-property: opacity, transform;
-}
-
-#select_way {
-  font-size: 14px;
-  color: rgb(145, 91, 56);
-}
-.v-application ul,
-.v-application ol {
-  padding-left: 0px;
-}
-.location_form {
-  margin-top: 15px;
-}
 </style>
