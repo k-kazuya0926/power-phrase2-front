@@ -74,7 +74,7 @@ const routes = [
   },
   // ユーザー更新画面
   {
-    path: '/profile_edit',
+    path: '/update_user',
     component: UpdateUserPage,
     meta: { requiresAuth: true }
   },

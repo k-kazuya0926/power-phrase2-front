@@ -56,7 +56,7 @@
                   x-small
                   class="ml-4"
                   color="indigo lighten-4"
-                  to="/profile_edit"
+                  to="/update_user"
                 >
                   <v-icon>mdi-account-edit</v-icon>
                 </v-btn>
