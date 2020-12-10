@@ -191,7 +191,7 @@ export default {
       dialog: false, // 削除確認ダイアログを表示するか
       currentPost: null, // 削除対象投稿
       baseURL: process.env.VUE_APP_STATIC_FILE_ENDPOINT,
-      loginUserId: this.$store.getters["auth/id"],
+      loginUserId: this.$store.getters["user/id"],
     };
   },
   mixins: [watchScrollPosition, clearSession],

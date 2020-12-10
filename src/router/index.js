@@ -99,7 +99,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const isLoggedIn = store.getters['auth/isLoggedIn']
+  const isLoggedIn = store.getters['user/isLoggedIn']
 
   // ログインが必要な画面に遷移しようとした場合
   if (to.matched.some(record => record.meta.requiresAuth)) {

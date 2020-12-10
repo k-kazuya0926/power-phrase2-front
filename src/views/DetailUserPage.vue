@@ -1,4 +1,3 @@
-<!-- TODO 削除 -->
 <template>
   <div>
     <!-- 戻るボタン -->
@@ -119,7 +118,7 @@ export default {
       login_user_id: "id",
     }),
     isLoggedIn() {
-      return this.$store.getters["auth/isLoggedIn"];
+      return this.$store.getters["user/isLoggedIn"];
     },
   },
 

@@ -4,12 +4,14 @@ export default {
     strict: process.env.NODE_ENV !== 'production',
     namespaced: true,
     state: {
+        isLoggedIn: false,
         id: '',
         name: '',
         email: '',
         image_file_path: '',
     },
     getters: {
+        isLoggedIn: state => state.isLoggedIn,
         id: state => state.id,
         name: state => state.name,
         email: state => state.email,
@@ -25,12 +27,14 @@ export default {
     },
     mutations: {
         set(state, payload) {
+            state.isLoggedIn = true
             state.id = payload.user.id
             state.name = payload.user.name
             state.email = payload.user.email
             state.image_file_path = payload.user.image_file_path
         },
         clear(state) {
+            state.isLoggedIn = false
             state.id = ''
             state.name = ''
             state.email = ''
@@ -38,6 +42,24 @@ export default {
         }
     },
     actions: {
+        // ログイン
+        login(context, payload) {
+            return api.post('/login', {
+                'email': payload.email,
+                'password': payload.password
+            })
+                .then(response => {
+                    // JWTトークン
+                    // 認証用トークンをlocalStorageに保存
+                    localStorage.setItem('access', response.data.token)
+                    // ユーザー情報を取得してstoreのユーザー情報を更新
+                    return context.dispatch('load', {
+                        id: response.data.id
+                    })
+                        .then(user => user)
+                })
+                .catch(error => error.response || error)
+        },
         load(context, payload) {
             return api.get('/users/' + payload.id)
                 .catch(error => {
@@ -51,8 +73,13 @@ export default {
                     })
                     return user
                 })
+                .catch(error => {
+                    console.log(error)
+                })
         },
         logout(context) {
+            // 認証用トークンをlocalStorageから削除
+            localStorage.removeItem('access')
             // storeのユーザー情報をクリア
             context.commit('clear')
         }

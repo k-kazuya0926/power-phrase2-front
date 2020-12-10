@@ -36,7 +36,7 @@ export default {
   computed: {
     // 不使用
     isLoggedIn() {
-      return this.$store.getters["auth/isLoggedIn"];
+      return this.$store.getters["user/isLoggedIn"];
     },
   },
 };

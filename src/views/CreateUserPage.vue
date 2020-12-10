@@ -197,7 +197,7 @@ export default {
     autoLogin: function () {
       this.isLoading = true;
       this.$store
-        .dispatch("auth/login", {
+        .dispatch("user/login", {
           email: this.email,
           password: this.password1,
         })
@@ -233,7 +233,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("auth", {
+    ...mapGetters("user", {
       isLoggedIn: "isLoggedIn",
       id: "id",
     }),

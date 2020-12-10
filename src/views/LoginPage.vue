@@ -65,7 +65,7 @@ export default {
       password = process.env.VUE_APP_LOGIN_PASSWORD
     ) {
       this.$store
-        .dispatch("auth/login", {
+        .dispatch("user/login", {
           email: email,
           password: password,
         })
@@ -94,7 +94,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("auth", {
+    ...mapGetters("user", {
       isLoggedIn: "isLoggedIn",
       id: "id",
     }),

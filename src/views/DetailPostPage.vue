@@ -235,10 +235,10 @@ export default {
   },
   computed: {
     login_user_id() {
-      return this.$store.getters["auth/id"];
+      return this.$store.getters["user/id"];
     },
     isLoggedIn() {
-      return this.$store.getters["auth/isLoggedIn"];
+      return this.$store.getters["user/isLoggedIn"];
     },
   },
   mounted() {

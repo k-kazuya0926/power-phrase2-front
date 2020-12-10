@@ -28,7 +28,7 @@ export default {
   mixins: [clearSession],
   data() {
     return {
-      auth_id: this.$store.getters["auth/id"],
+      auth_id: this.$store.getters["user/id"],
       postNum: 0,
       page: 1,
       isLoading: true,

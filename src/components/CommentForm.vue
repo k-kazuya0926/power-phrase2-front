@@ -27,12 +27,12 @@ export default {
   data() {
     return {
       body: "",
-      userId: this.$store.getters["auth/id"],
+      userId: this.$store.getters["user/id"],
     };
   },
   computed: {
     isLoggedIn() {
-      return this.$store.getters["auth/isLoggedIn"];
+      return this.$store.getters["user/isLoggedIn"];
     },
   },
   methods: {

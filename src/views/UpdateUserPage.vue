@@ -190,7 +190,7 @@ export default {
     ValidationObserver,
   },
   computed: {
-    ...mapGetters("auth", {
+    ...mapGetters("user", {
       id: "id",
     }),
   },
@@ -233,9 +233,6 @@ export default {
           message: "更新完了",
         });
         // storeのユーザー情報を更新
-        await this.$store.dispatch("auth/reload", {
-          id: this.id,
-        });
         await this.$store.dispatch("user/load", {
           id: this.id,
         });
@@ -261,9 +258,7 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-      this.$store.dispatch("user/logout"),
-        this.$store.dispatch("auth/logout"),
-        this.$router.replace("/");
+      this.$store.dispatch("user/logout"), this.$router.replace("/");
     },
     back() {
       // 1つ前へ

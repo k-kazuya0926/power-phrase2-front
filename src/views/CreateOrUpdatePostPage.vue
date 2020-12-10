@@ -155,7 +155,7 @@ export default {
   props: ["postId"],
   data() {
     return {
-      loginUserId: this.$store.getters["auth/id"],
+      loginUserId: this.$store.getters["user/id"],
       title: "",
       speaker: "",
       detail: "",
@@ -165,7 +165,7 @@ export default {
   },
   watch: {
     $route() {
-      (this.loginUserId = this.$store.getters["auth/id"]),
+      (this.loginUserId = this.$store.getters["user/id"]),
         (this.title = ""),
         (this.speaker = ""),
         (this.detail = ""),

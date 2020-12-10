@@ -38,7 +38,7 @@
       <router-view></router-view>
     </v-main>
 
-    <v-footer color="primary" dark app>&copy; {{ new Date().getFullYear() }} Kazuya Kobayashi</v-footer>
+    <v-footer color="primary" dark app>&copy; Kazuya Kobayashi</v-footer>
   </v-app>
 </template>
 
@@ -51,27 +51,17 @@ export default {
     GlobalMessage,
   },
   methods: {
-    deleteCookie: function () {
-      document.cookie = "token=;max-age=0";
-      document.cookie = "userId=;max-age=0";
-      document.cookie = "authenticated=;max-age=0";
-      window.location.href = "/";
-    },
     // ログアウトリンク押下
     clickLogout: function () {
       sessionStorage.clear();
-      this.$store.dispatch("auth/logout");
       this.$store.dispatch("user/logout");
-      this.$store.dispatch("message/setSuccessMessage", {
-        message: "ログアウトしました",
-      });
-      this.$router.replace("/login");
+      this.$router.go({ path: "/", force: true }).catch(() => {});
     },
     // 動作確認用ログイン
     // TODO 動作が怪しい
     simpleLogin() {
       this.$store
-        .dispatch("auth/login", {
+        .dispatch("user/login", {
           email: process.env.VUE_APP_LOGIN_EMAIL,
           password: process.env.VUE_APP_LOGIN_PASSWORD,
         })
@@ -102,11 +92,11 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("auth", {
+    ...mapGetters("user", {
       userId: "id",
     }),
     isLoggedIn: function () {
-      return this.$store.getters["auth/isLoggedIn"];
+      return this.$store.getters["user/isLoggedIn"];
     },
   },
 };
