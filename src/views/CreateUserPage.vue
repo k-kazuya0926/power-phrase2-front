@@ -13,7 +13,7 @@
           >
             <div class="pa-8">
               <ValidationObserver v-slot="{ invalid }">
-                <form @submit.prevent="submitUser()">
+                <form @submit.prevent="createUser()">
                   <ValidationProvider
                     mode="eager"
                     name="ユーザー名"
@@ -56,15 +56,15 @@
                   >
                     <v-text-field
                       v-model="password1"
-                      :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                      :type="show1 ? 'text' : 'password'"
+                      :append-icon="showsPassword1 ? 'mdi-eye' : 'mdi-eye-off'"
+                      :type="showsPassword1 ? 'text' : 'password'"
                       counter
                       :error-messages="errors"
                       required
                       placeholder="パスワード"
                       hint="8文字以上（半角英小文字,数字を含む）"
                       persistent-hint
-                      @click:append="show1 = !show1"
+                      @click:append="showsPassword1 = !showsPassword1"
                       prepend-inner-icon="mdi-lock"
                     ></v-text-field>
                   </ValidationProvider>
@@ -77,25 +77,17 @@
                   >
                     <v-text-field
                       v-model="password2"
-                      :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-                      :type="show2 ? 'text' : 'password'"
+                      :append-icon="showsPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
+                      :type="showsPassword2 ? 'text' : 'password'"
                       counter
                       :error-messages="errors"
                       required
                       placeholder="パスワード（確認）"
-                      @click:append="show2 = !show2"
+                      @click:append="showsPassword2 = !showsPassword2"
                       prepend-inner-icon="mdi-lock"
                     ></v-text-field>
                   </ValidationProvider>
 
-                  <!-- TODO vee-validateを使うよう変更 -->
-                  <!-- <ValidationProvider
-                    mode="lazy"
-                    name="画像ファイル"
-                    rules="image"
-                    v-slot="{ errors }"
-                    vid="imageFile"
-                  >-->
                   <v-file-input
                     @change="imageFileSelected"
                     show-size
@@ -103,7 +95,6 @@
                     :rules="[valueRequired]"
                     label="画像ファイル"
                   ></v-file-input>
-                  <!-- </ValidationProvider> -->
 
                   <v-btn block elevation="2" class="mr-4 mt-4" type="submit" :disabled="invalid">送信</v-btn>
                 </form>
@@ -126,14 +117,7 @@ import {
   localize,
 } from "vee-validate";
 import ja from "vee-validate/dist/locale/ja.json";
-import {
-  required,
-  max,
-  min,
-  email,
-  confirmed,
-  image,
-} from "vee-validate/dist/rules";
+import { required, max, min, email, confirmed } from "vee-validate/dist/rules";
 
 extend("required", required);
 extend("max", max);
@@ -146,7 +130,6 @@ extend("password", (password1) => {
   return "半角英小文字、数字をそれぞれ1種類以上含めてください";
 });
 extend("confirmed", confirmed);
-extend("image", image);
 localize("ja", ja);
 
 export default {
@@ -161,20 +144,21 @@ export default {
       email: "",
       password1: "",
       password2: "",
-      isLoading: false,
-      show1: false,
-      show2: false,
+      showsPassword1: false,
+      showsPassword2: false,
       imageFile: null,
       valueRequired: (value) => !!value || "必ず入力してください",
     };
   },
   methods: {
-    submitUser() {
+    createUser() {
+      // 画像アップロード
       const data = new FormData();
       data.append("ImageFile", this.imageFile);
       api
         .post("/users/images", data)
         .then((response) => {
+          // ユーザー登録
           api
             .post("/users", {
               name: this.username,
@@ -186,16 +170,17 @@ export default {
               this.autoLogin();
             })
             .catch((error) => {
+              console.log("ユーザー登録エラー");
               console.log("response: ", error);
             });
         })
         .catch((error) => {
-          console.log("response: " + error);
+          console.log("画像アップロードエラー");
+          console.log(error);
         });
     },
     // 自動ログイン
     autoLogin: function () {
-      this.isLoading = true;
       this.$store
         .dispatch("user/login", {
           email: this.email,
@@ -206,18 +191,8 @@ export default {
             this.$store.dispatch("message/setSuccessMessage", {
               message: "登録完了",
             });
-            // ユーザー情報取得
-            this.$store
-              .dispatch("user/load", { id: this.id })
-              .catch((error) => {
-                if (process.env.NODE_ENV !== "production") {
-                  console.log(error);
-                }
-              });
-            this.isLoading = false;
-            // クエリ文字列に「next」がなければ、ホーム画面へ
-            const next = this.$route.query.next || "/";
-            this.$router.push(next).catch(() => {});
+
+            this.$router.push("/");
           } else {
             console.log("ログインエラー");
           }
