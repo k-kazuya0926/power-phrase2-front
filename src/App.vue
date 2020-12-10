@@ -83,10 +83,8 @@ export default {
   computed: {
     ...mapGetters("user", {
       userId: "id",
+      isLoggedIn: "isLoggedIn",
     }),
-    isLoggedIn: function () {
-      return this.$store.getters["user/isLoggedIn"];
-    },
   },
 };
 </script>

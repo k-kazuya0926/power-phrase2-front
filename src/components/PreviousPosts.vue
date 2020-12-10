@@ -5,7 +5,6 @@
       :user_id="auth_id"
       @parentPostDelete="parentPostDelete"
       :isLoading="isLoading"
-      :nextPage="nextPage"
       :postURL="postURL"
       :sessionKey="sessionKey"
     />
@@ -32,7 +31,6 @@ export default {
       postNum: 0,
       page: 1,
       isLoading: true,
-      nextPage: false,
       previousPosts: [],
       sessionKey: "infinitePage_previous",
     };
@@ -59,30 +57,7 @@ export default {
     },
   },
   async mounted() {
-    if (sessionStorage.getItem("infinitePage_previous")) {
-      const page_infinite = sessionStorage.getItem("infinitePage_previous");
-      for (let i = 1; i <= page_infinite; i++) {
-        console.log("page:" + page_infinite);
-        await api
-          .get(this.postURL, {
-            params: {
-              page: i,
-            },
-          })
-          .then(({ data }) => {
-            if (data.next !== null) {
-              this.nextPage = true;
-            } else {
-              this.nextPage = false;
-            }
-            this.previousPosts.push(...data.results);
-          });
-      }
-      this.isLoading = false;
-    } else {
-      this.clearSession();
-      this.getPosts();
-    }
+    this.getPosts();
   },
   methods: {
     async getPosts() {
@@ -91,9 +66,6 @@ export default {
         .get("/posts?limit=100&page=1&user_id=" + this.userId)
         .then((response) => {
           this.previousPosts = response.data.posts;
-          if (response.data.next !== null) {
-            this.nextPage = true;
-          }
         });
       this.isLoading = false;
     },

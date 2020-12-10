@@ -21,7 +21,6 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'latest',
         component: LatestPosts
       },
     ]

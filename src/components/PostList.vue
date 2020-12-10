@@ -1,12 +1,12 @@
-<!--投稿一覧-->
+<!-- 投稿一覧 -->
 <template>
   <div>
-    <!--ローディング-->
+    <!-- ローディング -->
     <div v-show="isLoading" class="text-center">
       <v-progress-circular indeterminate color="blue-gray"></v-progress-circular>
     </div>
 
-    <!--非ローディング-->
+    <!-- 非ローディング -->
     <div v-show="!isLoading">
       <v-container>
         <v-row>
@@ -79,44 +79,6 @@
                           }}
                         </span>
                       </div>
-
-                      <v-spacer></v-spacer>
-
-                      <!--PC用-->
-                      <div class="d-none d-sm-flex">
-                        <!-- TODO コメント -->
-                        <!-- <v-icon medium class="pr-1">mdi-message-text</v-icon>
-                        <span style="color: #263238">
-                          {{
-                          post.comments_count
-                          }}
-                        </span>-->
-
-                        <!-- TODO いいね -->
-                        <!-- <v-icon medium class="ml-2 pr-1">mdi-heart-outline</v-icon>
-                        <span style="color: #263238">
-                          {{
-                          post.likes_count
-                          }}
-                        </span>-->
-                      </div>
-                      <!--SP用-->
-                      <div class="d-flex d-sm-none">
-                        <!-- TODO コメント -->
-                        <!-- <v-icon small class="pr-0">mdi-message-text</v-icon>
-                        <span style="color: #263238">
-                          {{
-                          post.comments_count
-                          }}
-                        </span>-->
-                        <!-- TODO いいね -->
-                        <!-- <v-icon small class="ml-1 pr-0">mdi-heart-outline</v-icon>
-                        <span style="color: #263238">
-                          {{
-                          post.likes_count
-                          }}
-                        </span>-->
-                      </div>
                     </v-card-actions>
                   </router-link>
 
@@ -134,26 +96,31 @@
                       >
                         <v-icon>mdi-pencil</v-icon>編集
                       </v-btn>
-                      <v-btn text @click.stop="onClickBtn(post)">
+                      <v-btn text @click.stop="onDelete(post)">
                         <v-icon>mdi-delete</v-icon>削除
                       </v-btn>
                     </v-card-actions>
 
-                    <!--削除確認ダイアログ-->
-                    <v-dialog v-model="dialog" v-if="currentPost" activator max-width="600px">
+                    <!-- 削除確認ダイアログ -->
+                    <v-dialog
+                      v-model="showsDeleteDialog"
+                      v-if="deleteTargetPost"
+                      activator
+                      max-width="600px"
+                    >
                       <v-card class="pa-2">
                         <v-card-title>削除確認</v-card-title>
                         <v-card-text>
                           投稿：{{
-                          currentPost.title
+                          deleteTargetPost.title
                           }}を削除します。よろしいですか？
                         </v-card-text>
                         <v-card-actions>
                           <v-spacer></v-spacer>
-                          <v-btn @click="dialog = false">キャンセル</v-btn>
+                          <v-btn @click="showsDeleteDialog = false">キャンセル</v-btn>
                           <v-btn
                             color="blue-grey lighten-3"
-                            @click="deletePost(currentPost.id)"
+                            @click="deletePost(deleteTargetPost.id)"
                             class="ml-4"
                           >OK</v-btn>
                         </v-card-actions>
@@ -166,70 +133,38 @@
           </v-col>
         </v-row>
       </v-container>
-
-      <!--無限スクロール-->
-      <!-- <div v-if="nextPage">
-        <infinite-loading spinner="spiral" @infinite="infiniteHandler">
-          <span slot="no-more"></span>
-          <span slot="no-results"></span>
-        </infinite-loading>
-      </div>-->
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import moment from "moment";
-import api from "@/services/api";
-import { watchScrollPosition, clearSession } from "@/mixins/utility";
 
 export default {
-  props: ["postType", "isLoading", "nextPage", "postURL", "sessionKey"],
+  props: ["postType", "isLoading", "postURL", "sessionKey"],
   data() {
     return {
-      page: 1,
-      dialog: false, // 削除確認ダイアログを表示するか
-      currentPost: null, // 削除対象投稿
+      showsDeleteDialog: false,
+      deleteTargetPost: null, // 削除対象投稿
       baseURL: process.env.VUE_APP_STATIC_FILE_ENDPOINT,
-      loginUserId: this.$store.getters["user/id"],
     };
   },
-  mixins: [watchScrollPosition, clearSession],
-
+  computed: {
+    ...mapGetters("user", {
+      loginUserId: "id",
+    }),
+  },
   methods: {
+    // 削除ボタンのイベントハンドラ
+    onDelete(post) {
+      this.deleteTargetPost = post;
+      this.showsDeleteDialog = true;
+    },
     // 投稿削除
     deletePost(postId) {
-      this.dialog = false;
-      this.clearSession(); // 無限スクロール関連をsessionStorageから削除
+      this.showsDeleteDialog = false;
       this.$emit("deletePost", postId); // イベント発行
-    },
-    infiniteHandler($state) {
-      this.page += 1;
-      sessionStorage.setItem(this.sessionKey, this.page);
-      api
-        .get(this.postURL, {
-          params: {
-            page: this.page,
-          },
-        })
-        .then(({ data }) => {
-          setTimeout(() => {
-            if (data.results.length) {
-              if (data.next === null) {
-                this.postType.push(...data.results);
-                $state.complete();
-              } else {
-                this.postType.push(...data.results);
-                $state.loaded();
-              }
-            }
-          }, 500);
-        });
-    },
-    onClickBtn(post) {
-      // 削除ボタンのイベントハンドラ
-      this.currentPost = post;
-      this.dialog = true;
     },
   },
   filters: {
