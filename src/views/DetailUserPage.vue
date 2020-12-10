@@ -107,7 +107,6 @@ export default {
       previousPostsNum: 0,
       Person: {},
       previousPosts: [], // これまでの投稿
-      login_user_icon_image: this.$store.getters["user/image_file_path"],
       login_user_username: this.$store.getters["user/name"],
       isLoading: true,
       baseURL: process.env.VUE_APP_STATIC_FILE_ENDPOINT,

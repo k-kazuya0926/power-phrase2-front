@@ -8,20 +8,20 @@ export default {
         id: '',
         name: '',
         email: '',
-        image_file_path: '',
+        imageFilePath: '',
     },
     getters: {
         isLoggedIn: state => state.isLoggedIn,
         id: state => state.id,
         name: state => state.name,
         email: state => state.email,
-        image_file_path: state => state.image_file_path,
+        imageFilePath: state => state.image_file_path,
         getUser: state => {
             return {
                 id: state.id,
                 name: state.name,
                 email: state.email,
-                image_file_path: state.image_file_path,
+                imageFilePath: state.image_file_path,
             }
         }
     },
@@ -31,14 +31,14 @@ export default {
             state.id = payload.user.id
             state.name = payload.user.name
             state.email = payload.user.email
-            state.image_file_path = payload.user.image_file_path
+            state.imageFilePath = payload.user.image_file_path
         },
         clear(state) {
             state.isLoggedIn = false
             state.id = ''
             state.name = ''
             state.email = ''
-            state.image_file_path = ''
+            state.imageFilePath = ''
         }
     },
     actions: {
@@ -60,6 +60,7 @@ export default {
                 })
                 .catch(error => error.response || error)
         },
+        // ユーザー情報取得
         load(context, payload) {
             return api.get('/users/' + payload.id)
                 .catch(error => {
@@ -77,6 +78,7 @@ export default {
                     console.log(error)
                 })
         },
+        // ログアウト
         logout(context) {
             // 認証用トークンをlocalStorageから削除
             localStorage.removeItem('access')

@@ -198,7 +198,7 @@ export default {
     return {
       beforeIconImage:
         process.env.VUE_APP_STATIC_FILE_ENDPOINT +
-        this.$store.getters["user/image_file_path"],
+        this.$store.getters["user/imageFilePath"],
       icon_image: "", // 選択された画像
       previewImage: "",
       username: this.$store.getters["user/name"],
