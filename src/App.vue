@@ -58,7 +58,6 @@ export default {
       this.$router.go({ path: "/", force: true }).catch(() => {});
     },
     // 動作確認用ログイン
-    // TODO 動作が怪しい
     simpleLogin() {
       this.$store
         .dispatch("user/login", {
@@ -67,18 +66,8 @@ export default {
         })
         .then(() => {
           if (this.isLoggedIn) {
-            // ユーザー情報取得
-            this.$store
-              .dispatch("user/load", { id: this.userId })
-              .catch((error) => {
-                if (process.env.NODE_ENV !== "production") {
-                  console.log(error);
-                }
-              });
-            // クエリ文字列に「next」がなければ、ホーム画面へ
-            const next = this.$route.query.next || "/";
             // 編集ボタン、削除ボタンを表示させるため、リロード
-            this.$router.go({ path: next, force: true }).catch(() => {});
+            this.$router.go({ path: "/", force: true }).catch(() => {});
           } else {
             console.log("ログイン失敗");
             this.$store.dispatch("message/setErrorMessage", {

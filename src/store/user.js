@@ -52,11 +52,11 @@ export default {
                     // JWTトークン
                     // 認証用トークンをlocalStorageに保存
                     localStorage.setItem('access', response.data.token)
+
                     // ユーザー情報を取得してstoreのユーザー情報を更新
                     return context.dispatch('load', {
                         id: response.data.id
                     })
-                        .then(user => user)
                 })
                 .catch(error => error.response || error)
         },

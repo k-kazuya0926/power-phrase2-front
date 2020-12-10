@@ -71,13 +71,6 @@ export default {
         })
         .then(() => {
           if (this.isLoggedIn) {
-            // ユーザー情報取得
-            this.$store
-              .dispatch("user/load", { id: this.id })
-              .catch((error) => {
-                if (process.env.NODE_ENV !== "production") console.log(error);
-              });
-
             // クエリ文字列に「next」がなければ、ホーム画面へ
             const next = this.$route.query.next || "/";
             this.$router.push(next).catch(() => {});
