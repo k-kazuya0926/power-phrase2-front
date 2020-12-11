@@ -20,7 +20,7 @@
         <v-btn v-show="!isLoggedIn" text to="/users/create">
           <v-icon color="white">mdi-account-plus</v-icon>ユーザー登録
         </v-btn>
-        <v-btn v-show="isLoggedIn" text v-on:click="clickLogout">
+        <v-btn v-show="isLoggedIn" text v-on:click="logout">
           <v-icon color="white">mdi-logout</v-icon>ログアウト
         </v-btn>
         <v-btn v-show="isLoggedIn" text to="/posts/create">
@@ -51,8 +51,8 @@ export default {
     GlobalMessage,
   },
   methods: {
-    // ログアウトリンク押下
-    clickLogout: function () {
+    // ログアウト
+    logout: function () {
       sessionStorage.clear();
       this.$store.dispatch("user/logout");
       this.$router.go({ path: "/", force: true }).catch(() => {});

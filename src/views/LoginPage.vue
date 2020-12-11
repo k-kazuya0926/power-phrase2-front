@@ -69,9 +69,7 @@ export default {
         })
         .then(() => {
           if (this.isLoggedIn) {
-            // クエリ文字列に「next」がなければ、ホーム画面へ
-            const next = this.$route.query.next || "/";
-            this.$router.push(next).catch(() => {});
+            this.$router.push("/").catch(() => {});
           } else {
             console.log("ログイン失敗");
             this.$store.dispatch("message/setErrorMessage", {

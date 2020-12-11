@@ -100,25 +100,12 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const isLoggedIn = store.getters['user/isLoggedIn']
 
-  // ログインが必要な画面に遷移しようとした場合
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-
-    // ログインしている状態の場合
-    if (isLoggedIn) {
-      next()
-
-    } else {
-      next({
-        path: '/login',
-        // 遷移先のURLはクエリ文字列として付加
-        query: {
-          next: to.fullPath
-        }
-      })
-    }
-
+  // ログインが必要な画面に遷移しようとした、かつログインしていない場合
+  if (to.matched.some(record => record.meta.requiresAuth) && !isLoggedIn) {
+    next({
+      path: '/login',
+    })
   } else {
-    // ログインが不要な画面であればそのまま次へ
     next()
   }
 })
