@@ -14,7 +14,7 @@
     </v-btn>
 
     <v-container>
-      <h3 class="h3 text-center pt-8">プロフィール編集</h3>
+      <h3 class="h3 text-center pt-8">ユーザー情報編集</h3>
 
       <v-row justify="center">
         <v-col justify="center">
@@ -23,34 +23,17 @@
             shaped
             color="blue-grey lighten-5"
             class="mx-auto"
-            max-width="800px"
+            max-width="500px"
           >
             <div class="pa-8">
               <span v-if="disabled" style="color: red">※動作確認用ユーザーは編集及びアカウント削除ができません。</span>
 
               <ValidationObserver v-slot="{ invalid }">
-                <form @submit.prevent="submitPost()">
+                <form @submit.prevent="updateUser()">
                   <v-row>
-                    <!--アイコン-->
-                    <v-col cols="12" md="6">
-                      <div uk-form-custom id="form_custom">
-                        <div class="uk-placeholder uk-text-center">
-                          <input :disabled="disabled" type="file" @change="selectedFile" />
-                          <div id="preview">
-                            <div v-if="previewImage">
-                              <img id="preview_image" :src="previewImage" />
-                            </div>
-                            <div v-else>
-                              <img id="preview_image" :src="beforeIconImage" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </v-col>
-
-                    <v-col cols="12" md="6">
+                    <v-col cols="12">
                       <ValidationProvider
-                        mode="lazy"
+                        mode="eager"
                         name="ユーザー名"
                         rules="required|max:20"
                         v-slot="{ errors }"
@@ -87,24 +70,45 @@
                       <ValidationProvider
                         mode="lazy"
                         name="パスワード"
-                        rules="required|min:8|password"
+                        rules="min:8|password"
                         v-slot="{ errors }"
                         vid="password1"
                       >
                         <v-text-field
+                          :disabled="disabled"
                           v-model="password1"
-                          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                          :type="show1 ? 'text' : 'password'"
+                          :append-icon="showsPassword1 ? 'mdi-eye' : 'mdi-eye-off'"
+                          :type="showsPassword1 ? 'text' : 'password'"
                           counter
                           :error-messages="errors"
-                          required
                           placeholder="パスワード"
                           hint="8文字以上（半角英小文字,数字を含む）"
                           persistent-hint
-                          @click:append="show1 = !show1"
+                          @click:append="showsPassword1 = !showsPassword1"
                           prepend-inner-icon="mdi-lock"
                         ></v-text-field>
                       </ValidationProvider>
+
+                      <ValidationProvider
+                        mode="aggressive"
+                        name="パスワード"
+                        rules="confirmed:password1"
+                        v-slot="{ errors }"
+                      >
+                        <v-text-field
+                          :disabled="disabled"
+                          v-model="password2"
+                          :append-icon="showsPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
+                          :type="showsPassword2 ? 'text' : 'password'"
+                          counter
+                          :error-messages="errors"
+                          placeholder="パスワード（確認）"
+                          @click:append="showsPassword2 = !showsPassword2"
+                          prepend-inner-icon="mdi-lock"
+                        ></v-text-field>
+                      </ValidationProvider>
+
+                      <v-file-input @change="imageFileSelected" show-size counter label="画像ファイル"></v-file-input>
 
                       <v-btn
                         block
@@ -117,10 +121,10 @@
                     </v-col>
                   </v-row>
 
-                  <!--アカウント削除-->
+                  <!-- アカウント削除 -->
                   <v-row no-gutters>
                     <v-col class="text-right">
-                      <v-dialog v-model="dialog" max-width="600">
+                      <v-dialog v-model="showsDeleteAccountDialog" max-width="600">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             small
@@ -138,7 +142,7 @@
                             <v-card-text>アカウントを削除します。よろしいですか？</v-card-text>
                             <v-card-actions>
                               <v-spacer></v-spacer>
-                              <v-btn @click="dialog = false">キャンセル</v-btn>
+                              <v-btn @click="showsDeleteAccountDialog = false">キャンセル</v-btn>
                               <v-btn
                                 color="blue-grey lighten-3"
                                 @click="deleteAccount"
@@ -170,7 +174,7 @@ import {
   localize,
 } from "vee-validate";
 import ja from "vee-validate/dist/locale/ja.json";
-import { required, max, min, email } from "vee-validate/dist/rules";
+import { required, max, min, email, confirmed } from "vee-validate/dist/rules";
 
 extend("required", required);
 extend("max", max);
@@ -182,6 +186,7 @@ extend("password", (password1) => {
   }
   return "半角英小文字、数字をそれぞれ1種類以上含めてください";
 });
+extend("confirmed", confirmed);
 localize("ja", ja);
 
 export default {
@@ -193,41 +198,65 @@ export default {
     ...mapGetters("user", {
       id: "id",
     }),
+    disabled: function () {
+      // 動作確認用ユーザーである場合
+      return this.email === process.env.VUE_APP_LOGIN_EMAIL;
+    },
   },
   data() {
     return {
-      beforeIconImage:
+      imageFileBefore:
         process.env.VUE_APP_STATIC_FILE_ENDPOINT +
         this.$store.getters["user/imageFilePath"],
-      icon_image: "", // 選択された画像
+      selectedImageFile: "", // 選択された画像
       previewImage: "",
       username: this.$store.getters["user/name"],
       email: this.$store.getters["user/email"],
       password1: "",
-      show1: false,
-      disabled: false,
-      dialog: false,
+      password2: "",
+      showsPassword1: false,
+      showsPassword2: false,
+      showsDeleteAccountDialog: false,
     };
-  },
-  mounted() {
-    if (this.username === "testuser") {
-      this.disabled = true;
-    }
   },
   methods: {
     // 画像選択
-    selectedFile(event) {
-      event.preventDefault();
-      this.icon_image = event.target.files[0];
-      this.createImage(event.target.files[0]);
+    imageFileSelected: function (imageFile) {
+      this.selectedImageFile = imageFile;
     },
-    submitPost: function () {
+    // ユーザー更新
+    updateUser: function () {
+      // 画像ファイルが選択されていない場合
+      if (!this.selectedImageFile) {
+        this.doUpdateUser();
+        return;
+      }
+
+      // 画像アップロード
+      const data = new FormData();
+      data.append("ImageFile", this.selectedImageFile);
+      api
+        .post("/users/images", data)
+        .then((response) => {
+          this.doUpdateUser(response.data);
+        })
+        .catch((error) => {
+          console.log("画像アップロードエラー");
+          console.log(error);
+        });
+    },
+    // ユーザー更新
+    doUpdateUser: function (imageFilePath = "") {
       const postData = {
         name: this.username,
         email: this.email,
-        password: this.password1,
-        // TODO 画像
       };
+      if (this.password1) {
+        postData.password = this.password1;
+      }
+      if (imageFilePath) {
+        postData.image_file_path = imageFilePath;
+      }
       api.put("/users/" + this.id, postData).then(async () => {
         this.$store.dispatch("message/setSuccessMessage", {
           message: "更新完了",
@@ -239,26 +268,21 @@ export default {
         this.$router.replace("/users/" + this.id);
       });
     },
-    createImage(file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        this.previewImage = event.target.result;
-      };
-      reader.readAsDataURL(file);
-    },
+    // アカウント削除
     async deleteAccount() {
-      this.dialog = false;
+      this.showsDeleteAccountDialog = false;
       await api
         .delete("/users/" + this.id)
         .then(
-          this.$store.dispatch("message/setInfoMessage", {
+          this.$store.dispatch("message/setSuccessMessage", {
             message: "アカウントを削除しました",
           })
         )
         .catch((error) => {
           console.log(error);
         });
-      this.$store.dispatch("user/logout"), this.$router.replace("/");
+      this.$store.dispatch("user/logout");
+      this.$router.replace("/");
     },
     back() {
       // 1つ前へ
@@ -268,61 +292,4 @@ export default {
 };
 </script>
 <style scoped>
-@import "../assets/common.css";
-
-#form_icon {
-  height: 40px;
-}
-
-#form_custom {
-  width: 100%;
-  height: auto;
-}
-
-.uk-placeholder {
-  position: relative;
-  width: 100%;
-  margin-bottom: 0px;
-  height: auto;
-  padding: 0px 0px;
-  background: 0 0;
-  position: relative;
-  border: 3px solid #ccc;
-  box-sizing: border-box;
-}
-
-#preview {
-  position: relative;
-  /* 現在:, 変更:, クリア表示を隠す  */
-  top: 0px;
-  z-index: 1;
-  pointer-events: none;
-  width: 100%;
-  height: auto;
-}
-
-#preview_image {
-  position: relative;
-  width: 100%;
-  height: auto;
-}
-
-@media (max-width: 640px) {
-  #preview_image {
-    position: relative;
-    width: 100%;
-    height: auto;
-  }
-  .uk-placeholder[data-v-2516ac38] {
-    position: relative;
-    width: 100%;
-    margin-bottom: 0px;
-    height: auto;
-    padding: 0px 0px;
-    background: 0 0;
-    position: relative;
-    border: 3px solid #ccc;
-    box-sizing: border-box;
-  }
-}
 </style>

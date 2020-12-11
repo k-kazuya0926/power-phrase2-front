@@ -15,13 +15,13 @@ export default {
         id: state => state.id,
         name: state => state.name,
         email: state => state.email,
-        imageFilePath: state => state.image_file_path,
+        imageFilePath: state => state.imageFilePath,
         getUser: state => {
             return {
                 id: state.id,
                 name: state.name,
                 email: state.email,
-                imageFilePath: state.image_file_path,
+                imageFilePath: state.imageFilePath,
             }
         }
     },
