@@ -5,7 +5,6 @@
       :postType="latestPosts"
       :isLoading="isLoading"
       :postURL="postURL"
-      :sessionKey="sessionKey"
       @deletePost="deletePost"
     />
   </div>
@@ -28,7 +27,6 @@ export default {
       latestPosts: [],
       isLoading: true,
       postURL: "/posts?limit=9&page=1",
-      sessionKey: "infinitePage_latest",
     };
   },
   async mounted() {
