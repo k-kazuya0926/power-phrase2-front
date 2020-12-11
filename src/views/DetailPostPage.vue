@@ -25,12 +25,12 @@
             shaped
             color="blue-grey lighten-5"
             class="mx-auto"
-            max-width="1100px"
+            max-width="800px"
           >
             <div class="px-3">
               <v-row justify="center">
-                <!-- 左側：投稿詳細エリア -->
-                <v-col cols="12" md="7">
+                <!-- 投稿詳細エリア -->
+                <v-col cols="12">
                   <!--タイトル-->
                   <v-card-title
                     class="float-left text-lg-h4 text-xs-caption font-weight-bold"
@@ -57,13 +57,10 @@
                   </div>
 
                   <!-- 発言者 -->
-                  <v-card-subtitle id="post_content">{{ post.speaker }}</v-card-subtitle>
+                  <v-card-subtitle id="post_content" class="font-weight-bold">{{ post.speaker }}</v-card-subtitle>
 
                   <!-- 詳細 -->
-                  <v-card-text
-                    class=".font-weight-bold"
-                    style="white-space:pre-wrap; word-wrap:break-word;"
-                  >{{ post.detail }}</v-card-text>
+                  <v-card-text style="white-space:pre-wrap; word-wrap:break-word;">{{ post.detail }}</v-card-text>
 
                   <!-- 動画 -->
                   <v-card-text>
@@ -77,37 +74,39 @@
                       allowfullscreen
                     ></iframe>
                   </v-card-text>
-
-                  <!-- TODO いいね -->
-                  <!-- <div id="like_buttun">
-                    <div v-if="isLiked">
-                      <div>
-                        <span @click="toggleLike" :disabled="isProcessing">
-                          <v-btn class="ma-2" text icon color="red lighten-2">
-                            <v-icon x-large>mdi-heart</v-icon>
-                          </v-btn>
-                        </span>
-                        <span class="like_count">{{ likeCount }}</span>
-                      </div>
-                    </div>
-                    <div v-else>
-                      <div>
-                        <span @click="toggleLike">
-                          <v-btn class="ma-2" text icon>
-                            <v-icon x-large>mdi-heart-outline</v-icon>
-                          </v-btn>
-                        </span>
-                        <span class="like_count">{{ likeCount }}</span>
-                      </div>
-                    </div>
-                  </div>-->
                 </v-col>
 
-                <!--右側：コメントエリア-->
-                <v-col cols="12" md="5">
+                <v-divider class="mx-4 my-0"></v-divider>
+
+                <!-- コメントエリア -->
+                <v-col cols="12">
                   <div>
                     <div>
-                      <CommentForm :post="post" @CommentGet="CommentGet" />
+                      <div>
+                        <form @submit.prevent="createComment()">
+                          <div>
+                            <div class="mb-5">
+                              <v-textarea
+                                class="ma-0 pa-0"
+                                solo
+                                rows="3"
+                                v-model="commentBody"
+                                placeholder="コメントを入力してください"
+                                hide-details
+                              ></v-textarea>
+                              <v-btn
+                                type="submit"
+                                block
+                                class="mt-1"
+                                dark
+                                color="blue-grey darken-1"
+                              >
+                                <v-icon>mdi-send</v-icon>登録
+                              </v-btn>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
                     </div>
                   </div>
                   <div v-if="comments == ''">
@@ -116,14 +115,12 @@
                   <div v-else>
                     <div class="logbox">
                       <!-- コメント一覧 -->
-                      <ul class="uk-comment-list">
+                      <ul style="list-style:none">
                         <li v-for="comment in comments" :key="comment.id">
-                          <article
-                            class="uk-comment uk-comment-primary uk-visible-toggle"
-                            tabindex="-1"
-                          >
-                            <header class="uk-comment-header uk-position-relative">
+                          <article tabindex="-1">
+                            <header>
                               <div>
+                                <!-- コメント登録ユーザー -->
                                 <v-btn
                                   class="px-0 float-left"
                                   v-if="comment.user_id"
@@ -137,7 +134,6 @@
                                     text-decoration: none;
                                   "
                                 >
-                                  <!-- コメント登録者 -->
                                   <v-avatar size="36px" class="ma-2">
                                     <img :src="baseURL + comment.user_image_file_path" />
                                   </v-avatar>
@@ -157,14 +153,14 @@
                             </div>
 
                             <!-- コメント削除 -->
-                            <div class="text-right" v-if="comment.user_id == login_user_id">
-                              <v-btn text icon @click.stop="onClickBtn(comment)">
+                            <div class="text-right" v-if="comment.user_id == loginUserId">
+                              <v-btn text icon @click.stop="onClickDeleteCommentBtn(comment)">
                                 <v-icon>mdi-delete</v-icon>
                               </v-btn>
 
                               <v-dialog
-                                v-model="dialog"
-                                v-if="currentComment"
+                                v-model="showsDeleteCommentDialog"
+                                v-if="deleteTargetComment"
                                 activator
                                 max-width="600px"
                               >
@@ -172,15 +168,15 @@
                                   <v-card-title>削除確認</v-card-title>
                                   <v-card-text>
                                     コメント：{{
-                                    currentComment.body
+                                    deleteTargetComment.body
                                     }}を削除します。よろしいですか？
                                   </v-card-text>
                                   <v-card-actions>
                                     <v-spacer></v-spacer>
-                                    <v-btn @click="dialog = false">キャンセル</v-btn>
+                                    <v-btn @click="showsDeleteCommentDialog = false">キャンセル</v-btn>
                                     <v-btn
                                       color="blue-grey lighten-3"
-                                      @click="deleteComment(currentComment.id)"
+                                      @click="deleteComment(deleteTargetComment.id)"
                                       class="ml-4"
                                     >OK</v-btn>
                                   </v-card-actions>
@@ -204,14 +200,11 @@
 
 <script>
 import moment from "moment";
-import CommentForm from "@/components/CommentForm";
 import api from "@/services/api";
+import { mapGetters } from "vuex";
 
 export default {
   name: "DetailPostPage",
-  components: {
-    CommentForm,
-  },
   filters: {
     moment: function (date) {
       return moment(date).format("YYYY/MM/DD HH:mm");
@@ -221,111 +214,28 @@ export default {
   data() {
     return {
       comments: [],
-      post: [],
-      author: [], // 投稿者
-      likeId: "",
-      isLiked: false,
-      likeCount: "",
+      post: {},
       isLoading: true,
-      isProcessing: false, // いいね処理中であるか
-      dialog: false,
-      currentComment: null,
+      showsDeleteCommentDialog: false,
+      deleteTargetComment: null,
       baseURL: process.env.VUE_APP_STATIC_FILE_ENDPOINT,
+      commentBody: "",
     };
   },
   computed: {
-    login_user_id() {
-      return this.$store.getters["user/id"];
-    },
-    isLoggedIn() {
-      return this.$store.getters["user/isLoggedIn"];
-    },
+    ...mapGetters("user", {
+      loginUserId: "id",
+    }),
   },
   mounted() {
     api.get("/posts/" + this.postId).then((response) => {
       this.post = response.data;
     });
-    // this.confirmLiked();
-    // this.getLikeCount();
-    this.CommentGet();
+    this.getComments();
   },
   methods: {
-    // いいねされているか確認
-    // async confirmLiked() {
-    //   if (this.login_user_id) {
-    //     await api
-    //       .get("/likes/", {
-    //         params: {
-    //           author: this.login_user_id,
-    //           post: this.post_id,
-    //         },
-    //       })
-    //       .then((response) => {
-    //         console.log(response.data.results);
-    //         if (response.data.results[0]) {
-    //           this.likeId = response.data.results[0].id;
-    //           this.isLiked = true;
-    //         }
-    //       });
-    //   }
-    // },
-    // getLikeCount() {
-    //   api.get("/posts/" + this.post_id + "/").then((response) => {
-    //     this.likeCount = response.data.likes_count;
-    //     this.isLoading = false;
-    //   });
-    // },
-    // toggleLike() {
-    //   if (this.isLoggedIn) {
-    //     if (this.isProcessing) return;
-    //     this.isProcessing = true;
-    //     this.isLiked ? this.removeLike() : this.addLike();
-    //     return new Promise((resolve) => {
-    //       setTimeout(() => {
-    //         this.isProcessing = false;
-    //         resolve();
-    //       }, 500);
-    //     });
-    //   } else {
-    //     this.$store.dispatch("message/setInfoMessage", {
-    //       message: "ログインが必要です",
-    //     });
-    //     this.$router.replace("/login");
-    //   }
-    // },
-    // addLike() {
-    //   console.log("addLike");
-    //   this.likeCount += 1;
-    //   this.isLiked = true;
-    //   this.confirmLiked;
-    //   this.getLikeCount;
-    //   api
-    //     .patch("/posts/like/" + this.post_id + "/", {
-    //       likes_count: this.likeCount,
-    //     })
-    //     .then(this.getLikeCount)
-    //     .then(this.confirmLiked);
-    //   api.post("/likes/", {
-    //     author: this.login_user_id,
-    //     post_id: this.post_id,
-    //   });
-    // },
-    // removeLike() {
-    //   console.log("removeLike");
-    //   this.likeCount -= 1;
-    //   this.isLiked = false;
-    //   this.confirmLiked;
-    //   this.getLikeCount;
-    //   api
-    //     .patch("/posts/like/" + this.post_id + "/", {
-    //       likes_count: this.likeCount,
-    //     })
-    //     .then(this.getLikeCount)
-    //     .then(this.confirmLiked);
-
-    //   api.delete("/likes/" + this.likeId + "/");
-    // },
-    CommentGet() {
+    // コメント一覧取得
+    getComments() {
       api
         .get("/posts/" + this.postId + "/comments?limit=100&page=1")
         .then((response) => {
@@ -334,106 +244,40 @@ export default {
         });
     },
     // コメント削除ボタンのイベントハンドラ
-    onClickBtn(comment) {
-      this.currentComment = comment;
-      this.dialog = true;
+    onClickDeleteCommentBtn(comment) {
+      this.deleteTargetComment = comment;
+      this.showsDeleteCommentDialog = true;
     },
+    // コメント削除
     deleteComment(comment_id) {
-      this.dialog = false;
-      api.delete("/comments/" + comment_id).then(this.CommentGet);
+      this.showsDeleteCommentDialog = false;
+      api.delete("/comments/" + comment_id).then(this.getComments);
     },
-
+    // 1つ前へ戻る
     back() {
-      // 1つ前へ
       this.$router.back();
+    },
+    // コメント登録
+    createComment: function () {
+      if (this.commentBody) {
+        api
+          .post("/posts/" + this.post.id + "/comments", {
+            user_id: this.loginUserId,
+            body: this.commentBody,
+          })
+          .then(() => {
+            this.getComments();
+          })
+          .catch((error) => {
+            console.log("response: ", error.response.data);
+          });
+        // 入力後、フォーム内の文字列をクリア
+        this.commentBody = "";
+      }
     },
   },
 };
 </script>
 
 <style scoped>
-@import "../assets/common.css";
-
-html {
-  overflow: overlay;
-}
-.v-application ul,
-.v-application ol {
-  padding-left: 0px;
-}
-#post_content {
-  word-break: break-all;
-  margin: 0px 0px 10px 0px;
-  padding: 5px 5px 5px 10px;
-  font-size: 15px;
-  white-space: pre-wrap;
-}
-#post_image {
-  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
-}
-
-#location_button {
-  float: left;
-  margin-top: 18px;
-  text-decoration: none;
-}
-#like_buttun {
-  max-width: 640px;
-  text-align: right;
-}
-
-.like_count {
-  font-size: 40px;
-  position: relative;
-  top: 8px;
-}
-
-.logbox {
-  height: 520px;
-  overflow-y: scroll;
-  overflow-y: overlay;
-}
-
-#location_modal.uk-modal-dialog {
-  position: relative;
-  box-sizing: border-box;
-  margin: 0 auto;
-  width: 1000px;
-  max-width: calc(100% - 0.01px) !important;
-  background: rgb(240, 240, 240);
-  transition: 0.3s linear;
-  transition-property: opacity, transform;
-}
-#location_modal.uk-modal-body {
-  display: flow-root;
-  padding: 0px 0px;
-  border-radius: 10px;
-}
-
-/* UIkitの上書き */
-
-.uk-comment-primary {
-  background-color: #fff;
-  padding: 15px 15px 5px 15px;
-  border-left: 4px solid black;
-  border-bottom: 1px solid black;
-}
-.uk-comment-header {
-  margin-bottom: 10px;
-}
-
-.uk-comment-list > :nth-child(n + 2) {
-  margin-top: 0px;
-}
-ul.uk-comment-list {
-  margin: 0;
-}
-
-@media (max-width: 640px) {
-  #location_modal.uk-modal-body {
-    display: flow-root;
-    padding: 0px 0px;
-    border-radius: 10px;
-  }
-}
 </style>
