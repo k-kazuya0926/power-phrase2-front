@@ -14,7 +14,7 @@
     </v-btn>
 
     <v-container>
-      <h3 class="h3 text-center pt-8">ユーザー情報編集</h3>
+      <h3 class="h3 text-center pt-8">アカウント変更</h3>
 
       <v-row justify="center">
         <v-col justify="center">
@@ -26,7 +26,7 @@
             max-width="500px"
           >
             <div class="pa-8">
-              <span v-if="disabled" style="color: red">※動作確認用ユーザーは編集及びアカウント削除ができません。</span>
+              <span v-if="disabled" style="color: red">※動作確認用ユーザーは変更および削除ができません。</span>
 
               <ValidationObserver v-slot="{ invalid }">
                 <form @submit.prevent="updateUser()">
