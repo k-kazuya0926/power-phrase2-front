@@ -116,7 +116,7 @@ export default {
       });
     },
     // 投稿一覧取得
-    getPosts() {
+    async getPosts() {
       let url =
         "/posts?limit=" +
         this.limit +
@@ -124,7 +124,7 @@ export default {
         this.page +
         "&user_id=" +
         this.userId;
-      api.get(url).then((response) => {
+      await api.get(url).then((response) => {
         this.posts = response.data.posts;
         this.totalPostsCount = response.data.totalCount;
       });
