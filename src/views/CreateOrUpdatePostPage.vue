@@ -75,16 +75,16 @@
                       <ValidationProvider
                         mode="aggressive"
                         name="詳細"
-                        rules="required|max:200"
+                        rules="max:500"
                         v-slot="{ errors }"
                       >
                         <v-textarea
                           label="詳細"
-                          rows="4"
+                          rows="10"
                           :error-messages="errors"
                           v-model="detail"
                           :counter="200"
-                          hint="200文字以下"
+                          hint="500文字以下"
                           persistent-hint
                         ></v-textarea>
                       </ValidationProvider>
