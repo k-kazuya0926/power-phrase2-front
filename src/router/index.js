@@ -1,62 +1,69 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '@/views/Login'
-import Top from '@/views/Top'
-import CreatePosts from '@/views/CreatePosts'
-import CreateUsers from '@/views/CreateUsers'
-import DetailPost from '@/views/DetailPost'
-import UpdatePost from '@/views/UpdatePost'
-import DetailUser from '@/views/DetailUser'
-import UpdateUser from '@/views/UpdateUser'
+import store from '@/store'
+import ListPostsPage from '@/views/ListPostsPage'
+import CreateUserPage from '@/views/CreateUserPage'
+import LoginPage from '@/views/LoginPage'
+import CreateOrUpdatePostPage from '@/views/CreateOrUpdatePostPage'
+import DetailPostPage from '@/views/DetailPostPage'
+import DetailUserPage from '@/views/DetailUserPage'
+import UpdateUserPage from '@/views/UpdateUserPage'
 
 Vue.use(VueRouter)
 
 const routes = [
+  // 投稿一覧画面
   {
     path: '/',
-    name: 'Top',
-    component: Top
+    component: ListPostsPage,
   },
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login
-  },
-  {
-    path: '/posts/create',
-    name: 'CreatePosts',
-    component: CreatePosts,
-    meta: { requiredAuth: true }
-  },
+  // ユーザー登録画面
   {
     path: '/users/create',
-    name: 'CreateUsers',
-    component: CreateUsers
+    component: CreateUserPage
   },
+  // ログイン画面
+  {
+    path: '/login',
+    component: LoginPage
+  },
+  // 投稿登録画面
+  {
+    path: '/posts/create',
+    component: CreateOrUpdatePostPage,
+    meta: { requiresAuth: true }
+  },
+  // 投稿詳細画面
   {
     path: '/posts/:postId',
-    name: 'DetailPost',
-    component: DetailPost,
-    meta: { requiredAuth: true }
+    name: 'DetailPostPage',
+    props: true,
+    component: DetailPostPage,
+    meta: { requiresAuth: true }
   },
+  // 投稿更新画面
   {
     path: '/posts/:postId/update',
-    name: 'UpdatePost',
-    component: UpdatePost,
-    meta: { requiredAuth: true }
+    name: 'UpdatePostPage',
+    component: CreateOrUpdatePostPage,
+    props: true,
+    meta: { requiresAuth: true }
   },
+  // ユーザー詳細画面
   {
     path: '/users/:userId',
-    name: 'DetailUser',
-    component: DetailUser,
-    meta: { requiredAuth: true }
+    name: 'DetailUserPage',
+    component: DetailUserPage,
+    props: true,
+    meta: { requiresAuth: true }
   },
+  // ユーザー更新画面
   {
-    path: '/users/:userId/update',
-    name: 'UpdateUser',
-    component: UpdateUser,
-    meta: { requiredAuth: true }
+    path: '/update_user',
+    component: UpdateUserPage,
+    meta: { requiresAuth: true }
   },
+  // その他
   {
     path: '*',
     redirect: '/'
@@ -67,12 +74,25 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
-  scrollBehavior (to, from, savedPosition) {
+  scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
-       return savedPosition
+      return savedPosition
     } else {
-       return { x: 0, y: 0 }
+      return { x: 0, y: 0 }
     }
+  }
+})
+
+router.beforeEach((to, from, next) => {
+  const isLoggedIn = store.getters['user/isLoggedIn']
+
+  // ログインが必要な画面に遷移しようとした、かつログインしていない場合
+  if (to.matched.some(record => record.meta.requiresAuth) && !isLoggedIn) {
+    next({
+      path: '/login',
+    })
+  } else {
+    next()
   }
 })
 
