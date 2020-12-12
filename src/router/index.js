@@ -4,7 +4,6 @@ import store from '@/store'
 import ListPostsPage from '@/views/ListPostsPage'
 import CreateUserPage from '@/views/CreateUserPage'
 import LoginPage from '@/views/LoginPage'
-import LatestPosts from '@/components/LatestPosts'
 import CreateOrUpdatePostPage from '@/views/CreateOrUpdatePostPage'
 import DetailPostPage from '@/views/DetailPostPage'
 import DetailUserPage from '@/views/DetailUserPage'
@@ -18,12 +17,6 @@ const routes = [
   {
     path: '/',
     component: ListPostsPage,
-    children: [
-      {
-        path: '',
-        component: LatestPosts
-      },
-    ]
   },
   // ユーザー登録画面
   {

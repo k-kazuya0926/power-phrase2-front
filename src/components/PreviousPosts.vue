@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PostList :postType="posts" @deletePost="deletePost" :isLoading="isLoading" :postURL="postURL" />
+    <PostList :postType="posts" @deletePost="deletePost" :isLoading="isLoading" />
     <div v-if="posts == ''" v-show="!isLoading">
       <p id="none_message">まだ投稿がありません</p>
     </div>

@@ -142,7 +142,7 @@ import { mapGetters } from "vuex";
 import moment from "moment";
 
 export default {
-  props: ["postType", "isLoading", "postURL"],
+  props: ["postType", "isLoading"],
   data() {
     return {
       showsDeleteDialog: false,
