@@ -55,18 +55,12 @@
         </v-card>
 
         <!--投稿一覧-->
-        <v-tabs color="blue-grey lighten-2" centered show-arrows>
-          <v-tab :to="{ name: 'DetailUserPage', params: { userId: userId } }">
-            <v-icon left>mdi-history</v-icon>
-            <v-badge color="blue-grey darken-1" :content="postsNum" :value="postsNum">
-              <span>投稿一覧</span>
-            </v-badge>
-          </v-tab>
-        </v-tabs>
         <div class="content">
-          <transition appear>
-            <router-view @deletePost="getPosts" />
-          </transition>
+          <v-layout justify-center>全{{ totalPostsCount }}件</v-layout>
+          <PostList :postType="posts" @deletePost="deletePost" :isLoading="isLoading" />
+          <div v-if="posts == ''" v-show="!isLoading">
+            <p id="none_message">まだ投稿がありません</p>
+          </div>
         </div>
       </div>
     </div>
@@ -75,16 +69,22 @@
 
 <script>
 import { mapGetters } from "vuex";
+import PostList from "@/components/PostList";
 import api from "@/services/api";
 
 export default {
   props: ["userId"],
+  components: {
+    PostList,
+  },
   data() {
     return {
-      postsNum: 0,
-      user: {},
-      posts: [], // これまでの投稿
       isLoading: true,
+      limit: 100,
+      page: 1,
+      posts: [],
+      totalPostsCount: 0,
+      user: {},
       baseURL: process.env.VUE_APP_STATIC_FILE_ENDPOINT,
     };
   },
@@ -105,24 +105,35 @@ export default {
     },
   },
   created() {
-    this.getPosts();
     this.getUser();
+    this.getPosts();
   },
   methods: {
-    getPosts() {
-      // TODO 件数
-      api
-        .get("/posts?limit=100&page=1&user_id=" + this.userId)
-        .then((response) => {
-          this.posts = response.data.posts;
-          this.postsNum = response.data.totalCount;
-        });
-    },
+    // ユーザー取得
     async getUser() {
       await api.get("/users/" + this.userId).then((response) => {
         this.user = response.data;
       });
+    },
+    // 投稿一覧取得
+    getPosts() {
+      let url =
+        "/posts?limit=" +
+        this.limit +
+        "&page=" +
+        this.page +
+        "&user_id=" +
+        this.userId;
+      api.get(url).then((response) => {
+        this.posts = response.data.posts;
+        this.totalPostsCount = response.data.totalCount;
+      });
       this.isLoading = false;
+    },
+    // 投稿削除
+    async deletePost(postId) {
+      await api.delete("/posts/" + postId).then(this.getPosts);
+      this.$emit("deletePost");
     },
   },
 };

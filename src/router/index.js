@@ -7,7 +7,6 @@ import LoginPage from '@/views/LoginPage'
 import CreateOrUpdatePostPage from '@/views/CreateOrUpdatePostPage'
 import DetailPostPage from '@/views/DetailPostPage'
 import DetailUserPage from '@/views/DetailUserPage'
-import PreviousPosts from '@/components/PreviousPosts'
 import UpdateUserPage from '@/views/UpdateUserPage'
 
 Vue.use(VueRouter)
@@ -53,15 +52,9 @@ const routes = [
   // ユーザー詳細画面
   {
     path: '/users/:userId',
+    name: 'DetailUserPage',
     component: DetailUserPage,
     props: true,
-    children: [{
-      path: '',
-      name: 'DetailUserPage',
-      component: PreviousPosts,
-      props: true,
-    },
-    ],
     meta: { requiresAuth: true }
   },
   // ユーザー更新画面
