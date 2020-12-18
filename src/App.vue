@@ -3,32 +3,110 @@
     <v-app-bar clipped-left app color="primary" dark>
       <v-toolbar-title class="pl-0 pl-sm-5">
         <router-link to="/" id="title">
-          <span class="hidden-sm-and-down white--text">Power Phrase - 心に残る言葉 -</span>
+          <span class="white--text">Power Phrase - 心に残る言葉 -</span>
         </router-link>
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
 
-      <v-toolbar-items>
-        <v-btn text to="/">Top</v-btn>
-        <v-btn v-show="!isLoggedIn" text to="/Login">
+      <!-- PC用 -->
+      <v-toolbar-items class="d-none d-sm-flex">
+        <v-btn text to="/">
+          <v-icon color="white">mdi-home</v-icon>Top
+        </v-btn>
+        <v-btn v-if="!isLoggedIn" text to="/login">
           <v-icon color="white">mdi-login</v-icon>ログイン
         </v-btn>
-        <v-btn v-show="!isLoggedIn" text v-on:click="simpleLogin">
+        <v-btn v-if="!isLoggedIn" text v-on:click="simpleLogin">
           <v-icon color="white">mdi-login</v-icon>動作確認用ログイン
         </v-btn>
-        <v-btn v-show="!isLoggedIn" text to="/users/create">
+        <v-btn v-if="!isLoggedIn" text to="/users/create">
           <v-icon color="white">mdi-account-plus</v-icon>ユーザー登録
         </v-btn>
-        <v-btn v-show="isLoggedIn" text v-on:click="logout">
+        <v-btn v-if="isLoggedIn" text v-on:click="logout">
           <v-icon color="white">mdi-logout</v-icon>ログアウト
         </v-btn>
-        <v-btn v-show="isLoggedIn" text to="/posts/create">
+        <v-btn v-if="isLoggedIn" text to="/posts/create">
           <v-icon color="white">mdi-pencil-box</v-icon>投稿作成
         </v-btn>
         <v-btn v-if="isLoggedIn" text :to="{name: 'DetailUserPage', params: {userId: userId}}">
           <v-icon color="white">mdi-account</v-icon>マイページ
         </v-btn>
+      </v-toolbar-items>
+
+      <!-- SP用 -->
+      <v-toolbar-items class="d-sm-none">
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <!-- ハンバーガーメニュー -->
+            <v-btn text v-bind="attrs" v-on="on" style="text-transform: none">
+              <v-icon size="40px">mdi-menu</v-icon>
+            </v-btn>
+          </template>
+          <!-- ドロップダウン -->
+          <v-card class="mx-auto">
+            <v-list>
+              <v-list-item-group>
+                <v-list-item to="/">
+                  <v-list-item-icon>
+                    <v-icon>mdi-home</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>Top</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+
+                <v-list-item v-if="!isLoggedIn" to="/login">
+                  <v-list-item-icon>
+                    <v-icon>mdi-login</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>ログイン</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+
+                <v-list-item v-if="!isLoggedIn" v-on:click="simpleLogin">
+                  <v-list-item-icon>
+                    <v-icon>mdi-login</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>動作確認用ログイン</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+
+                <v-list-item v-if="!isLoggedIn" to="/users/create">
+                  <v-list-item-icon>
+                    <v-icon>mdi-account-plus</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>ユーザー登録</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+
+                <v-list-item v-if="isLoggedIn" v-on:click="logout">
+                  <v-list-item-icon>
+                    <v-icon>mdi-logout</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>ログアウト</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+
+                <v-list-item
+                  v-if="isLoggedIn"
+                  :to="{name: 'DetailUserPage', params: {userId: userId}}"
+                >
+                  <v-list-item-icon>
+                    <v-icon>mdi-account</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>マイページ</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+          </v-card>
+        </v-menu>
       </v-toolbar-items>
     </v-app-bar>
 
