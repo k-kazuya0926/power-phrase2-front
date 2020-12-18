@@ -2,7 +2,7 @@
   <div>
     <!-- 戻るボタン -->
     <v-btn
-      class="mx-2 d-none d-sm-flex"
+      class="mx-2 d-sm-flex"
       @click="$router.back()"
       fab
       fixed

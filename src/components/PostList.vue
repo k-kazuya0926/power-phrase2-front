@@ -14,11 +14,11 @@
             class="pa-1 pa-sm-2"
             v-for="(post, key) in postType"
             :key="key"
-            cols="6"
-            lg="4"
-            md="4"
+            cols="12"
+            xs="12"
             sm="6"
-            xs="3"
+            md="4"
+            lg="4"
           >
             <v-hover>
               <template v-slot:default="{ hover }">
@@ -37,7 +37,7 @@
                     <iframe
                       v-if="post.embed_movie_url"
                       width="100%"
-                      height="300px"
+                      height="250px"
                       :src="post.embed_movie_url"
                       frameborder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
