@@ -67,7 +67,7 @@
                     <iframe
                       v-if="post.embed_movie_url"
                       width="100%"
-                      height="400px"
+                      height="250px"
                       :src="post.embed_movie_url"
                       frameborder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

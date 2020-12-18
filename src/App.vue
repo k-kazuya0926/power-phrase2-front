@@ -27,7 +27,7 @@
           <v-icon color="white">mdi-logout</v-icon>ログアウト
         </v-btn>
         <v-btn v-if="isLoggedIn" text to="/posts/create">
-          <v-icon color="white">mdi-pencil-box</v-icon>投稿作成
+          <v-icon color="white">mdi-pencil</v-icon>投稿作成
         </v-btn>
         <v-btn v-if="isLoggedIn" text :to="{name: 'DetailUserPage', params: {userId: userId}}">
           <v-icon color="white">mdi-account</v-icon>マイページ

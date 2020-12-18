@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- SP用、投稿登録ボタン-->
+    <!-- SP用、投稿作成ボタン -->
     <v-btn
       class="mx-2 d-flex d-sm-none"
       fab
@@ -13,12 +13,12 @@
       to="/posts/create"
       v-if="isLoggedIn"
     >
-      <v-icon dark>mdi-plus</v-icon>
+      <v-icon dark>mdi-pencil</v-icon>
     </v-btn>
 
     <v-container class="top">
       <v-row class="lighten-4" style="height: 150px;" justify="center" align-content="center">
-        <v-col md="4">
+        <v-col cols="12" sm="6">
           <!-- 検索 -->
           <v-text-field
             v-model="keyword"
@@ -29,12 +29,10 @@
             prepend-inner-icon="mdi-magnify"
           ></v-text-field>
         </v-col>
-        <v-col md="12">
-          <v-layout justify-center>全{{ totalPostsCount }}件</v-layout>
-        </v-col>
       </v-row>
 
       <!-- ページネーション -->
+      <v-row justify="center">全{{ totalPostsCount }}件</v-row>
       <v-pagination
         v-model="page"
         :length="pageLength"
