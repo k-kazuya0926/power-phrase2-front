@@ -28,10 +28,10 @@
                     :to="{ name: 'DetailPostPage', params: { postId: post.id } }"
                   >
                     <!-- タイトル -->
-                    <v-card-title>{{ post.title }}</v-card-title>
+                    <v-card-title class="font-weight-bold">{{ post.title }}</v-card-title>
 
                     <!-- 発言者 -->
-                    <v-card-subtitle>{{ post.speaker }}</v-card-subtitle>
+                    <v-card-subtitle class="font-weight-bold">{{ post.speaker }}</v-card-subtitle>
 
                     <!-- 動画 -->
                     <iframe
