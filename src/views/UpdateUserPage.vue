@@ -18,13 +18,7 @@
 
       <v-row justify="center">
         <v-col justify="center">
-          <v-card
-            elevation="5"
-            shaped
-            color="blue-grey lighten-5"
-            class="mx-auto"
-            max-width="500px"
-          >
+          <v-card elevation="5" color="blue-grey lighten-5" class="mx-auto" max-width="500px">
             <div class="pa-8">
               <span v-if="disabled" style="color: red">※動作確認用ユーザーは変更および削除ができません。</span>
 

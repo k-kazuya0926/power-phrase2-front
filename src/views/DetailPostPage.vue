@@ -21,13 +21,7 @@
       <v-container fluid>
         <v-row justify="center" align-content="center">
           <v-col class="py-0">
-            <v-card
-              elevation="5"
-              shaped
-              color="blue-grey lighten-5"
-              class="mx-auto"
-              max-width="600px"
-            >
+            <v-card elevation="5" color="blue-grey lighten-5" class="mx-auto" max-width="600px">
               <div>
                 <v-row justify="center">
                   <!-- 投稿詳細エリア -->

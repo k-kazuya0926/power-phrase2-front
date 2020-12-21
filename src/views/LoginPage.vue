@@ -3,7 +3,7 @@
     <h3 class="h3 text-center pt-8">ログイン</h3>
     <v-row justify="center">
       <v-col justify="center">
-        <v-card elevation="5" shaped color="blue-grey lighten-5" class="mx-auto" max-width="500px">
+        <v-card elevation="5" color="blue-grey lighten-5" class="mx-auto" max-width="500px">
           <div class="pa-8">
             <form @submit.prevent="login(email, password)">
               <v-text-field
