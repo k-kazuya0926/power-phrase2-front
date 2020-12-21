@@ -45,30 +45,24 @@
                     ></iframe>
 
                     <!-- 投稿者 -->
-                    <v-card-title class="pa-1 pa-sm-4">
-                      <router-link
-                        style="text-decoration: none"
-                        :to="{
+                    <router-link
+                      style="text-decoration: none"
+                      :to="{
                           name: 'DetailUserPage',
                           params: { userId: post.user_id },
                         }"
-                      >
-                        <v-btn
-                          text
-                          class="px-0"
-                          style="text-transform: none; text-decoration: none"
-                        >
-                          <v-avatar size="24px" class="mr-2">
-                            <img :src="baseURL + post.user_image_file_path" />
-                          </v-avatar>
-                          <span class="text-body-2 text-sm-h6">
-                            {{
-                            post.user_name
-                            }}
-                          </span>
-                        </v-btn>
-                      </router-link>
-                    </v-card-title>
+                    >
+                      <v-btn text class="px-0" style="text-transform: none; text-decoration: none">
+                        <v-avatar size="24px" class="mr-2">
+                          <img :src="baseURL + post.user_image_file_path" />
+                        </v-avatar>
+                        <span class="text-h6">
+                          {{
+                          post.user_name
+                          }}
+                        </span>
+                      </v-btn>
+                    </router-link>
 
                     <v-card-actions class="px-2 py-0 px-sm-4 py-sm-2">
                       <!-- 投稿日 -->
