@@ -38,8 +38,7 @@ const routes = [
     path: '/posts/:postId',
     name: 'DetailPostPage',
     props: true,
-    component: DetailPostPage,
-    meta: { requiresAuth: true }
+    component: DetailPostPage
   },
   // 投稿更新画面
   {
