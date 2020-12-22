@@ -23,11 +23,17 @@
         <v-card class="mb-2" color="blue-grey lighten-5">
           <v-row no-gutters>
             <!--アイコン-->
-            <v-col cols="6" lg="3" md="3" sm="3" xs="3">
-              <v-img v-if="user.image_file_path" eager :src="baseURL + user.image_file_path"></v-img>
+            <v-col cols="6" sm="3">
+              <v-img
+                v-if="user.image_file_path"
+                eager
+                :src="baseURL + user.image_file_path"
+                width="200px"
+                height="200px"
+              ></v-img>
             </v-col>
 
-            <v-col cols="6" lg="4" md="3" sm="9" xs="3" class="pa-md-3">
+            <v-col cols="6" sm="9" class="pa-md-3">
               <!--本人である場合-->
               <v-card-title
                 v-if="userId == loginUserId"
