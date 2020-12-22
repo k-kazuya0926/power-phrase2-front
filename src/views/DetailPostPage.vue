@@ -81,9 +81,18 @@
                           v-model="commentBody"
                           placeholder="コメントを入力してください"
                           hide-details
+                          :disabled="!isLoggedIn"
                         ></v-textarea>
-                        <v-btn type="submit" block class="mt-2" dark color="blue-grey darken-1">
-                          <v-icon>mdi-send</v-icon>登録
+                        <v-btn
+                          type="submit"
+                          block
+                          class="mt-2 white--text"
+                          color="blue-grey darken-1"
+                          :disabled="!isLoggedIn"
+                        >
+                          <v-icon>mdi-send</v-icon>
+                          <span v-if="isLoggedIn">登録</span>
+                          <span v-else>コメントを登録するにはログインしてください</span>
                         </v-btn>
                       </div>
                     </form>
@@ -189,6 +198,7 @@ export default {
   computed: {
     ...mapGetters("user", {
       loginUserId: "id",
+      isLoggedIn: "isLoggedIn",
     }),
   },
   mounted() {
