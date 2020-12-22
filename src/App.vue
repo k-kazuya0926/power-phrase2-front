@@ -3,8 +3,10 @@
     <v-app-bar clipped-left app color="primary" dark>
       <v-toolbar-title class="ml-0">
         <router-link to="/" id="title">
+          <v-btn icon class="mb-2" disabled>
+            <v-img src="./assets/logo.png" max-width="32px" max-height="32px" />
+          </v-btn>
           <span class="white--text title">Power Phrase</span>
-          <span class="white--text subtitle-1 ml-2">- 心に残る言葉 -</span>
         </router-link>
       </v-toolbar-title>
 
