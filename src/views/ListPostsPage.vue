@@ -16,14 +16,13 @@
       <v-icon dark>mdi-pencil</v-icon>
     </v-btn>
 
-    <v-container class="top">
-      <v-row class="lighten-4" style="height: 150px;" justify="center" align-content="center">
+    <v-container>
+      <v-row class="lighten-4" style="height: 80px;" justify="center">
         <v-col cols="12" sm="6">
           <!-- 検索 -->
           <v-text-field
             v-model="keyword"
             label="検索"
-            outlined
             @keyup.enter="getPosts"
             clearable
             prepend-inner-icon="mdi-magnify"
@@ -33,13 +32,7 @@
 
       <!-- ページネーション -->
       <v-row justify="center">全{{ totalPostsCount }}件</v-row>
-      <v-pagination
-        v-model="page"
-        :length="pageLength"
-        :total-visible="10"
-        class="my-0"
-        @input="getPosts"
-      ></v-pagination>
+      <v-pagination v-model="page" :length="pageLength" :total-visible="10" @input="getPosts"></v-pagination>
     </v-container>
 
     <!-- 投稿一覧 -->

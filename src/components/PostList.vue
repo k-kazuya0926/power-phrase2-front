@@ -28,10 +28,10 @@
                     :to="{ name: 'DetailPostPage', params: { postId: post.id } }"
                   >
                     <!-- タイトル -->
-                    <v-card-title>{{ post.title }}</v-card-title>
+                    <v-card-title class="font-weight-bold">{{ post.title }}</v-card-title>
 
                     <!-- 発言者 -->
-                    <v-card-subtitle>{{ post.speaker }}</v-card-subtitle>
+                    <v-card-subtitle class="font-weight-bold">{{ post.speaker }}</v-card-subtitle>
 
                     <!-- 動画 -->
                     <iframe
@@ -45,41 +45,32 @@
                     ></iframe>
 
                     <!-- 投稿者 -->
-                    <v-card-title class="pa-1 pa-sm-4">
-                      <router-link
-                        style="text-decoration: none"
-                        :to="{
+                    <router-link
+                      style="text-decoration: none"
+                      :to="{
                           name: 'DetailUserPage',
                           params: { userId: post.user_id },
                         }"
-                      >
-                        <v-btn
-                          text
-                          class="px-0"
-                          style="text-transform: none; text-decoration: none"
-                        >
-                          <v-avatar size="24px" class="mr-2">
-                            <img :src="baseURL + post.user_image_file_path" />
-                          </v-avatar>
-                          <span class="text-body-2 text-sm-h6">
-                            {{
-                            post.user_name
-                            }}
-                          </span>
-                        </v-btn>
-                      </router-link>
-                    </v-card-title>
-
-                    <v-card-actions class="px-2 py-0 px-sm-4 py-sm-2">
-                      <!-- 投稿日 -->
-                      <div class="px-0 text-caption text-sm-body-2" style="color: #263238">
-                        <span class="px-1 px-sm-2">
+                    >
+                      <v-btn text class="px-2" style="text-transform: none; text-decoration: none">
+                        <v-avatar size="24px">
+                          <img :src="baseURL + post.user_image_file_path" />
+                        </v-avatar>
+                        <span class="text-h6">
                           {{
-                          post.created_at | moment
+                          post.user_name
                           }}
                         </span>
-                      </div>
-                    </v-card-actions>
+                      </v-btn>
+                    </router-link>
+
+                    <v-card-text class="px-2 pt-0">
+                      <!-- 投稿日 -->
+                      <div
+                        class="px-0 text-caption text-sm-body-2"
+                        style="color: #263238"
+                      >{{ post.created_at | moment }}</div>
+                    </v-card-text>
                   </router-link>
 
                   <!-- 投稿者 = ログインユーザーである場合、編集、削除ボタン表示 -->

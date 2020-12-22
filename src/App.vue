@@ -1,9 +1,10 @@
 <template>
   <v-app>
     <v-app-bar clipped-left app color="primary" dark>
-      <v-toolbar-title class="pl-0 pl-sm-5">
+      <v-toolbar-title class="ml-0">
         <router-link to="/" id="title">
-          <span class="white--text">Power Phrase - 心に残る言葉 -</span>
+          <span class="white--text title">Power Phrase</span>
+          <span class="white--text subtitle-1 ml-2">- 心に残る言葉 -</span>
         </router-link>
       </v-toolbar-title>
 

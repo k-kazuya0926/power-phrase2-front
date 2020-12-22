@@ -20,13 +20,7 @@
 
       <v-row justify="center">
         <v-col justify="center">
-          <v-card
-            elevation="5"
-            shaped
-            color="blue-grey lighten-5"
-            class="mx-auto"
-            max-width="800px"
-          >
+          <v-card elevation="5" color="blue-grey lighten-5" class="mx-auto" max-width="800px">
             <div class="pa-6">
               <h3 v-if="postId" class="text-center">投稿編集</h3>
               <h3 v-else class="text-center">新規投稿</h3>
