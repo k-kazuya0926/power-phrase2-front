@@ -26,9 +26,10 @@
                   <router-link
                     style="text-decoration: none"
                     :to="{ name: 'DetailPostPage', params: { postId: post.id } }"
+                    class="black--text"
                   >
                     <!-- タイトル -->
-                    <v-card-title class="font-weight-bold">{{ post.title }}</v-card-title>
+                    <v-card-title class="primary--text font-weight-bold">{{ post.title }}</v-card-title>
 
                     <!-- 発言者 -->
                     <v-card-subtitle class="font-weight-bold">{{ post.speaker }}</v-card-subtitle>
@@ -66,10 +67,13 @@
 
                     <v-card-text class="px-2 pt-0">
                       <!-- 投稿日 -->
-                      <div
-                        class="px-0 text-caption text-sm-body-2"
-                        style="color: #263238"
-                      >{{ post.created_at | moment }}</div>
+                      <div>{{ post.created_at | moment }}</div>
+
+                      <!-- コメント件数 -->
+                      <div>
+                        <v-icon>mdi-comment</v-icon>
+                        {{ post.comment_count }}
+                      </div>
                     </v-card-text>
                   </router-link>
 
