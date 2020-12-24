@@ -27,7 +27,7 @@
                   <!-- 投稿詳細エリア -->
                   <v-col cols="12">
                     <!--タイトル-->
-                    <v-card-title class="float-left font-weight-bold">{{ post.title }}</v-card-title>
+                    <v-card-title class="float-left primary--text font-weight-bold">{{ post.title }}</v-card-title>
 
                     <div class="text-right mr-2">
                       <!--投稿者-->
