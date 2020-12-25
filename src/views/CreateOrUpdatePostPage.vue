@@ -77,7 +77,7 @@
                           rows="10"
                           :error-messages="errors"
                           v-model="detail"
-                          :counter="200"
+                          :counter="500"
                           hint="500文字以下"
                           persistent-hint
                         ></v-textarea>
@@ -95,8 +95,8 @@
                           v-model="movieUrl"
                           :counter="100"
                           :error-messages="errors"
-                          placeholder="例）https://www.youtube.com/watch?v=・・・"
-                          hint="100文字以下"
+                          placeholder="https://www.youtube.com/watch?v=xxx"
+                          hint="「https://youtu.be/xxx」も可"
                           persistent-hint
                         ></v-text-field>
                       </ValidationProvider>

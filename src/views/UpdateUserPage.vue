@@ -28,7 +28,7 @@
                     <v-col cols="12">
                       <ValidationProvider
                         mode="eager"
-                        name="ユーザー名"
+                        name="名前"
                         rules="required|max:20"
                         v-slot="{ errors }"
                       >
@@ -38,7 +38,7 @@
                           :counter="20"
                           :error-messages="errors"
                           required
-                          placeholder="ユーザー名"
+                          label="名前"
                           hint="20文字以下"
                           persistent-hint
                           prepend-inner-icon="mdi-account"
@@ -56,7 +56,7 @@
                           v-model="email"
                           :error-messages="errors"
                           required
-                          placeholder="メールアドレス"
+                          label="メールアドレス"
                           prepend-inner-icon="mdi-email"
                         ></v-text-field>
                       </ValidationProvider>
@@ -75,7 +75,7 @@
                           :type="showsPassword1 ? 'text' : 'password'"
                           counter
                           :error-messages="errors"
-                          placeholder="パスワード"
+                          label="パスワード"
                           hint="8文字以上（半角英小文字,数字を含む）"
                           persistent-hint
                           @click:append="showsPassword1 = !showsPassword1"
@@ -96,7 +96,7 @@
                           :type="showsPassword2 ? 'text' : 'password'"
                           counter
                           :error-messages="errors"
-                          placeholder="パスワード（確認）"
+                          label="パスワード（確認）"
                           @click:append="showsPassword2 = !showsPassword2"
                           prepend-inner-icon="mdi-lock"
                         ></v-text-field>
