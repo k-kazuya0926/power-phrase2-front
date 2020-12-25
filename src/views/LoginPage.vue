@@ -6,19 +6,14 @@
         <v-card elevation="5" color="blue-grey lighten-5" class="mx-auto" max-width="500px">
           <div class="pa-8">
             <form @submit.prevent="login(email, password)">
-              <v-text-field
-                v-model="email"
-                required
-                placeholder="メールアドレス"
-                prepend-inner-icon="mdi-email"
-              ></v-text-field>
+              <v-text-field v-model="email" required label="メールアドレス" prepend-inner-icon="mdi-email"></v-text-field>
 
               <v-text-field
                 v-model="password"
                 :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="show1 ? 'text' : 'password'"
                 required
-                placeholder="パスワード"
+                label="パスワード"
                 @click:append="show1 = !show1"
                 prepend-inner-icon="mdi-lock"
               ></v-text-field>
