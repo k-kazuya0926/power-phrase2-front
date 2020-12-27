@@ -12,11 +12,6 @@ import UpdateUserPage from '@/views/UpdateUserPage'
 Vue.use(VueRouter)
 
 const routes = [
-  // 投稿一覧画面
-  {
-    path: '/',
-    component: ListPostsPage,
-  },
   // ユーザー登録画面
   {
     path: '/users/create',
@@ -26,6 +21,17 @@ const routes = [
   {
     path: '/login',
     component: LoginPage
+  },
+  // 投稿一覧画面
+  {
+    path: '/',
+    component: ListPostsPage,
+  },
+  // お気に入り投稿一覧画面
+  {
+    path: '/posts/favorites',
+    component: ListPostsPage,
+    meta: { requiresAuth: true }
   },
   // 投稿登録画面
   {

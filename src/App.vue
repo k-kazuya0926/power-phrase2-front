@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <!-- ヘッダー -->
     <v-app-bar clipped-left app color="primary" dark>
       <v-toolbar-title class="ml-0">
         <router-link to="/" id="title">
@@ -17,6 +18,9 @@
         <v-btn text to="/">
           <v-icon color="white">mdi-home</v-icon>Top
         </v-btn>
+        <v-btn v-if="isLoggedIn" text to="/posts/favorites">
+          <v-icon color="white">mdi-star</v-icon>お気に入り
+        </v-btn>
         <v-btn v-if="!isLoggedIn" text to="/login">
           <v-icon color="white">mdi-login</v-icon>ログイン
         </v-btn>
@@ -26,14 +30,14 @@
         <v-btn v-if="!isLoggedIn" text to="/users/create">
           <v-icon color="white">mdi-account-plus</v-icon>ユーザー登録
         </v-btn>
-        <v-btn v-if="isLoggedIn" text v-on:click="logout">
-          <v-icon color="white">mdi-logout</v-icon>ログアウト
-        </v-btn>
         <v-btn v-if="isLoggedIn" text to="/posts/create">
           <v-icon color="white">mdi-pencil</v-icon>投稿作成
         </v-btn>
         <v-btn v-if="isLoggedIn" text :to="{name: 'DetailUserPage', params: {userId: userId}}">
           <v-icon color="white">mdi-account</v-icon>マイページ
+        </v-btn>
+        <v-btn v-if="isLoggedIn" text v-on:click="logout">
+          <v-icon color="white">mdi-logout</v-icon>ログアウト
         </v-btn>
       </v-toolbar-items>
 

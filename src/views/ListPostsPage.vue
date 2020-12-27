@@ -67,15 +67,30 @@ export default {
   computed: {
     ...mapGetters("user", {
       isLoggedIn: "isLoggedIn",
+      loginUserId: "id",
     }),
     pageLength: function () {
       return Math.ceil(this.totalPostsCount / this.limit);
     },
   },
+  watch: {
+    $route() {
+      this.getPosts();
+    },
+  },
   methods: {
     // 投稿一覧取得
     async getPosts() {
-      let url = "/posts?limit=" + this.limit + "&page=" + this.page;
+      let url;
+      // お気に入り一覧である場合
+      if (this.$route.path === "/posts/favorites") {
+        url = "/posts/favorites?user_id=" + this.loginUserId;
+      } else {
+        url = "/posts?login_user_id=" + this.loginUserId;
+      }
+      url += "&limit=" + this.limit + "&page=" + this.page;
+
+      // 検索キーワードがある場合
       if (this.keyword) {
         url += "&keyword=" + this.keyword;
       }

@@ -64,18 +64,27 @@
                         </span>
                       </v-btn>
                     </router-link>
-
-                    <v-card-text class="px-2 pt-0">
-                      <!-- 投稿日 -->
-                      <div>{{ post.created_at | moment }}</div>
-
-                      <!-- コメント件数 -->
-                      <div>
-                        <v-icon>mdi-comment</v-icon>
-                        {{ post.comment_count }}
-                      </div>
-                    </v-card-text>
                   </router-link>
+
+                  <v-card-text class="px-2 pt-0">
+                    <!-- 投稿日 -->
+                    <div>{{ post.created_at | moment }}</div>
+
+                    <div>
+                      <!-- コメント件数 -->
+                      <v-icon>mdi-comment</v-icon>
+                      {{ post.comment_count }}
+                      <!-- お気に入り -->
+                      <span v-if="isLoggedIn">
+                        <v-btn v-if="post.is_favorite" text @click="deleteFavorite(post)">
+                          <v-icon>mdi-star</v-icon>
+                        </v-btn>
+                        <v-btn v-else text @click="createFavorite(post)">
+                          <v-icon>mdi-star-outline</v-icon>
+                        </v-btn>
+                      </span>
+                    </div>
+                  </v-card-text>
 
                   <!-- 投稿者 = ログインユーザーである場合、編集、削除ボタン表示 -->
                   <div v-if="post.user_id === loginUserId">
@@ -135,6 +144,7 @@
 <script>
 import { mapGetters } from "vuex";
 import moment from "moment";
+import api from "@/services/api";
 
 export default {
   props: ["postType", "isLoading"],
@@ -147,6 +157,7 @@ export default {
   },
   computed: {
     ...mapGetters("user", {
+      isLoggedIn: "isLoggedIn",
       loginUserId: "id",
     }),
   },
@@ -160,6 +171,33 @@ export default {
     deletePost(postId) {
       this.showsDeleteDialog = false;
       this.$emit("deletePost", postId); // イベント発行
+    },
+    // お気に入り登録
+    async createFavorite(post) {
+      const postData = {
+        user_id: this.loginUserId,
+      };
+      await api
+        .post("/posts/" + post.id + "/favorites", postData)
+        .then(() => {
+          post.is_favorite = true;
+        })
+        .catch((error) => {
+          console.log("お気に入り登録エラー");
+          console.log(error);
+        });
+    },
+    // お気に入り削除
+    async deleteFavorite(post) {
+      await api
+        .delete("/posts/" + post.id + "/favorites/" + this.loginUserId)
+        .then(() => {
+          post.is_favorite = false;
+        })
+        .catch((error) => {
+          console.log("お気に入り削除エラー");
+          console.log(error);
+        });
     },
   },
   filters: {
