@@ -63,6 +63,15 @@
                   </v-list-item-content>
                 </v-list-item>
 
+                <v-list-item v-if="isLoggedIn" to="/posts/favorites">
+                  <v-list-item-icon>
+                    <v-icon>mdi-star</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>お気に入り</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+
                 <v-list-item v-if="!isLoggedIn" to="/login">
                   <v-list-item-icon>
                     <v-icon>mdi-login</v-icon>
@@ -90,15 +99,6 @@
                   </v-list-item-content>
                 </v-list-item>
 
-                <v-list-item v-if="isLoggedIn" v-on:click="logout">
-                  <v-list-item-icon>
-                    <v-icon>mdi-logout</v-icon>
-                  </v-list-item-icon>
-                  <v-list-item-content>
-                    <v-list-item-title>ログアウト</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-
                 <v-list-item
                   v-if="isLoggedIn"
                   :to="{name: 'DetailUserPage', params: {userId: userId}}"
@@ -108,6 +108,15 @@
                   </v-list-item-icon>
                   <v-list-item-content>
                     <v-list-item-title>マイページ</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+
+                <v-list-item v-if="isLoggedIn" v-on:click="logout">
+                  <v-list-item-icon>
+                    <v-icon>mdi-logout</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>ログアウト</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-list-item-group>
@@ -123,7 +132,7 @@
       <router-view></router-view>
     </v-main>
 
-    <v-footer color="primary" dark app>&copy; Kazuya Kobayashi</v-footer>
+    <v-footer color="primary" dark app>&copy; 2020 Kazuya Kobayashi</v-footer>
   </v-app>
 </template>
 
