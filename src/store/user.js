@@ -5,7 +5,7 @@ export default {
     namespaced: true,
     state: {
         isLoggedIn: false,
-        id: '',
+        id: 0,
         name: '',
         email: '',
         imageFilePath: '',
@@ -35,7 +35,7 @@ export default {
         },
         clear(state) {
             state.isLoggedIn = false
-            state.id = ''
+            state.id = 0
             state.name = ''
             state.email = ''
             state.imageFilePath = ''

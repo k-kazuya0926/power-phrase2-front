@@ -67,6 +67,7 @@ export default {
   computed: {
     ...mapGetters("user", {
       isLoggedIn: "isLoggedIn",
+      loginUserId: "id",
     }),
     pageLength: function () {
       return Math.ceil(this.totalPostsCount / this.limit);
@@ -75,7 +76,13 @@ export default {
   methods: {
     // 投稿一覧取得
     async getPosts() {
-      let url = "/posts?limit=" + this.limit + "&page=" + this.page;
+      let url =
+        "/posts?limit=" +
+        this.limit +
+        "&page=" +
+        this.page +
+        "&login_user_id=" +
+        this.loginUserId;
       if (this.keyword) {
         url += "&keyword=" + this.keyword;
       }

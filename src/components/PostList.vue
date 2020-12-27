@@ -69,10 +69,15 @@
                       <!-- 投稿日 -->
                       <div>{{ post.created_at | moment }}</div>
 
-                      <!-- コメント件数 -->
                       <div>
+                        <!-- コメント件数 -->
                         <v-icon>mdi-comment</v-icon>
                         {{ post.comment_count }}
+                        <!-- お気に入り -->
+                        <span v-if="isLoggedIn">
+                          <v-icon v-if="post.is_favorite">mdi-star</v-icon>
+                          <v-icon v-else>mdi-star-outline</v-icon>
+                        </span>
                       </div>
                     </v-card-text>
                   </router-link>
@@ -147,6 +152,7 @@ export default {
   },
   computed: {
     ...mapGetters("user", {
+      isLoggedIn: "isLoggedIn",
       loginUserId: "id",
     }),
   },
