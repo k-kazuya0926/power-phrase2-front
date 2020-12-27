@@ -82,6 +82,7 @@ export default {
     // 投稿一覧取得
     async getPosts() {
       let url;
+      // お気に入り一覧である場合
       if (this.$route.path === "/posts/favorites") {
         url = "/posts/favorites?user_id=" + this.loginUserId;
       } else {
@@ -89,6 +90,7 @@ export default {
       }
       url += "&limit=" + this.limit + "&page=" + this.page;
 
+      // 検索キーワードがある場合
       if (this.keyword) {
         url += "&keyword=" + this.keyword;
       }
