@@ -31,6 +31,7 @@ const routes = [
   {
     path: '/posts/favorites',
     component: ListPostsPage,
+    meta: { requiresAuth: true }
   },
   // 投稿登録画面
   {
