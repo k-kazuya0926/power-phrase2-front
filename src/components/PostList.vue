@@ -76,7 +76,7 @@
                       {{ post.comment_count }}
                       <!-- お気に入り -->
                       <span v-if="isLoggedIn">
-                        <v-btn v-if="post.is_favorite" text>
+                        <v-btn v-if="post.is_favorite" text @click="deleteFavorite(post)">
                           <v-icon>mdi-star</v-icon>
                         </v-btn>
                         <v-btn v-else text @click="createFavorite(post)">
@@ -184,6 +184,18 @@ export default {
         })
         .catch((error) => {
           console.log("お気に入り登録エラー");
+          console.log(error);
+        });
+    },
+    // お気に入り削除
+    async deleteFavorite(post) {
+      await api
+        .delete("/posts/" + post.id + "/favorites/" + this.loginUserId)
+        .then(() => {
+          post.is_favorite = false;
+        })
+        .catch((error) => {
+          console.log("お気に入り削除エラー");
           console.log(error);
         });
     },
