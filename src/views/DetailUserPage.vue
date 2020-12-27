@@ -128,8 +128,10 @@ export default {
         this.limit +
         "&page=" +
         this.page +
-        "&user_id=" +
-        this.userId;
+        "&post_user_id=" +
+        this.userId +
+        "&login_user_id=" +
+        this.loginUserId;
       await api.get(url).then((response) => {
         this.posts = response.data.posts;
         this.totalPostsCount = response.data.totalCount;
