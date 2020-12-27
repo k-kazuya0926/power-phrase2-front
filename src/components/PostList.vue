@@ -10,6 +10,10 @@
     <div v-show="!isLoading">
       <v-container fluid>
         <v-row>
+          <v-col cols="12">
+            <!-- サムネイル表示切り替え -->
+            <v-checkbox v-model="showsMovieThumbnails" label="サムネイル表示"></v-checkbox>
+          </v-col>
           <v-col
             class="pa-1 pa-sm-3"
             v-for="(post, key) in postType"
@@ -36,7 +40,7 @@
 
                     <!-- 動画 -->
                     <iframe
-                      v-if="post.embed_movie_url"
+                      v-if="showsMovieThumbnails && post.embed_movie_url"
                       width="100%"
                       height="300px"
                       :src="post.embed_movie_url"
@@ -153,6 +157,7 @@ export default {
       showsDeleteDialog: false,
       deleteTargetPost: null, // 削除対象投稿
       baseURL: process.env.VUE_APP_STATIC_FILE_ENDPOINT,
+      showsMovieThumbnails: true,
     };
   },
   computed: {
