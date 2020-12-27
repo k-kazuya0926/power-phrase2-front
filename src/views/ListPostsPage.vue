@@ -73,16 +73,22 @@ export default {
       return Math.ceil(this.totalPostsCount / this.limit);
     },
   },
+  watch: {
+    $route() {
+      this.getPosts();
+    },
+  },
   methods: {
     // 投稿一覧取得
     async getPosts() {
-      let url =
-        "/posts?limit=" +
-        this.limit +
-        "&page=" +
-        this.page +
-        "&login_user_id=" +
-        this.loginUserId;
+      let url;
+      if (this.$route.path === "/posts/favorites") {
+        url = "/posts/favorites?user_id=" + this.loginUserId;
+      } else {
+        url = "/posts?login_user_id=" + this.loginUserId;
+      }
+      url += "&limit=" + this.limit + "&page=" + this.page;
+
       if (this.keyword) {
         url += "&keyword=" + this.keyword;
       }
