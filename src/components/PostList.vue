@@ -57,15 +57,13 @@
                           params: { userId: post.user_id },
                         }"
                     >
-                      <v-btn text class="px-2" style="text-transform: none; text-decoration: none">
+                      <v-btn text class="px-2" style="text-transform: none">
                         <v-avatar size="24px">
                           <img :src="baseURL + post.user_image_file_path" />
                         </v-avatar>
-                        <span class="text-h6">
-                          {{
-                          post.user_name
-                          }}
-                        </span>
+                        {{
+                        post.user_name
+                        }}
                       </v-btn>
                     </router-link>
                   </router-link>

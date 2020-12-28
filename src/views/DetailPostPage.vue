@@ -37,16 +37,14 @@
                         :to="{ name: 'DetailUserPage', params: { userId: post.user_id } }"
                         style="text-transform: none; text-decoration: none"
                       >
-                        <v-avatar size="36px">
+                        <v-avatar size="24px">
                           <img :src="baseURL + post.user_image_file_path" />
                         </v-avatar>
-                        <span class="text-lg-h6">{{ post.user_name }}</span>
+                        {{ post.user_name }}
                       </v-btn>
 
                       <!--投稿日-->
-                      <div>
-                        <span>{{ post.created_at | moment }}</span>
-                      </div>
+                      <div>{{ post.created_at | moment }}</div>
                     </div>
 
                     <!-- 発言者 -->
@@ -118,10 +116,10 @@
                                     text-decoration: none;
                                   "
                             >
-                              <v-avatar size="36px">
+                              <v-avatar size="24px">
                                 <img :src="baseURL + comment.user_image_file_path" />
                               </v-avatar>
-                              <span class="text-lg-h6">{{ comment.user_name }}</span>
+                              {{ comment.user_name }}
                             </v-btn>
                           </div>
                           <div>{{ comment.created_at | moment }}</div>
