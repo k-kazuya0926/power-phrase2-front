@@ -27,25 +27,7 @@
                   <!-- 投稿詳細エリア -->
                   <v-col cols="12">
                     <!--タイトル-->
-                    <v-card-title class="float-left primary--text font-weight-bold">{{ post.title }}</v-card-title>
-
-                    <div class="text-right mr-2">
-                      <!--投稿者-->
-                      <v-btn
-                        v-if="post.user_id"
-                        text
-                        :to="{ name: 'DetailUserPage', params: { userId: post.user_id } }"
-                        style="text-transform: none; text-decoration: none"
-                      >
-                        <v-avatar size="24px">
-                          <img :src="baseURL + post.user_image_file_path" />
-                        </v-avatar>
-                        {{ post.user_name }}
-                      </v-btn>
-
-                      <!--投稿日-->
-                      <div>{{ post.created_at | moment }}</div>
-                    </div>
+                    <v-card-title class="primary--text font-weight-bold">{{ post.title }}</v-card-title>
 
                     <!-- 発言者 -->
                     <v-card-subtitle id="post_content" class="font-weight-bold">{{ post.speaker }}</v-card-subtitle>
@@ -65,6 +47,50 @@
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowfullscreen
                     ></iframe>
+
+                    <v-card-text>
+                      <!-- 投稿日 -->
+                      <div>{{ post.created_at | moment }}</div>
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-list-item class="grow">
+                        <!-- 投稿者 -->
+                        <router-link
+                          :to="{
+                          name: 'DetailUserPage',
+                          params: { userId: post.user_id },
+                        }"
+                        >
+                          <v-list-item-avatar color="grey darken-3">
+                            <v-img class="elevation-6" :src="baseURL + post.user_image_file_path"></v-img>
+                          </v-list-item-avatar>
+                        </router-link>
+                        <v-list-item-content>
+                          <v-list-item-title>
+                            {{
+                            post.user_name
+                            }}
+                          </v-list-item-title>
+                        </v-list-item-content>
+
+                        <v-row align="center" justify="end">
+                          <!-- コメント件数 -->
+                          <v-icon class="mr-1">mdi-comment</v-icon>
+                          <span class="subheading mr-2">{{ post.comment_count }}</span>
+
+                          <!-- お気に入り -->
+                          <span v-if="isLoggedIn">
+                            <v-btn v-if="post.is_favorite" text @click="deleteFavorite(post)">
+                              <v-icon>mdi-star</v-icon>
+                            </v-btn>
+                            <v-btn v-else text @click="createFavorite(post)">
+                              <v-icon>mdi-star-outline</v-icon>
+                            </v-btn>
+                          </span>
+                        </v-row>
+                      </v-list-item>
+                    </v-card-actions>
                   </v-col>
 
                   <v-divider class="mx-4"></v-divider>
@@ -90,7 +116,7 @@
                         >
                           <v-icon>mdi-send</v-icon>
                           <span v-if="isLoggedIn">登録</span>
-                          <span v-else>コメントを登録するにはログインしてください</span>
+                          <span v-else>要ログイン</span>
                         </v-btn>
                       </div>
                     </form>
@@ -102,28 +128,36 @@
                       <!-- コメント一覧 -->
                       <ul style="list-style:none">
                         <li v-for="comment in comments" :key="comment.id">
-                          <div>
-                            <!-- コメント登録ユーザー -->
-                            <v-btn
-                              class="px-0"
-                              text
-                              :to="{
-                                    name: 'DetailUserPage',
-                                    params: { userId: comment.user_id },
-                                  }"
-                              style="
-                                    text-transform: none;
-                                    text-decoration: none;
-                                  "
-                            >
-                              <v-avatar size="24px">
-                                <img :src="baseURL + comment.user_image_file_path" />
-                              </v-avatar>
-                              {{ comment.user_name }}
-                            </v-btn>
-                          </div>
+                          <!-- コメント登録日時 -->
                           <div>{{ comment.created_at | moment }}</div>
+
+                          <v-list-item class="grow">
+                            <!-- コメント登録ユーザー -->
+                            <router-link
+                              :to="{
+                              name: 'DetailUserPage',
+                              params: { userId: comment.user_id },
+                            }"
+                            >
+                              <v-list-item-avatar color="grey darken-3">
+                                <v-img
+                                  class="elevation-6"
+                                  :src="baseURL + comment.user_image_file_path"
+                                ></v-img>
+                              </v-list-item-avatar>
+                            </router-link>
+                            <v-list-item-content>
+                              <v-list-item-title>
+                                {{
+                                comment.user_name
+                                }}
+                              </v-list-item-title>
+                            </v-list-item-content>
+                          </v-list-item>
+
+                          <!-- コメント本文 -->
                           <div class="mt-2">{{ comment.body }}</div>
+
                           <!-- コメント削除 -->
                           <div class="text-right" v-if="comment.user_id == loginUserId">
                             <v-btn text icon @click.stop="onClickDeleteCommentBtn(comment)">
@@ -185,7 +219,7 @@ export default {
   data() {
     return {
       comments: [],
-      post: {},
+      post: { user_id: 0 },
       isLoading: true,
       showsDeleteCommentDialog: false,
       deleteTargetComment: null,
@@ -246,6 +280,33 @@ export default {
         // 入力後、フォーム内の文字列をクリア
         this.commentBody = "";
       }
+    },
+    // お気に入り登録
+    async createFavorite(post) {
+      const postData = {
+        user_id: this.loginUserId,
+      };
+      await api
+        .post("/posts/" + post.id + "/favorites", postData)
+        .then(() => {
+          post.is_favorite = true;
+        })
+        .catch((error) => {
+          console.log("お気に入り登録エラー");
+          console.log(error);
+        });
+    },
+    // お気に入り削除
+    async deleteFavorite(post) {
+      await api
+        .delete("/posts/" + post.id + "/favorites/" + this.loginUserId)
+        .then(() => {
+          post.is_favorite = false;
+        })
+        .catch((error) => {
+          console.log("お気に入り削除エラー");
+          console.log(error);
+        });
     },
   },
 };
