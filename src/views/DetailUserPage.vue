@@ -20,45 +20,31 @@
       </div>
 
       <div v-show="!isLoading">
-        <v-card class="mb-2" color="blue-grey lighten-5">
-          <v-row no-gutters>
-            <!--アイコン-->
-            <v-col cols="6" sm="3">
-              <v-img
-                v-if="user.image_file_path"
-                eager
-                :src="baseURL + user.image_file_path"
-                width="200px"
-                height="200px"
-              ></v-img>
-            </v-col>
+        <v-container class="text-center">
+          <v-avatar class="elevation-12 mt-4" size="128">
+            <v-img v-if="user.image_file_path" :src="baseURL + user.image_file_path"></v-img>
+          </v-avatar>
 
-            <v-col cols="6" sm="9" class="pa-md-3">
-              <!--本人である場合-->
-              <v-card-title
-                v-if="userId == loginUserId"
-                class="text-h5 text-sm-h4 text-md-h4 text-lg-h3 pa-2 pa-sm-4"
-              >
-                {{ loginUserName }}
-                <!--編集ボタン-->
-                <v-btn
-                  v-if="userId == loginUserId"
-                  style="text-decoration: none"
-                  fab
-                  x-small
-                  class="ml-4"
-                  color="indigo lighten-4"
-                  to="/update_user"
-                >
-                  <v-icon>mdi-account-edit</v-icon>
-                </v-btn>
-              </v-card-title>
+          <!--本人である場合-->
+          <div v-if="userId == loginUserId" class="title mt-4">
+            {{ loginUserName }}
+            <!--編集ボタン-->
+            <v-btn
+              v-if="userId == loginUserId"
+              style="text-decoration: none"
+              fab
+              x-small
+              class="ml-4"
+              color="indigo lighten-4"
+              to="/update_user"
+            >
+              <v-icon>mdi-account-edit</v-icon>
+            </v-btn>
+          </div>
 
-              <!--本人でない場合-->
-              <v-card-title v-else class="text-h5 text-sm-h4 text-md-h4 text-lg-h3">{{ user.name }}</v-card-title>
-            </v-col>
-          </v-row>
-        </v-card>
+          <!--本人でない場合-->
+          <div v-else class="title mt-4">{{ user.name }}</div>
+        </v-container>
 
         <!--投稿一覧-->
         <div class="content">
