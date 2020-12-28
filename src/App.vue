@@ -132,7 +132,7 @@
       <router-view></router-view>
     </v-main>
 
-    <v-footer color="primary" dark app>&copy; 2020 Kazuya Kobayashi</v-footer>
+    <v-footer color="primary" dark>&copy; 2020 Kazuya Kobayashi</v-footer>
   </v-app>
 </template>
 
