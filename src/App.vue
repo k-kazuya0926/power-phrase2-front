@@ -5,7 +5,7 @@
       <v-toolbar-title class="ml-0">
         <router-link to="/" id="title">
           <v-btn icon class="mb-2" disabled>
-            <v-img src="./assets/logo.png" max-width="32px" max-height="32px" />
+            <v-img src="./assets/logo.png" max-width="40px" max-height="40px" />
           </v-btn>
           <span class="white--text title">Power Phrase</span>
         </router-link>
@@ -128,7 +128,7 @@
 
     <GlobalMessage />
 
-    <v-main color="blue" dark>
+    <v-main>
       <router-view></router-view>
     </v-main>
 
