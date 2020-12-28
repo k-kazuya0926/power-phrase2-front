@@ -37,61 +37,66 @@
 
                     <!-- 発言者 -->
                     <v-card-subtitle class="font-weight-bold">{{ post.speaker }}</v-card-subtitle>
+                  </router-link>
 
-                    <!-- 動画 -->
-                    <iframe
-                      v-if="showsMovieThumbnails && post.embed_movie_url"
-                      width="100%"
-                      height="300px"
-                      :src="post.embed_movie_url"
-                      frameborder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowfullscreen
-                    ></iframe>
+                  <!-- 動画 -->
+                  <iframe
+                    v-if="showsMovieThumbnails && post.embed_movie_url"
+                    width="100%"
+                    height="300px"
+                    :src="post.embed_movie_url"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  ></iframe>
 
-                    <!-- 投稿者 -->
-                    <router-link
-                      style="text-decoration: none"
-                      :to="{
+                  <v-card-text>
+                    <!-- 投稿日 -->
+                    <div>{{ post.created_at | moment }}</div>
+                  </v-card-text>
+
+                  <v-card-actions>
+                    <v-list-item class="grow">
+                      <!-- 投稿者 -->
+                      <router-link
+                        :to="{
                           name: 'DetailUserPage',
                           params: { userId: post.user_id },
                         }"
-                    >
-                      <v-btn text class="px-2" style="text-transform: none">
-                        <v-avatar size="24px">
-                          <img :src="baseURL + post.user_image_file_path" />
-                        </v-avatar>
-                        {{
-                        post.user_name
-                        }}
-                      </v-btn>
-                    </router-link>
-                  </router-link>
+                      >
+                        <v-list-item-avatar color="grey darken-3">
+                          <v-img class="elevation-6" :src="baseURL + post.user_image_file_path"></v-img>
+                        </v-list-item-avatar>
+                      </router-link>
+                      <v-list-item-content>
+                        <v-list-item-title>
+                          {{
+                          post.user_name
+                          }}
+                        </v-list-item-title>
+                      </v-list-item-content>
 
-                  <v-card-text class="px-2 pt-0">
-                    <!-- 投稿日 -->
-                    <div>{{ post.created_at | moment }}</div>
+                      <v-row align="center" justify="end">
+                        <!-- コメント件数 -->
+                        <v-icon class="mr-1">mdi-comment</v-icon>
+                        <span class="subheading mr-2">{{ post.comment_count }}</span>
 
-                    <div>
-                      <!-- コメント件数 -->
-                      <v-icon>mdi-comment</v-icon>
-                      {{ post.comment_count }}
-                      <!-- お気に入り -->
-                      <span v-if="isLoggedIn">
-                        <v-btn v-if="post.is_favorite" text @click="deleteFavorite(post)">
-                          <v-icon>mdi-star</v-icon>
-                        </v-btn>
-                        <v-btn v-else text @click="createFavorite(post)">
-                          <v-icon>mdi-star-outline</v-icon>
-                        </v-btn>
-                      </span>
-                    </div>
-                  </v-card-text>
+                        <!-- お気に入り -->
+                        <span v-if="isLoggedIn">
+                          <v-btn v-if="post.is_favorite" text @click="deleteFavorite(post)">
+                            <v-icon>mdi-star</v-icon>
+                          </v-btn>
+                          <v-btn v-else text @click="createFavorite(post)">
+                            <v-icon>mdi-star-outline</v-icon>
+                          </v-btn>
+                        </span>
+                      </v-row>
+                    </v-list-item>
+                  </v-card-actions>
 
                   <!-- 投稿者 = ログインユーザーである場合、編集、削除ボタン表示 -->
                   <div v-if="post.user_id === loginUserId">
-                    <v-divider class="mx-4 my-0"></v-divider>
-                    <v-card-actions>
+                    <v-card-actions v-if="post.user_id === loginUserId">
                       <v-btn
                         text
                         style="text-decoration: none"
