@@ -37,23 +37,23 @@
 
                     <!-- 発言者 -->
                     <v-card-subtitle class="font-weight-bold">{{ post.speaker }}</v-card-subtitle>
+
+                    <!-- 動画 -->
+                    <iframe
+                      v-if="showsMovieThumbnails && post.embed_movie_url"
+                      width="100%"
+                      height="300px"
+                      :src="post.embed_movie_url"
+                      frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen
+                    ></iframe>
+
+                    <v-card-text>
+                      <!-- 投稿日 -->
+                      <div>{{ post.created_at | moment }}</div>
+                    </v-card-text>
                   </router-link>
-
-                  <!-- 動画 -->
-                  <iframe
-                    v-if="showsMovieThumbnails && post.embed_movie_url"
-                    width="100%"
-                    height="300px"
-                    :src="post.embed_movie_url"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                  ></iframe>
-
-                  <v-card-text>
-                    <!-- 投稿日 -->
-                    <div>{{ post.created_at | moment }}</div>
-                  </v-card-text>
 
                   <v-card-actions>
                     <v-list-item class="grow">
