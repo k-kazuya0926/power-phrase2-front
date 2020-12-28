@@ -48,7 +48,7 @@
 
         <!--投稿一覧-->
         <div class="content">
-          <v-layout justify-center>全{{ totalPostsCount }}件</v-layout>
+          <v-row justify="center">全{{ totalPostsCount }}件</v-row>
           <PostList :postType="posts" @deletePost="deletePost" :isLoading="isLoading" />
           <div v-if="posts == ''" v-show="!isLoading">
             <p id="none_message">まだ投稿がありません</p>
