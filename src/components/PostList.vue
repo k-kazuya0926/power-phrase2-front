@@ -83,12 +83,17 @@
 
                         <!-- お気に入り -->
                         <span v-if="isLoggedIn">
-                          <v-btn v-if="post.is_favorite" text @click="deleteFavorite(post)">
+                          <v-btn v-if="post.is_favorite" text icon @click="deleteFavorite(post)">
                             <v-icon>mdi-star</v-icon>
                           </v-btn>
-                          <v-btn v-else text @click="createFavorite(post)">
+                          <v-btn v-else text icon @click="createFavorite(post)">
                             <v-icon>mdi-star-outline</v-icon>
                           </v-btn>
+                          <span class="subheading">{{ post.favorite_count }}</span>
+                        </span>
+                        <span v-else>
+                          <v-icon>mdi-star-outline</v-icon>
+                          <span class="subheading">{{ post.favorite_count }}</span>
                         </span>
                       </v-row>
                     </v-list-item>
@@ -189,6 +194,7 @@ export default {
         .post("/posts/" + post.id + "/favorites", postData)
         .then(() => {
           post.is_favorite = true;
+          post.favorite_count++;
         })
         .catch((error) => {
           console.log("お気に入り登録エラー");
@@ -201,6 +207,7 @@ export default {
         .delete("/posts/" + post.id + "/favorites/" + this.loginUserId)
         .then(() => {
           post.is_favorite = false;
+          post.favorite_count--;
         })
         .catch((error) => {
           console.log("お気に入り削除エラー");
