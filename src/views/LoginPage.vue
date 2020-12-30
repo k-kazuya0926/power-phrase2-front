@@ -18,16 +18,14 @@
                 prepend-inner-icon="mdi-lock"
               ></v-text-field>
 
-              <v-btn block elevation="2" class="mr-4 mt-4" type="submit">ログイン</v-btn>
+              <div class="text-center">
+                <v-btn elevation="2" class="mr-4 mt-4" color="secondary" type="submit">ログイン</v-btn>
+              </div>
             </form>
 
-            <v-btn
-              block
-              color="blue-grey lighten-3"
-              elevation="2"
-              class="mr-4 mt-4"
-              @click="login()"
-            >動作確認用ログイン</v-btn>
+            <div class="text-center">
+              <v-btn color="secondary" elevation="2" class="mr-4 mt-4" @click="login()">動作確認用ログイン</v-btn>
+            </div>
 
             <div class="pa-4 text-center">
               登録していない方

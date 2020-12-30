@@ -112,17 +112,18 @@
                           hide-details
                           :disabled="!isLoggedIn"
                         ></v-textarea>
-                        <v-btn
-                          type="submit"
-                          block
-                          class="mt-2 white--text"
-                          color="blue-grey darken-1"
-                          :disabled="!isLoggedIn"
-                        >
-                          <v-icon>mdi-send</v-icon>
-                          <span v-if="isLoggedIn">登録</span>
-                          <span v-else>要ログイン</span>
-                        </v-btn>
+                        <div class="text-center">
+                          <v-btn
+                            type="submit"
+                            class="mt-2"
+                            color="secondary"
+                            :disabled="!isLoggedIn"
+                          >
+                            <v-icon>mdi-send</v-icon>
+                            <span v-if="isLoggedIn">登録</span>
+                            <span v-else>要ログイン</span>
+                          </v-btn>
+                        </div>
                       </div>
                     </form>
 
