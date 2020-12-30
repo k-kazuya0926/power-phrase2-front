@@ -104,22 +104,24 @@
                   </v-row>
 
                   <!-- 投稿、保存ボタン -->
-                  <v-btn
-                    large
-                    block
-                    elevation="2"
-                    class="mr-4 mt-4"
-                    type="submit"
-                    :disabled="invalid"
-                    color="blue-grey lighten-2"
-                  >
-                    <span v-if="postId">
-                      <v-icon>mdi-content-save</v-icon>変更を保存
-                    </span>
-                    <span v-else>
-                      <v-icon>mdi-send-outline</v-icon>投稿
-                    </span>
-                  </v-btn>
+                  <v-row class="text-center">
+                    <v-col>
+                      <v-btn
+                        elevation="2"
+                        class="mr-4 mt-4"
+                        type="submit"
+                        :disabled="invalid"
+                        color="secondary"
+                      >
+                        <span v-if="postId">
+                          <v-icon>mdi-content-save</v-icon>変更を保存
+                        </span>
+                        <span v-else>
+                          <v-icon>mdi-send-outline</v-icon>投稿
+                        </span>
+                      </v-btn>
+                    </v-col>
+                  </v-row>
                 </form>
               </ValidationObserver>
             </div>

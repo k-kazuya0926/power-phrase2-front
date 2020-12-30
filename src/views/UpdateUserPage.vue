@@ -104,14 +104,15 @@
 
                       <v-file-input @change="imageFileSelected" show-size counter label="画像ファイル"></v-file-input>
 
-                      <v-btn
-                        block
-                        large
-                        elevation="2"
-                        class="mr-4 mt-4"
-                        type="submit"
-                        :disabled="invalid || disabled"
-                      >変更を保存する</v-btn>
+                      <div class="text-center">
+                        <v-btn
+                          elevation="2"
+                          class="mr-4 mt-4"
+                          color="secondary"
+                          type="submit"
+                          :disabled="invalid || disabled"
+                        >変更を保存する</v-btn>
+                      </div>
                     </v-col>
                   </v-row>
 
@@ -121,9 +122,8 @@
                       <v-dialog v-model="showsDeleteAccountDialog" max-width="600">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
-                            small
                             elevation="2"
-                            color="red accent-1"
+                            color="error"
                             v-bind="attrs"
                             v-on="on"
                             :disabled="disabled"

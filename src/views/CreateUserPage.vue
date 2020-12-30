@@ -90,7 +90,15 @@
                     label="画像ファイル"
                   ></v-file-input>
 
-                  <v-btn block elevation="2" class="mr-4 mt-4" type="submit" :disabled="invalid">送信</v-btn>
+                  <div class="text-center">
+                    <v-btn
+                      elevation="2"
+                      class="mr-4 mt-4"
+                      color="secondary"
+                      type="submit"
+                      :disabled="invalid"
+                    >送信</v-btn>
+                  </div>
                 </form>
               </ValidationObserver>
             </div>
