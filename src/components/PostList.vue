@@ -10,10 +10,12 @@
     <div v-show="!isLoading">
       <v-container fluid>
         <v-row>
-          <v-col cols="12">
+          <v-col cols="6" sm="2">
             <!-- サムネイル表示切り替え -->
             <v-checkbox v-model="showsMovieThumbnails" label="サムネイル表示"></v-checkbox>
           </v-col>
+        </v-row>
+        <v-row>
           <v-col
             class="pa-1 pa-sm-3"
             v-for="(post, key) in postType"
