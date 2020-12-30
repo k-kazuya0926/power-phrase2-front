@@ -73,7 +73,7 @@
                         v-slot="{ errors }"
                       >
                         <v-textarea
-                          label="詳細"
+                          label="詳細(任意)"
                           rows="10"
                           :error-messages="errors"
                           v-model="detail"
@@ -91,7 +91,7 @@
                         v-slot="{ errors }"
                       >
                         <v-text-field
-                          label="YouTube動画URL"
+                          label="YouTube動画URL(任意)"
                           v-model="movieUrl"
                           :counter="100"
                           :error-messages="errors"
