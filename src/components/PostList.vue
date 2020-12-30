@@ -56,7 +56,7 @@
                   </router-link>
 
                   <v-card-actions>
-                    <v-list-item class="grow">
+                    <v-list-item>
                       <!-- 投稿者 -->
                       <router-link
                         :to="{
@@ -64,8 +64,8 @@
                           params: { userId: post.user_id },
                         }"
                       >
-                        <v-list-item-avatar color="grey darken-3">
-                          <v-img class="elevation-6" :src="baseURL + post.user_image_file_path"></v-img>
+                        <v-list-item-avatar>
+                          <v-img :src="baseURL + post.user_image_file_path"></v-img>
                         </v-list-item-avatar>
                       </router-link>
                       <v-list-item-content>
@@ -76,26 +76,24 @@
                         </v-list-item-title>
                       </v-list-item-content>
 
-                      <v-row align="center" justify="end">
-                        <!-- コメント件数 -->
-                        <v-icon class="mr-1">mdi-comment</v-icon>
-                        <span class="subheading mr-2">{{ post.comment_count }}</span>
+                      <!-- コメント件数 -->
+                      <v-icon class="mr-1">mdi-comment</v-icon>
+                      <span class="subheading mr-2">{{ post.comment_count }}</span>
 
-                        <!-- お気に入り -->
-                        <span v-if="isLoggedIn">
-                          <v-btn v-if="post.is_favorite" text icon @click="deleteFavorite(post)">
-                            <v-icon>mdi-star</v-icon>
-                          </v-btn>
-                          <v-btn v-else text icon @click="createFavorite(post)">
-                            <v-icon>mdi-star-outline</v-icon>
-                          </v-btn>
-                          <span class="subheading">{{ post.favorite_count }}</span>
-                        </span>
-                        <span v-else>
+                      <!-- お気に入り -->
+                      <span v-if="isLoggedIn">
+                        <v-btn v-if="post.is_favorite" text icon @click="deleteFavorite(post)">
+                          <v-icon>mdi-star</v-icon>
+                        </v-btn>
+                        <v-btn v-else text icon @click="createFavorite(post)">
                           <v-icon>mdi-star-outline</v-icon>
-                          <span class="subheading">{{ post.favorite_count }}</span>
-                        </span>
-                      </v-row>
+                        </v-btn>
+                        <span class="subheading">{{ post.favorite_count }}</span>
+                      </span>
+                      <span v-else>
+                        <v-icon>mdi-star-outline</v-icon>
+                        <span class="subheading">{{ post.favorite_count }}</span>
+                      </span>
                     </v-list-item>
                   </v-card-actions>
 
