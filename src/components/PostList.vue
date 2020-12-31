@@ -83,7 +83,7 @@
                       <!-- お気に入り -->
                       <span v-if="isLoggedIn">
                         <v-btn v-if="post.is_favorite" text icon @click="deleteFavorite(post)">
-                          <v-icon>mdi-star</v-icon>
+                          <v-icon color="yellow darken-4">mdi-star</v-icon>
                         </v-btn>
                         <v-btn v-else text icon @click="createFavorite(post)">
                           <v-icon>mdi-star-outline</v-icon>
