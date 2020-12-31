@@ -8,6 +8,7 @@ import CreateOrUpdatePostPage from '@/views/CreateOrUpdatePostPage'
 import DetailPostPage from '@/views/DetailPostPage'
 import DetailUserPage from '@/views/DetailUserPage'
 import UpdateUserPage from '@/views/UpdateUserPage'
+import ListNotificationsPage from '@/views/ListNotificationsPage'
 
 Vue.use(VueRouter)
 
@@ -67,6 +68,11 @@ const routes = [
     path: '/update_user',
     component: UpdateUserPage,
     meta: { requiresAuth: true }
+  },
+  // 通知一覧画面
+  {
+    path: '/notifications',
+    component: ListNotificationsPage,
   },
   // その他
   {

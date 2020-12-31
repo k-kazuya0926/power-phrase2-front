@@ -21,6 +21,9 @@
         <v-btn v-if="isLoggedIn" text to="/posts/favorites">
           <v-icon color="white">mdi-star</v-icon>お気に入り
         </v-btn>
+        <v-btn v-if="isLoggedIn" text to="/notifications">
+          <v-icon color="white">mdi-bell</v-icon>通知
+        </v-btn>
         <v-btn v-if="!isLoggedIn" text to="/login">
           <v-icon color="white">mdi-login</v-icon>ログイン
         </v-btn>
@@ -60,6 +63,15 @@
                   </v-list-item-icon>
                   <v-list-item-content>
                     <v-list-item-title>投稿一覧</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+
+                <v-list-item v-if="isLoggedIn" to="/notifications">
+                  <v-list-item-icon>
+                    <v-icon>mdi-bell</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>通知</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
 
