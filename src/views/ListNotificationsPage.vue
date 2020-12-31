@@ -7,19 +7,24 @@
           color="blue-grey lighten-5"
           class="mx-auto mb-5"
           max-width="600px"
-          v-for="i in 3"
+          v-for="i in 2"
           :key="i"
         >
           <div class="pl-2 pt-2">
-            <v-icon color="yellow darken-4">mdi-star</v-icon>
-            <v-avatar>
+            <v-icon v-if="i === 1" color="yellow darken-4">mdi-star</v-icon>
+            <v-icon v-else>mdi-comment</v-icon>
+            <v-avatar class="ml-2">
               <v-img
                 class="elevation-6"
                 :src="baseURL + 'images/20201218205639_3217ac0b0c402abbda34013c549ada75a7b6f7b4.png'"
               ></v-img>
             </v-avatar>
           </div>
-          <v-card-title>Aさんがあなたの投稿をお気に入りに登録しました。</v-card-title>
+          <v-card-title>
+            Aさんがあなたの投稿
+            <span v-if="i === 1">をお気に入りに登録</span>
+            <span v-else>にコメント</span>しました。
+          </v-card-title>
 
           <v-card-subtitle>ヨット理論</v-card-subtitle>
 
