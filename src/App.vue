@@ -16,7 +16,7 @@
       <!-- PC用 -->
       <v-toolbar-items class="d-none d-sm-flex">
         <v-btn text to="/">
-          <v-icon color="white">mdi-home</v-icon>Top
+          <v-icon color="white">mdi-table</v-icon>投稿一覧
         </v-btn>
         <v-btn v-if="isLoggedIn" text to="/posts/favorites">
           <v-icon color="white">mdi-star</v-icon>お気に入り
