@@ -56,10 +56,10 @@
               <v-list-item-group>
                 <v-list-item to="/">
                   <v-list-item-icon>
-                    <v-icon>mdi-home</v-icon>
+                    <v-icon>mdi-table</v-icon>
                   </v-list-item-icon>
                   <v-list-item-content>
-                    <v-list-item-title>Top</v-list-item-title>
+                    <v-list-item-title>投稿一覧</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
 
